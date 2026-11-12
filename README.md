@@ -21,6 +21,7 @@ A biblioteca digital de **Antônio José**: prévias, leitura online do livro co
 
 Se um dia o endereço do App da Web mudar, troque o ID na linha `const ID_DO_APPS_SCRIPT = '...'` do `index.html`.
 
+
 ## Regras para mexer no código
 - Não use comentários nem `//`, `/*` ou `*/` dentro do `<script>` do `index.html` — o Apps Script apaga o que parece comentário e quebra o site.
 - Colunas novas da planilha entram sempre **no fim** da lista `COLS` no `Código.gs`.
