@@ -88,6 +88,19 @@
     #readerBody h4 { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.15em; margin: 1.5em 0 .75em; text-align: center; }
     #readerBody .orn { text-align: center; margin: 1.75em 0; letter-spacing: 1em; opacity: .75; }
     #readerBody blockquote { border-left: 2px solid currentColor; padding-left: 1em; opacity: .85; font-style: italic; margin: 0 0 1.25em; }
+    #readerBody > * { position: relative; transition: background-color .25s ease, outline-color .25s ease; }
+    #readerBody .hl { border-radius: 3px; padding: .15em .4em; margin-left: -.4em; margin-right: -.4em; }
+    #readerBody [data-cor="ouro"] { background: rgba(217,181,92,.30); }
+    #readerBody [data-cor="vinho"] { background: rgba(176,58,74,.24); }
+    #readerBody [data-cor="verde"] { background: rgba(110,160,90,.26); }
+    #readerBody [data-cor="azul"] { background: rgba(90,135,190,.26); }
+    #readerBody .tem-nota::after { content: '✎'; position: absolute; right: -1.15em; top: .1em; font-size: .75em; opacity: .75; }
+    #readerBody .marcado::before { content: '🔖'; position: absolute; left: -1.5em; top: .1em; font-size: .7em; }
+    #readerBody .bloco-ativo { outline: 1px dashed currentColor; outline-offset: 5px; border-radius: 2px; }
+    #readerBody .piscar { animation: piscar 1.6s ease; }
+    @keyframes piscar { 0%,60% { outline: 2px solid #d9b55c; outline-offset: 6px; } 100% { outline: 2px solid transparent; outline-offset: 6px; } }
+    .cor-ponto { width: 22px; height: 22px; border-radius: 9999px; border: 2px solid rgba(255,255,255,.25); }
+    .cor-ponto.ativa { border-color: #fff; box-shadow: 0 0 0 2px #d9b55c; }
     .tchar { opacity: 0; animation: inkIn .55s ease forwards; }
     @keyframes inkIn { from { opacity: 0; filter: blur(4px); transform: translateY(2px); } to { opacity: 1; filter: none; transform: none; } }
     .quill { transform-origin: 30% 90%; }
@@ -185,6 +198,7 @@
         </div>
       </div>
       <div class="flex items-center gap-1 sm:gap-2 shrink-0">
+        <button data-action="marcarTexto" id="rMarcaBtn" class="hidden w-8 h-8 text-muted hover:text-wine text-base" aria-label="Marcar onde estou" title="Marcar onde estou">🔖</button>
         <button data-action="fontDown" class="w-8 h-8 text-muted hover:text-wine text-xs font-semibold" aria-label="Diminuir letra">A−</button>
         <button data-action="fontUp" class="w-8 h-8 text-muted hover:text-wine text-base font-semibold" aria-label="Aumentar letra">A+</button>
         <span class="w-px h-5 bg-ink/15 mx-1"></span>
@@ -210,6 +224,17 @@
       </article>
     </div>
     </div>
+    <div id="hlBar" style="bottom:20px;left:50%;transform:translateX(-50%)" class="hidden fixed z-[52] bg-ink text-paper-light rounded-full shadow-book-lg pl-3 pr-2 py-2 items-center gap-2 text-sm max-w-[94vw]" role="toolbar" aria-label="Destacar e anotar">
+      <button data-action="hlCor" data-cor="ouro" class="cor-ponto" style="background:#d9b55c" aria-label="Destacar em dourado"></button>
+      <button data-action="hlCor" data-cor="vinho" class="cor-ponto" style="background:#b03a4a" aria-label="Destacar em vinho"></button>
+      <button data-action="hlCor" data-cor="verde" class="cor-ponto" style="background:#6ea05a" aria-label="Destacar em verde"></button>
+      <button data-action="hlCor" data-cor="azul" class="cor-ponto" style="background:#5a87be" aria-label="Destacar em azul"></button>
+      <span class="w-px h-5 bg-white/20 mx-0.5"></span>
+      <button data-action="hlNota" class="px-2.5 py-1 rounded-full hover:bg-white/10 whitespace-nowrap">✎ Nota</button>
+      <button data-action="hlMarca" id="hlMarcaBtn" class="px-2.5 py-1 rounded-full hover:bg-white/10 whitespace-nowrap">🔖</button>
+      <button data-action="hlLimpar" id="hlLimpar" class="px-2.5 py-1 rounded-full hover:bg-white/10 text-white/70 whitespace-nowrap">Apagar</button>
+      <button data-action="hlFechar" class="px-2 py-1 text-white/60 hover:text-white" aria-label="Fechar">✕</button>
+    </div>
   </div>
 
   <div id="bookReader" class="fixed inset-0 z-50 hidden flex-col" style="background:#0b0907" role="dialog" aria-modal="true" aria-label="Leitor do livro">
@@ -223,6 +248,7 @@
       </div>
       <div class="flex items-center gap-1 sm:gap-2 shrink-0">
         <button data-action="readText" id="brTextoBtn" class="hidden text-[10px] font-semibold uppercase tracking-[0.14em] text-wine border border-wine/40 rounded-sm px-2.5 py-1.5 mr-1" title="Ler em texto">Aa Texto</button>
+        <button data-action="marcarPdf" id="brMarcaBtn" class="w-8 h-8 text-muted hover:text-wine text-base" aria-label="Marcar esta página" title="Marcar esta página">🔖</button>
         <button data-action="brZoomOut" class="w-8 h-8 text-muted hover:text-wine text-lg" aria-label="Diminuir página">−</button>
         <button data-action="brZoomIn" class="w-8 h-8 text-muted hover:text-wine text-lg" aria-label="Aumentar página">+</button>
         <span class="w-px h-5 bg-ink/15 mx-1"></span>
@@ -259,6 +285,7 @@
         <p id="dMsg" class="text-sm text-muted mt-2 leading-relaxed"></p>
       </div>
       <input id="dInput" type="password" autocomplete="current-password" class="field hidden text-center !text-lg tracking-widest" aria-label="Senha">
+      <textarea id="dArea" rows="5" maxlength="2000" class="field hidden !text-base text-left leading-relaxed" placeholder="Escreva o que este trecho te fez pensar…" aria-label="Nota"></textarea>
       <div class="flex gap-3">
         <button data-action="dialogOk" id="dOk" class="btn-primary flex-1">OK</button>
         <button data-action="dialogCancel" id="dCancel" class="btn-outline">Cancelar</button>
@@ -303,7 +330,7 @@ const S = {
   editing: null,
   quoteId: null,
   quoteWritten: false,
-  bibTab: 'lendo',
+  bibTab: LS.get('almaTinta.abaBib', 'lendo') || 'lendo',
   tiltEl: null,
   favs: new Set(LS.get('almaTinta.favs', [])),
   reader: Object.assign({ size: 20, theme: 'escuro' }, LS.get('almaTinta.reader3', {})),
@@ -348,20 +375,22 @@ function toast(msg) {
 }
 
 let dialogResolve = null;
-function dialog({ title, msg, icon = '🔒', ok = 'OK', cancel = null, input = false }) {
+function dialog({ title, msg, icon = '🔒', ok = 'OK', cancel = null, input = false, area = false, valor = '' }) {
   $('dTitle').textContent = title; $('dMsg').textContent = msg; $('dIcon').textContent = icon;
   $('dOk').textContent = ok;
   $('dCancel').classList.toggle('hidden', !cancel); if (cancel) $('dCancel').textContent = cancel;
   const inp = $('dInput'); inp.value = ''; inp.classList.toggle('hidden', !input);
+  const ar = $('dArea'); ar.value = valor || ''; ar.classList.toggle('hidden', !area);
   const d = $('dialog'); d.classList.remove('hidden'); d.classList.add('flex');
-  setTimeout(() => (input ? inp : $('dOk')).focus(), 30);
+  setTimeout(() => (area ? ar : input ? inp : $('dOk')).focus(), 30);
   return new Promise(res => { dialogResolve = res; });
 }
 function closeDialog(val) {
   const d = $('dialog'); d.classList.add('hidden'); d.classList.remove('flex');
   const inp = $('dInput'); const withInput = !inp.classList.contains('hidden');
-  const out = val && withInput ? inp.value : val;
-  inp.value = ''; inp.classList.add('hidden');
+  const ar = $('dArea'); const withArea = !ar.classList.contains('hidden');
+  const out = val && withArea ? ar.value : val && withInput ? inp.value : val;
+  inp.value = ''; inp.classList.add('hidden'); ar.value = ''; ar.classList.add('hidden');
   if (dialogResolve) { dialogResolve(out); dialogResolve = null; }
 }
 $('dInput').addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); closeDialog(true); } });
@@ -798,6 +827,7 @@ function viewEstante() {
   const conta = { lendo: 0, quero: 0, lidos: 0, favoritos: 0 };
   S.books.forEach(b => { const sh = shelfOf(b.id); if (conta[sh] !== undefined) conta[sh]++; if (S.favs.has(b.id)) conta.favoritos++; });
   const tab = S.bibTab;
+  const contaNotas = S.books.reduce((n, b) => { const r = BIB.livros[b.id] || {}; return n + (r.notas || []).length + (r.marcas || []).length; }, 0);
   let list = tab === 'favoritos' ? S.books.filter(b => S.favs.has(b.id)) : S.books.filter(b => shelfOf(b.id) === tab);
   list = list.sort((a, z) => ((BIB.livros[z.id] || {}).lastRead || 0) - ((BIB.livros[a.id] || {}).lastRead || 0) || pubTime(z) - pubTime(a));
   const segTotal = Object.keys(BIB.livros).filter(id => ids.has(id)).reduce((n, id) => n + (BIB.livros[id].seconds || 0), 0);
@@ -816,8 +846,11 @@ function viewEstante() {
     <div class="flex justify-center gap-2 mt-10 overflow-x-auto hide-scrollbar pb-1">
       ${SHELVES.map(([k, l]) => `<button data-action="bibTab" data-tab="${k}" class="chip ${tab === k ? 'active' : ''}">${l} <span class="opacity-70">${conta[k]}</span></button>`).join('')}
     </div>
+    <div class="flex justify-center gap-2 mt-3 overflow-x-auto hide-scrollbar pb-1">
+      ${EXTRAS_BIB.map(([k, l]) => `<button data-action="bibTab" data-tab="${k}" class="chip ${tab === k ? 'active' : ''}">${l}${k === 'notas' && contaNotas ? ` <span class="opacity-70">${contaNotas}</span>` : ''}</button>`).join('')}
+    </div>
     <div class="rule my-10"></div>
-    ${list.length ? `<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-x-5 gap-y-10 md:gap-x-8">${list.map(b => {
+    ${tab === 'notas' ? viewNotas() : tab === 'historico' ? viewHistorico() : tab === 'stats' ? viewStats() : list.length ? `<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-x-5 gap-y-10 md:gap-x-8">${list.map(b => {
         const r = BIB.livros[b.id] || {}; const pct = progressPct(b.id);
         const extra = tab === 'lendo' && (r.pages || r.modo === 'texto') ? `<div class="mt-2 space-y-1.5">${progressBar(pct)}<p class="text-[11px] text-muted">${pct}% · ${restanteTxt(b.id)}</p><button data-action="readFull" data-id="${esc(b.id)}" class="btn-link !text-[10px]">Continuar →</button></div>`
           : tab === 'lidos' && r.finishedAt ? `<p class="text-[11px] text-muted mt-1">Terminado em ${fmtDataHora(r.finishedAt)}</p>` : '';
@@ -1070,6 +1103,7 @@ function openReader(b, draftText) {
 function closeReader() {
   const aberto = !$('reader').classList.contains('hidden');
   if (aberto && TX.id) atualizarTexto(true);
+  fecharBarra();
   const r = $('reader'); r.classList.add('hidden'); r.classList.remove('flex');
   document.body.style.overflow = '';
   if (aberto && TX.id) fecharTexto(true, true);
@@ -1128,7 +1162,7 @@ function errMsg(e) {
 }
 
 const BIB_KEY = 'almaTinta.biblioteca';
-const BIB = (() => { const v = LS.get(BIB_KEY, {}); return { livros: (v && v.livros) || {}, ritmo: (v && v.ritmo) || { seg: 0, pags: 0 } }; })();
+const BIB = (() => { const v = LS.get(BIB_KEY, {}) || {}; return { livros: v.livros || {}, ritmo: v.ritmo || { seg: 0, pags: 0 }, dias: v.dias || {}, hist: Array.isArray(v.hist) ? v.hist : [], sessao: v.sessao || null }; })();
 function bib(id) { return BIB.livros[id] || (BIB.livros[id] = {}); }
 function bibSave() { LS.set(BIB_KEY, BIB); }
 function shelfOf(id) { return (BIB.livros[id] || {}).shelf || ''; }
@@ -1149,6 +1183,7 @@ function restanteTxt(id) {
   return falta ? 'faltam cerca de ' + fmtDuracao(falta * ritmo()) : 'leitura concluída';
 }
 function hasOnline(b) { const c = content(b); return !!(b.hasPdf || b.hasText || (c && c.pdfUrl) || (S.restricted[b.id] || {}).hasText); }
+const EXTRAS_BIB = [['notas', '✎ Notas e marcadores'], ['historico', '⏱ Histórico'], ['stats', '✦ Estatísticas']];
 const SHELVES = [['lendo', 'Lendo agora'], ['quero', 'Quero ler'], ['lidos', 'Lidos'], ['favoritos', 'Favoritos']];
 function setShelf(id, shelf) {
   const r = bib(id);
@@ -1211,6 +1246,7 @@ async function openPdfBook(b, pagina) {
     if (!r.startedAt) r.startedAt = Date.now();
     if (r.shelf !== 'lidos') r.shelf = 'lendo';
     bibSave();
+    iniciarSessao(b.id, 'pdf');
     BR.page = Math.min(Math.max(1, pagina || r.page || 1), BR.pages);
     $('brSlider').max = BR.pages;
     $('brLoading').style.display = 'none';
@@ -1249,6 +1285,9 @@ async function renderBookPage() {
 function updateBookUi() {
   const id = BR.book.id; const pct = progressPct(id);
   $('brPage').textContent = `Página ${BR.page} de ${BR.pages}`;
+  const marcada = ((BIB.livros[id] || {}).marcas || []).some(m => m.tipo === 'pdf' && m.page === BR.page);
+  $('brMarcaBtn').classList.toggle('!text-wine', marcada); $('brMarcaBtn').style.opacity = marcada ? '1' : '';
+  $('brMarcaBtn').title = marcada ? 'Página marcada (toque para tirar)' : 'Marcar esta página';
   $('brSlider').value = BR.page;
   $('brLeft').textContent = restanteTxt(id);
   $('brInfo').textContent = `${BR.book.author || ''} · ${pct}% lido`;
@@ -1261,9 +1300,8 @@ function goBookPage(n) {
   if (!BR.doc) return;
   n = Math.min(Math.max(1, n | 0), BR.pages);
   if (n === BR.page) return;
-  const now = Date.now(); const dt = (now - BR.lastTurn) / 1000; BR.lastTurn = now;
+  const now = Date.now(); const dt = (now - BR.lastTurn) / 1000; BR.lastTurn = now; ATIV.ultimo = now;
   const r = bib(BR.book.id);
-  if (!document.hidden) r.seconds = (r.seconds || 0) + Math.min(dt, 600);
   if (n === BR.page + 1 && dt >= 3 && dt <= 600) { BIB.ritmo.seg += dt; BIB.ritmo.pags += 1; }
   BR.page = n;
   r.page = n; r.lastRead = now;
@@ -1274,7 +1312,7 @@ function goBookPage(n) {
 
 function closeBook() {
   const m = $('bookReader'); if (m.classList.contains('hidden')) return;
-  if (BR.book) { const r = bib(BR.book.id); r.seconds = (r.seconds || 0) + Math.min((Date.now() - BR.lastTurn) / 1000, 600); r.lastRead = Date.now(); bibSave(); }
+  if (BR.book) { const r = bib(BR.book.id); r.lastRead = Date.now(); bibSave(); encerrarSessao(); }
   m.classList.add('hidden'); m.classList.remove('flex');
   SS.set('almaTinta.lendoAgora', '');
   document.body.style.overflow = '';
@@ -1334,11 +1372,12 @@ function currentTocItem() { let atual = null; BR.toc.forEach(it => { if (it.page
 function renderToc() {
   const el = $('brToc');
   const head = `<div class="sticky top-0 bg-paper-light border-b border-ink/10 px-5 py-4 flex items-center justify-between"><p class="eyebrow">Sumário</p><button data-action="tocToggle" class="text-muted hover:text-wine md:hidden" aria-label="Fechar sumário">✕</button></div>`;
+  const marcas = secaoMarcasPdf();
   if (!BR.toc.length) {
-    el.innerHTML = head + `<p class="px-5 py-6 text-sm text-muted font-display italic">${BR.tocDone ? 'Este PDF não tem capítulos marcados. Use a barra de páginas abaixo para navegar.' : 'Montando o sumário…'}</p>`;
+    el.innerHTML = head + marcas + `<p class="px-5 py-6 text-sm text-muted font-display italic">${BR.tocDone ? 'Este PDF não tem capítulos marcados. Use a barra de páginas abaixo para navegar.' : 'Montando o sumário…'}</p>`;
     return;
   }
-  el.innerHTML = head + '<div class="py-2">' + BR.toc.map(it => `<button data-action="tocGo" data-page="${it.page}" class="w-full text-left px-5 py-2.5 hover:bg-wine/5 flex items-baseline justify-between gap-3 ${it.parte ? 'mt-3' : ''}">
+  el.innerHTML = head + marcas + (marcas ? '<p class="eyebrow px-5 pt-5">Capítulos</p>' : '') + '<div class="py-2">' + BR.toc.map(it => `<button data-action="tocGo" data-page="${it.page}" class="w-full text-left px-5 py-2.5 hover:bg-wine/5 flex items-baseline justify-between gap-3 ${it.parte ? 'mt-3' : ''}">
       <span class="min-w-0"><span class="${it.parte ? 'text-[10px] uppercase tracking-[0.18em] text-wine font-semibold' : 'text-xs uppercase tracking-wider text-muted'} block">${esc(it.label)}</span>${it.sub ? `<span class="font-display text-base text-ink leading-snug block">${esc(it.sub)}</span>` : ''}</span>
       <span class="text-[11px] text-muted tabular-nums">${it.page}</span></button>`).join('') + (BR.tocDone ? '' : '<p class="px-5 py-3 text-xs text-muted italic">Lendo o restante do livro…</p>') + '</div>';
   updateBookUiSafe();
@@ -1455,7 +1494,7 @@ async function extrairTextoPdf(doc, opts, onProg) {
   return saida.join('\n\n');
 }
 
-const TX = { id: null, cache: {}, t0: 0, salvarTimer: null, caps: [] };
+const TX = { id: null, cache: {}, t0: 0, salvarTimer: null, caps: [], irPara: null };
 function hasText(b) { return !!(b.hasText || (S.restricted[b.id] || {}).hasText); }
 function posicaoTxt(id) {
   const r = BIB.livros[id] || {}; const pct = progressPct(id);
@@ -1503,8 +1542,14 @@ async function openTextBook(b) {
     if (r.shelf !== 'lidos') r.shelf = 'lendo';
     bibSave();
     $('rMeta').textContent = `${b.author || ''} · ${fmtDuracao(r.palavras / 220 * 60)} de leitura`;
+    $('rMarcaBtn').classList.remove('hidden');
+    pintarAnotacoes();
+    iniciarSessao(b.id, 'texto');
     const sc = $('rScroll');
-    requestAnimationFrame(() => { sc.scrollTop = (r.frac || 0) * Math.max(0, sc.scrollHeight - sc.clientHeight); updateProgress(); atualizarTexto(false); });
+    requestAnimationFrame(() => {
+      sc.scrollTop = (r.frac || 0) * Math.max(0, sc.scrollHeight - sc.clientHeight); updateProgress(); atualizarTexto(false);
+      if (TX.irPara != null) { const alvo = TX.irPara; TX.irPara = null; irBloco(alvo); }
+    });
     TX.t0 = Date.now();
   } catch (e) {
     $('readerBody').innerHTML = `<div class="py-16 text-center"><p class="font-display italic text-xl">Não foi possível abrir o livro.</p><p class="text-sm opacity-70 mt-2">${esc(errMsg(e))}</p></div>`;
@@ -1513,8 +1558,9 @@ async function openTextBook(b) {
 function renderTextToc() {
   const el = $('rToc');
   const head = `<div class="sticky top-0 bg-paper-light border-b border-ink/10 px-5 py-4 flex items-center justify-between"><p class="eyebrow">Sumário</p><button data-action="rTocToggle" class="text-muted hover:text-wine md:hidden" aria-label="Fechar sumário">✕</button></div>`;
-  if (!TX.caps.length) { el.innerHTML = head + '<p class="px-5 py-6 text-sm text-muted font-display italic">Este texto não tem capítulos marcados.</p>'; return; }
-  el.innerHTML = head + '<div class="py-2">' + TX.caps.map((h, i) => {
+  const notas = secaoAnotacoesTexto();
+  if (!TX.caps.length) { el.innerHTML = head + notas + '<p class="px-5 py-6 text-sm text-muted font-display italic">Este texto não tem capítulos marcados.</p>'; return; }
+  el.innerHTML = head + notas + (notas ? '<p class="eyebrow px-5 pt-5">Capítulos</p>' : '') + '<div class="py-2">' + TX.caps.map((h, i) => {
     const t = h.textContent; const parte = /^parte\b/i.test(t);
     const pedacos = t.split(' — '); const rot = pedacos.length > 1 && /^cap[ií]tulo/i.test(pedacos[0]) ? pedacos[0] : '';
     const nome = rot ? pedacos.slice(1).join(' — ') : t;
@@ -1545,14 +1591,328 @@ function atualizarTexto(salvar) {
 function fecharTexto(rerender, jaSalvo) {
   if (!TX.id) return;
   if (!jaSalvo) atualizarTexto(true);
-  const r = bib(TX.id); r.seconds = (r.seconds || 0) + Math.min((Date.now() - TX.t0) / 1000, 7200); bibSave();
+  encerrarSessao();
+  fecharBarra();
   TX.id = null; TX.caps = [];
+  $('rMarcaBtn').classList.add('hidden');
   SS.set('almaTinta.lendoAgora', '');
   $('rTocBtn').classList.add('hidden'); $('rToc').classList.add('hidden');
   if (rerender) render(true);
 }
 window.addEventListener('pagehide', () => { if (TX.id) atualizarTexto(true); });
-$('rScroll').addEventListener('scroll', () => { if (!TX.id) return; atualizarTexto(false); clearTimeout(TX.salvarTimer); TX.salvarTimer = setTimeout(() => atualizarTexto(true), 700); }, { passive: true });
+$('rScroll').addEventListener('scroll', () => { if (!TX.id) return; ATIV.ultimo = Date.now(); if (HL.i !== null && Math.abs($('rScroll').scrollTop - HL.top) > 80) fecharBarra(); atualizarTexto(false); clearTimeout(TX.salvarTimer); TX.salvarTimer = setTimeout(() => atualizarTexto(true), 700); }, { passive: true });
+
+const ATIV = { ultimo: Date.now() };
+['pointerdown', 'keydown', 'wheel', 'touchstart'].forEach(ev => document.addEventListener(ev, () => { ATIV.ultimo = Date.now(); }, { passive: true }));
+function diaDe(ms) { const d = new Date(ms); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
+function leituraAberta() {
+  if (TX.id && !$('reader').classList.contains('hidden')) return { id: TX.id, modo: 'texto' };
+  if (BR.book && !$('bookReader').classList.contains('hidden')) return { id: BR.book.id, modo: 'pdf' };
+  return null;
+}
+function posicaoCurta(id, modo) {
+  const r = BIB.livros[id] || {};
+  if (modo === 'texto') return r.capitulo || '';
+  return r.pages ? 'página ' + (r.page || 1) : '';
+}
+function iniciarSessao(id, modo) {
+  const s = BIB.sessao;
+  if (s && s.id === id && s.modo === modo && Date.now() - (s.fim || 0) < 600000) return;
+  encerrarSessao();
+  const agora = Date.now();
+  BIB.sessao = { id, modo, ini: agora, fim: agora, seg: 0, de: progressPct(id), ate: progressPct(id), onde: posicaoCurta(id, modo) };
+  ATIV.ultimo = agora;
+  bibSave();
+}
+function encerrarSessao() {
+  const s = BIB.sessao; if (!s) return;
+  BIB.sessao = null;
+  s.ate = progressPct(s.id); s.onde = posicaoCurta(s.id, s.modo) || s.onde;
+  if (s.seg >= 20) { BIB.hist.unshift(s); BIB.hist = BIB.hist.slice(0, 400); }
+  bibSave();
+}
+setInterval(() => {
+  const l = leituraAberta(); const s = BIB.sessao;
+  if (!l || !s || s.id !== l.id || document.hidden || Date.now() - ATIV.ultimo > 180000) return;
+  const r = bib(l.id); const passo = 15;
+  r.seconds = (r.seconds || 0) + passo;
+  const d = diaDe(Date.now()); BIB.dias[d] = (BIB.dias[d] || 0) + passo;
+  s.seg += passo; s.fim = Date.now(); s.ate = progressPct(l.id); s.onde = posicaoCurta(l.id, l.modo) || s.onde;
+  bibSave();
+}, 15000);
+(() => { const s = BIB.sessao; if (s && Date.now() - (s.fim || 0) > 600000) encerrarSessao(); })();
+
+const HL = { i: null, top: 0 };
+const CORES = { ouro: '#d9b55c', vinho: '#b03a4a', verde: '#6ea05a', azul: '#5a87be' };
+function blocosTexto() { return [...$('readerBody').children]; }
+function trechoDe(el) { const t = (el.textContent || '').replace(/\s+/g, ' ').trim(); return t.length > 160 ? t.slice(0, 160).replace(/\s\S*$/, '') + '…' : t; }
+function capDoBloco(el) { let cap = ''; TX.caps.forEach(h => { if (h.offsetTop <= el.offsetTop + 2) cap = h.textContent.split(' — ')[0]; }); return cap; }
+function notaDe(id, i) { return ((BIB.livros[id] || {}).notas || []).find(n => n.i === i) || null; }
+function marcaTextoDe(id, i) { return ((BIB.livros[id] || {}).marcas || []).find(m => m.tipo === 'texto' && m.i === i) || null; }
+function pintarAnotacoes() {
+  if (!TX.id) return;
+  const r = BIB.livros[TX.id] || {}; const bl = blocosTexto();
+  bl.forEach(el => { el.classList.remove('hl', 'tem-nota', 'marcado'); delete el.dataset.cor; });
+  (r.notas || []).forEach(n => { const el = bl[n.i]; if (!el) return; if (n.cor) { el.classList.add('hl'); el.dataset.cor = n.cor; } if (n.nota) el.classList.add('tem-nota'); });
+  (r.marcas || []).forEach(m => { if (m.tipo === 'texto' && bl[m.i]) bl[m.i].classList.add('marcado'); });
+}
+function abrirBarra(i) {
+  const bl = blocosTexto(); const el = bl[i]; if (!el) return;
+  if (HL.i === i) { fecharBarra(); return; }
+  bl.forEach(b => b.classList.remove('bloco-ativo'));
+  el.classList.add('bloco-ativo');
+  HL.i = i; HL.top = $('rScroll').scrollTop;
+  const n = notaDe(TX.id, i);
+  document.querySelectorAll('#hlBar [data-cor]').forEach(b => b.classList.toggle('ativa', !!n && n.cor === b.dataset.cor));
+  $('hlLimpar').classList.toggle('hidden', !n);
+  $('hlMarcaBtn').textContent = marcaTextoDe(TX.id, i) ? '🔖 Tirar' : '🔖';
+  const bar = $('hlBar'); bar.classList.remove('hidden'); bar.classList.add('flex');
+  if (!LS.get('almaTinta.dicaNotas', false)) { LS.set('almaTinta.dicaNotas', true); toast('Escolha uma cor para destacar, ou escreva uma nota sobre este trecho.'); }
+}
+function fecharBarra() {
+  HL.i = null;
+  const bar = $('hlBar'); bar.classList.add('hidden'); bar.classList.remove('flex');
+  document.querySelectorAll('#readerBody .bloco-ativo').forEach(b => b.classList.remove('bloco-ativo'));
+}
+function salvarAnotacao(i, mudar) {
+  const r = bib(TX.id); r.notas = r.notas || [];
+  const el = blocosTexto()[i]; if (!el) return;
+  let n = r.notas.find(x => x.i === i);
+  if (!n) { n = { i, cor: '', nota: '', trecho: trechoDe(el), cap: capDoBloco(el), at: Date.now() }; r.notas.push(n); }
+  mudar(n);
+  n.trecho = trechoDe(el); n.cap = capDoBloco(el); n.at = Date.now();
+  if (!n.cor && !n.nota) r.notas = r.notas.filter(x => x !== n);
+  r.notas.sort((a, b) => a.i - b.i);
+  bibSave(); pintarAnotacoes(); renderTextToc();
+}
+function alternarMarcaTexto(i) {
+  const el = blocosTexto()[i]; if (!el) return;
+  const r = bib(TX.id); r.marcas = r.marcas || [];
+  const ja = r.marcas.find(m => m.tipo === 'texto' && m.i === i);
+  if (ja) { r.marcas = r.marcas.filter(m => m !== ja); toast('Marcador removido.'); }
+  else { const cap = capDoBloco(el); r.marcas.push({ tipo: 'texto', i, cap, trecho: trechoDe(el), at: Date.now() }); toast('Marcador adicionado' + (cap ? ' em ' + cap : '') + ' 🔖'); }
+  r.marcas.sort((a, b) => (a.i || 0) - (b.i || 0));
+  bibSave(); pintarAnotacoes(); renderTextToc();
+}
+function blocoNoTopo() {
+  const sc = $('rScroll'); const bl = blocosTexto();
+  const i = bl.findIndex(el => el.offsetTop + el.offsetHeight > sc.scrollTop + 40 && (el.textContent || '').trim().length > 1 && !el.classList.contains('orn'));
+  return i < 0 ? 0 : i;
+}
+function irBloco(i) {
+  const el = blocosTexto()[i]; if (!el) return;
+  $('rScroll').scrollTop = Math.max(0, el.offsetTop - 90);
+  atualizarTexto(true);
+  el.classList.remove('piscar'); void el.offsetWidth; el.classList.add('piscar');
+}
+async function editarNota(i) {
+  const el = blocosTexto()[i]; if (!el) return;
+  const atual = notaDe(TX.id, i);
+  const t = await dialog({ title: atual && atual.nota ? 'Editar nota' : 'Nova nota', msg: '“' + trechoDe(el) + '”', icon: '✎', ok: 'Salvar nota', cancel: 'Cancelar', area: true, valor: (atual && atual.nota) || '' });
+  if (t === false || t == null) return;
+  salvarAnotacao(i, n => { n.nota = String(t).trim().slice(0, 2000); if (!n.nota && !n.cor) n.cor = ''; });
+  toast(String(t).trim() ? 'Nota salva ✎' : 'Nota removida.');
+}
+function itemAnotacao(n, acao) {
+  const cor = n.cor ? CORES[n.cor] : 'transparent';
+  return `<button data-action="${acao}" data-i="${n.i}" class="w-full text-left px-5 py-2.5 hover:bg-wine/5 block">
+    <span class="flex items-start gap-2"><span class="mt-1.5 w-2.5 h-2.5 rounded-full shrink-0 border border-ink/20" style="background:${cor}"></span>
+    <span class="min-w-0"><span class="text-[10px] uppercase tracking-wider text-muted block">${esc(n.cap || 'Início')}</span>
+    <span class="font-display italic text-[15px] text-ink leading-snug block line-clamp-2">${esc(n.trecho)}</span>
+    ${n.nota ? `<span class="text-xs text-wine block mt-1 line-clamp-2">✎ ${esc(n.nota)}</span>` : ''}</span></span></button>`;
+}
+function secaoAnotacoesTexto() {
+  const r = BIB.livros[TX.id] || {};
+  const marcas = (r.marcas || []).filter(m => m.tipo === 'texto'); const notas = r.notas || [];
+  if (!marcas.length && !notas.length) return '';
+  return `${marcas.length ? `<p class="eyebrow px-5 pt-5">Marcadores</p><div class="py-1">${marcas.map(m => `<button data-action="irBlocoToc" data-i="${m.i}" class="w-full text-left px-5 py-2 hover:bg-wine/5 block"><span class="text-[10px] uppercase tracking-wider text-muted block">🔖 ${esc(m.cap || 'Início')}</span><span class="font-display italic text-[15px] text-ink leading-snug block line-clamp-1">${esc(m.trecho)}</span></button>`).join('')}</div>` : ''}
+    ${notas.length ? `<p class="eyebrow px-5 pt-4">Destaques e notas</p><div class="py-1">${notas.map(n => itemAnotacao(n, 'irBlocoToc')).join('')}</div>` : ''}
+    <div class="mx-5 mt-2 border-b border-ink/10"></div>`;
+}
+function secaoMarcasPdf() {
+  if (!BR.book) return '';
+  const marcas = ((BIB.livros[BR.book.id] || {}).marcas || []).filter(m => m.tipo === 'pdf').sort((a, b) => a.page - b.page);
+  if (!marcas.length) return '';
+  return `<p class="eyebrow px-5 pt-5">Marcadores</p><div class="py-1">${marcas.map(m => `<button data-action="tocGo" data-page="${m.page}" class="w-full text-left px-5 py-2 hover:bg-wine/5 flex items-baseline justify-between gap-3"><span class="min-w-0"><span class="text-xs uppercase tracking-wider text-muted block">🔖 ${esc(m.cap || 'Marcador')}</span></span><span class="text-[11px] text-muted tabular-nums">p. ${m.page}</span></button>`).join('')}</div><div class="mx-5 mt-2 border-b border-ink/10"></div>`;
+}
+function alternarMarcaPdf() {
+  if (!BR.book || !BR.doc) return;
+  const r = bib(BR.book.id); r.marcas = r.marcas || [];
+  const ja = r.marcas.find(m => m.tipo === 'pdf' && m.page === BR.page);
+  if (ja) { r.marcas = r.marcas.filter(m => m !== ja); toast('Marcador removido.'); }
+  else { const it = currentTocItem(); r.marcas.push({ tipo: 'pdf', page: BR.page, cap: it ? it.label : '', at: Date.now() }); toast(`Página ${BR.page} marcada 🔖`); }
+  bibSave(); renderToc(); updateBookUi();
+}
+$('readerBody').addEventListener('click', e => {
+  if (!TX.id) return;
+  const bl = blocosTexto(); const el = bl.find(b => b.contains(e.target));
+  if (!el || el.classList.contains('orn') || !(el.textContent || '').trim()) return;
+  abrirBarra(bl.indexOf(el));
+});
+document.addEventListener('pointerdown', e => {
+  if (HL.i === null) return;
+  if (e.target.closest('#hlBar') || e.target.closest('#readerBody') || e.target.closest('#dialog')) return;
+  fecharBarra();
+});
+
+function apagarAnotacao(id, tipo, chave) {
+  const r = BIB.livros[id]; if (!r) return;
+  if (tipo === 'nota') r.notas = (r.notas || []).filter(n => n.i !== chave);
+  else if (tipo === 'texto') r.marcas = (r.marcas || []).filter(m => !(m.tipo === 'texto' && m.i === chave));
+  else r.marcas = (r.marcas || []).filter(m => !(m.tipo === 'pdf' && m.page === chave));
+  bibSave(); render(true); toast('Apagado.');
+}
+function abrirAnotacao(id, tipo, chave) {
+  const b = S.books.find(x => x.id === id); if (!b) return;
+  if (tipo === 'pdf') { openPdfBook(b, chave); return; }
+  if (!hasText(b)) { toast('O texto deste livro não está disponível agora.'); return; }
+  TX.irPara = chave; openTextBook(b);
+}
+
+function minutosTxt(seg) { return seg >= 60 ? fmtDuracao(seg) : seg > 0 ? 'menos de 1 min' : '0 min'; }
+function sequencias() {
+  const ativo = d => (BIB.dias[d] || 0) >= 60;
+  const hoje = new Date(); hoje.setHours(12, 0, 0, 0);
+  let atual = 0; let d = new Date(hoje);
+  if (!ativo(diaDe(d.getTime()))) d.setDate(d.getDate() - 1);
+  while (ativo(diaDe(d.getTime()))) { atual++; d.setDate(d.getDate() - 1); }
+  const dias = Object.keys(BIB.dias).filter(ativo).sort();
+  let maior = 0, corrida = 0, ant = null;
+  dias.forEach(k => {
+    const t = new Date(k + 'T12:00:00').getTime();
+    corrida = ant !== null && Math.round((t - ant) / 86400000) === 1 ? corrida + 1 : 1;
+    maior = Math.max(maior, corrida); ant = t;
+  });
+  return { atual, maior, ativos: dias.length };
+}
+function periodoFavorito() {
+  const f = { madrugada: 0, manhã: 0, tarde: 0, noite: 0 };
+  BIB.hist.forEach(s => { const h = new Date(s.ini).getHours(); const k = h < 6 ? 'madrugada' : h < 12 ? 'manhã' : h < 18 ? 'tarde' : 'noite'; f[k] += s.seg; });
+  const [k, v] = Object.entries(f).sort((a, b) => b[1] - a[1])[0];
+  return v >= 300 ? k : '';
+}
+function statCard(valor, rotulo, extra = '') {
+  return `<div class="border border-ink/10 bg-paper-light/60 rounded-sm px-4 py-5 text-center"><p class="font-display ${String(valor).length > 6 ? 'text-2xl md:text-3xl' : 'text-3xl md:text-4xl'} font-semibold text-ink leading-tight">${valor}</p><p class="text-[10px] uppercase tracking-[0.16em] text-muted mt-2">${rotulo}</p>${extra ? `<p class="text-[11px] text-wine mt-1">${extra}</p>` : ''}</div>`;
+}
+function viewStats() {
+  const ids = new Set(S.books.map(b => b.id));
+  const livros = Object.entries(BIB.livros).filter(([id]) => ids.has(id));
+  const total = livros.reduce((n, [, r]) => n + (r.seconds || 0), 0);
+  const lidos = S.books.filter(b => shelfOf(b.id) === 'lidos').length;
+  const lendo = S.books.filter(b => shelfOf(b.id) === 'lendo').length;
+  const palavras = livros.reduce((n, [, r]) => n + (r.modo === 'texto' && r.palavras ? Math.round(r.palavras * Math.min(1, r.frac || 0)) : 0), 0);
+  const paginas = livros.reduce((n, [, r]) => n + (r.modo !== 'texto' && r.pages ? (r.page || 1) : 0), 0);
+  const notas = livros.reduce((n, [, r]) => n + (r.notas || []).length, 0);
+  const marcas = livros.reduce((n, [, r]) => n + (r.marcas || []).length, 0);
+  const seq = sequencias();
+  const hoje = BIB.dias[diaDe(Date.now())] || 0;
+  let semana = 0; const barras = [];
+  for (let k = 13; k >= 0; k--) {
+    const d = new Date(); d.setDate(d.getDate() - k);
+    const seg = BIB.dias[diaDe(d.getTime())] || 0;
+    if (k < 7) semana += seg;
+    barras.push({ seg, rot: d.toLocaleDateString('pt-BR', { weekday: 'narrow' }).toUpperCase(), dia: d.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' }), hoje: k === 0 });
+  }
+  const maxSeg = Math.max(60, ...barras.map(b => b.seg));
+  const per = periodoFavorito();
+  const media = seq.ativos ? Object.values(BIB.dias).reduce((a, b) => a + b, 0) / seq.ativos : 0;
+  const porLivro = livros.filter(([, r]) => (r.seconds || 0) >= 60).sort((a, b) => b[1].seconds - a[1].seconds).slice(0, 8);
+  const maxLivro = porLivro.length ? porLivro[0][1].seconds : 1;
+  if (total < 20 && !lidos) return `<div class="text-center py-10 space-y-6"><p class="font-display italic text-2xl text-muted max-w-md mx-auto">Suas estatísticas aparecem aqui depois das primeiras leituras: tempo lido, dias seguidos, livros terminados e muito mais.</p><a href="#acervo" class="btn-outline">Começar a ler</a></div>`;
+  return `<div class="space-y-12 max-w-4xl mx-auto" style="display:flex;flex-direction:column;gap:3rem">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+      ${statCard(esc(minutosTxt(total)), 'Tempo de leitura')}
+      ${statCard(seq.atual, seq.atual === 1 ? 'Dia seguido' : 'Dias seguidos', seq.maior > seq.atual ? 'recorde: ' + seq.maior : seq.atual >= 2 ? 'seu recorde ✦' : '')}
+      ${statCard(lidos, lidos === 1 ? 'Livro lido' : 'Livros lidos', lendo ? lendo + ' em andamento' : '')}
+      ${statCard(esc(minutosTxt(semana)), 'Nos últimos 7 dias', hoje >= 60 ? 'hoje: ' + minutosTxt(hoje) : '')}
+    </div>
+    <div>
+      <div class="flex items-baseline justify-between"><p class="eyebrow">Últimos 14 dias</p><p class="text-[11px] text-muted">minutos por dia</p></div>
+      <div class="mt-5 flex items-end gap-1.5 md:gap-2.5 border-b border-ink/15" style="height:160px">
+        ${barras.map(b => `<div class="flex-1 h-full flex flex-col justify-end items-center gap-1 group" title="${b.dia}: ${esc(minutosTxt(b.seg))}">
+          <span class="text-[10px] text-muted tabular-nums ${b.seg >= 60 ? '' : 'invisible'}">${Math.round(b.seg / 60)}</span>
+          <div class="w-full rounded-t-[2px] ${b.hoje ? 'bg-wine' : 'bg-gradient-to-t from-gold/70 to-gold'}" style="height:${b.seg ? Math.max(3, Math.round(b.seg / maxSeg * 100)) : 0}%"></div></div>`).join('')}
+      </div>
+      <div class="flex gap-1.5 md:gap-2.5 mt-1.5">${barras.map(b => `<span class="flex-1 text-center text-[10px] ${b.hoje ? 'text-wine font-semibold' : 'text-muted'}">${b.rot}</span>`).join('')}</div>
+    </div>
+    <div class="grid md:grid-cols-2 gap-10">
+      <div>
+        <p class="eyebrow">Tempo por livro</p>
+        <div class="mt-5 space-y-4">${porLivro.length ? porLivro.map(([id, r]) => { const b = S.books.find(x => x.id === id); return `<a href="#obra-${esc(id)}" class="block group"><div class="flex justify-between gap-3 text-sm"><span class="font-display text-lg text-ink group-hover:text-wine truncate">${esc(b.title)}</span><span class="text-muted tabular-nums shrink-0">${esc(minutosTxt(r.seconds))}</span></div><div class="h-1.5 mt-1.5 rounded-full bg-ink/10 overflow-hidden"><div class="h-full bg-gradient-to-r from-gold to-wine-light rounded-full" style="width:${Math.round(r.seconds / maxLivro * 100)}%"></div></div><p class="text-[11px] text-muted mt-1">${progressPct(id)}% lido</p></a>`; }).join('') : '<p class="text-sm text-muted italic">Ainda pouco tempo de leitura registrado.</p>'}</div>
+      </div>
+      <div>
+        <p class="eyebrow">Seu jeito de ler</p>
+        <ul class="mt-5 space-y-3 text-[15px] text-ink">
+          ${per ? `<li>🌙 Você lê mais <strong>${per === 'manhã' ? 'de manhã' : per === 'tarde' ? 'à tarde' : per === 'noite' ? 'à noite' : 'de madrugada'}</strong>.</li>` : ''}
+          ${seq.ativos ? `<li>📅 ${plural(seq.ativos, 'dia', 'dias')} com leitura, em média <strong>${esc(minutosTxt(media))}</strong> por dia.</li>` : ''}
+          ${palavras ? `<li>📖 Cerca de <strong>${palavras.toLocaleString('pt-BR')}</strong> palavras lidas no leitor em texto.</li>` : ''}
+          ${paginas ? `<li>📄 ${plural(paginas, 'página percorrida', 'páginas percorridas')} no leitor de PDF.</li>` : ''}
+          <li>✎ ${plural(notas, 'destaque ou nota', 'destaques e notas')} · 🔖 ${plural(marcas, 'marcador', 'marcadores')}.</li>
+          ${seq.maior ? `<li>🔥 Maior sequência: <strong>${plural(seq.maior, 'dia', 'dias')}</strong> seguidos.</li>` : ''}
+          <li>⏱ ${plural(BIB.hist.length, 'sessão de leitura registrada', 'sessões de leitura registradas')}.</li>
+        </ul>
+      </div>
+    </div>
+  </div>`;
+}
+function rotuloDia(ms) {
+  const d = diaDe(ms); const hoje = new Date(); const ontem = new Date(); ontem.setDate(ontem.getDate() - 1);
+  if (d === diaDe(hoje.getTime())) return 'Hoje';
+  if (d === diaDe(ontem.getTime())) return 'Ontem';
+  const t = new Date(ms).toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' });
+  return t.charAt(0).toUpperCase() + t.slice(1);
+}
+function viewHistorico() {
+  const ids = new Set(S.books.map(b => b.id));
+  const lista = (BIB.sessao && BIB.sessao.seg >= 20 ? [Object.assign({ agora: true }, BIB.sessao)] : []).concat(BIB.hist).filter(s => ids.has(s.id));
+  const eventos = [];
+  S.books.forEach(b => { const r = BIB.livros[b.id] || {}; if (r.finishedAt) eventos.push({ fim: true, id: b.id, ini: r.finishedAt }); });
+  const tudo = lista.concat(eventos).sort((a, b) => b.ini - a.ini);
+  if (!tudo.length) return `<div class="text-center py-10 space-y-6"><p class="font-display italic text-2xl text-muted max-w-md mx-auto">Cada vez que você ler um livro online, a sessão aparece aqui: quando, por quanto tempo e até onde chegou.</p><a href="#acervo" class="btn-outline">Explorar o acervo</a></div>`;
+  let diaAtual = ''; const partes = [];
+  tudo.slice(0, 150).forEach(s => {
+    const rot = rotuloDia(s.ini);
+    if (rot !== diaAtual) { diaAtual = rot; partes.push(`<p class="eyebrow pt-8 first:pt-0">${esc(rot)}</p>`); }
+    const b = S.books.find(x => x.id === s.id);
+    const hora = new Date(s.ini).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+    if (s.fim === true) { partes.push(`<div class="flex gap-4 py-3 border-b border-ink/10"><span class="text-xs text-muted tabular-nums w-11 shrink-0 pt-1">${hora}</span><p class="text-[15px] text-ink">✦ Você terminou <a href="#obra-${esc(b.id)}" class="font-display text-lg font-semibold hover:text-wine">${esc(b.title)}</a></p></div>`); return; }
+    const avancou = s.ate > s.de ? `de ${s.de}% a ${s.ate}%` : `em ${s.ate}%`;
+    partes.push(`<div class="flex gap-4 py-3 border-b border-ink/10 items-start">
+      <span class="text-xs text-muted tabular-nums w-11 shrink-0 pt-1">${hora}</span>
+      <div class="min-w-0 flex-1"><a href="#obra-${esc(b.id)}" class="font-display text-lg font-semibold text-ink hover:text-wine leading-tight">${esc(b.title)}</a>
+      <p class="text-xs text-muted mt-0.5">${s.agora ? '<span class="text-wine">lendo agora · </span>' : ''}${esc(minutosTxt(s.seg))} · ${avancou}${s.onde ? ' · ' + esc(s.onde) : ''} · ${s.modo === 'texto' ? 'texto' : 'PDF'}</p></div>
+      ${canAccess(b) && hasOnline(b) ? `<button data-action="readFull" data-id="${esc(b.id)}" class="btn-link !text-[10px] shrink-0 pt-1">Continuar →</button>` : ''}</div>`);
+  });
+  return `<div class="max-w-2xl mx-auto">${partes.join('')}
+    <div class="text-center pt-10"><button data-action="limparHist" class="text-[11px] uppercase tracking-[0.14em] text-muted hover:text-wine">Apagar histórico</button></div></div>`;
+}
+function viewNotas() {
+  const blocos = S.books.map(b => {
+    const r = BIB.livros[b.id] || {};
+    const notas = (r.notas || []).map(n => Object.assign({ k: 'nota', ord: n.i }, n));
+    const marcas = (r.marcas || []).map(m => Object.assign({ k: m.tipo, ord: m.tipo === 'pdf' ? m.page * 1e6 : m.i }, m));
+    const itens = notas.concat(marcas).sort((a, z) => a.ord - z.ord);
+    return itens.length ? { b, itens } : null;
+  }).filter(Boolean);
+  if (!blocos.length) return `<div class="text-center py-10 space-y-6"><p class="font-display italic text-2xl text-muted max-w-md mx-auto">Seus destaques, notas e marcadores aparecem aqui. No leitor, toque num parágrafo para destacar ou anotar, e use 🔖 para marcar onde parou.</p><a href="#acervo" class="btn-outline">Explorar o acervo</a></div>`;
+  return `<div class="max-w-2xl mx-auto space-y-14">${blocos.map(({ b, itens }) => `<section>
+    <div class="flex items-baseline justify-between gap-4 border-b border-ink/15 pb-3"><a href="#obra-${esc(b.id)}" class="font-display text-2xl font-semibold text-ink hover:text-wine">${esc(b.title)}</a><span class="text-[11px] text-muted shrink-0">${plural(itens.length, 'item', 'itens')}</span></div>
+    <div class="divide-y divide-ink/10">${itens.map(it => {
+      const chave = it.k === 'pdf' ? it.page : it.i;
+      const cor = it.k === 'nota' && it.cor ? CORES[it.cor] : '';
+      const titulo = it.k === 'pdf' ? `🔖 Página ${it.page}${it.cap ? ' · ' + esc(it.cap) : ''}` : `${it.k === 'texto' ? '🔖 ' : ''}${esc(it.cap || 'Início')}`;
+      return `<div class="py-4 flex gap-3">
+        <span class="mt-1.5 w-1 self-stretch rounded-full shrink-0" style="background:${cor || 'rgba(120,100,80,.25)'}"></span>
+        <div class="min-w-0 flex-1">
+          <p class="text-[10px] uppercase tracking-wider text-muted">${titulo} · ${esc(fmtDataHora(it.at))}</p>
+          ${it.trecho ? `<p class="font-display italic text-lg text-ink leading-snug mt-1">“${esc(it.trecho)}”</p>` : ''}
+          ${it.nota ? `<p class="text-[15px] text-ink/90 mt-2 whitespace-pre-line border-l-2 border-wine/40 pl-3">${esc(it.nota)}</p>` : ''}
+          <div class="flex gap-5 mt-2">
+            ${canAccess(b) ? `<button data-action="abrirNota" data-id="${esc(b.id)}" data-tipo="${it.k}" data-chave="${chave}" class="btn-link !text-[10px]">Abrir aqui →</button>` : ''}
+            <button data-action="apagarNota" data-id="${esc(b.id)}" data-tipo="${it.k}" data-chave="${chave}" class="text-[10px] uppercase tracking-[0.14em] text-muted hover:text-wine">Apagar</button>
+          </div>
+        </div></div>`; }).join('')}</div></section>`).join('')}</div>`;
+}
 
 const TEXTO_FORM = { alterado: false, ocupado: false };
 async function extrairParaFormulario(silencioso) {
@@ -1806,7 +2166,18 @@ document.addEventListener('click', e => {
     case 'brZoomOut': BR.zoom = Math.max(0.5, BR.zoom - 0.25); renderBookPage(); break;
     case 'tocToggle': $('brToc').classList.toggle('hidden'); setTimeout(renderBookPage, 50); break;
     case 'tocGo': goBookPage(+el.dataset.page); if (window.innerWidth < 768) $('brToc').classList.add('hidden'); break;
-    case 'bibTab': S.bibTab = el.dataset.tab; render(true); break;
+    case 'bibTab': S.bibTab = el.dataset.tab; LS.set('almaTinta.abaBib', S.bibTab); render(true); break;
+    case 'hlCor': if (HL.i !== null) { const i = HL.i; const cor = el.dataset.cor; salvarAnotacao(i, n => { n.cor = n.cor === cor ? '' : cor; }); fecharBarra(); } break;
+    case 'hlNota': if (HL.i !== null) { const i = HL.i; fecharBarra(); editarNota(i); } break;
+    case 'hlMarca': if (HL.i !== null) { const i = HL.i; fecharBarra(); alternarMarcaTexto(i); } break;
+    case 'hlLimpar': if (HL.i !== null) { const i = HL.i; salvarAnotacao(i, n => { n.cor = ''; n.nota = ''; }); fecharBarra(); toast('Destaque apagado.'); } break;
+    case 'hlFechar': fecharBarra(); break;
+    case 'marcarTexto': if (TX.id) alternarMarcaTexto(blocoNoTopo()); break;
+    case 'marcarPdf': alternarMarcaPdf(); break;
+    case 'irBlocoToc': irBloco(+el.dataset.i); if (window.innerWidth < 768) $('rToc').classList.add('hidden'); break;
+    case 'abrirNota': abrirAnotacao(id, el.dataset.tipo, +el.dataset.chave); break;
+    case 'apagarNota': dialog({ title: 'Apagar?', msg: 'Este destaque, nota ou marcador será apagado deste aparelho.', icon: '✎', ok: 'Apagar', cancel: 'Cancelar' }).then(ok => { if (ok) apagarAnotacao(id, el.dataset.tipo, +el.dataset.chave); }); break;
+    case 'limparHist': dialog({ title: 'Apagar o histórico?', msg: 'As sessões de leitura serão apagadas. Seu progresso, notas e estatísticas de tempo continuam.', icon: '⏱', ok: 'Apagar', cancel: 'Cancelar' }).then(ok => { if (ok) { BIB.hist = []; bibSave(); render(true); toast('Histórico apagado.'); } }); break;
     case 'fontDown': S.reader.size = Math.max(15, S.reader.size - 1); saveReaderPrefs(); break;
     case 'fontUp': S.reader.size = Math.min(28, S.reader.size + 1); saveReaderPrefs(); break;
     case 'theme': S.reader.theme = el.dataset.theme; saveReaderPrefs(); break;
