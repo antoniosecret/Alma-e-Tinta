@@ -323,8 +323,11 @@
       <button data-action="ttsPlay" id="ttsPlay" class="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-base" aria-label="Pausar">⏸</button>
       <button data-action="ttsProx" class="w-9 h-9 rounded-full hover:bg-white/10" aria-label="Próximo parágrafo">⏭</button>
       <button data-action="ttsVel" id="ttsVel" class="h-9 px-3 rounded-full hover:bg-white/10 tabular-nums text-xs font-semibold" aria-label="Velocidade">1×</button>
+      <span id="ttsTimer" class="hidden text-[10px] tabular-nums opacity-80 px-1 whitespace-nowrap"></span>
+      <button data-action="vozPainel" id="vozPainelBtn" class="w-9 h-9 rounded-full hover:bg-white/10 text-base" aria-label="Ajustes da voz" title="Voz, tom, timer e capítulos">⚙</button>
       <button data-action="ttsParar" class="w-9 h-9 rounded-full hover:bg-white/10 opacity-60 hover:opacity-100" aria-label="Parar de ouvir">✕</button>
     </div>
+    <div id="vozPanel" class="hidden fixed z-[53] bg-paper-light text-ink border border-ink/15 rounded-lg shadow-book-lg p-4 space-y-4 w-[21rem] max-w-[94vw] overflow-y-auto" style="bottom:84px;left:50%;transform:translateX(-50%);max-height:calc(100% - 170px)"></div>
     <div id="dicPanel" class="hidden absolute inset-x-0 bottom-0 z-[54] sm:inset-x-auto sm:right-5 sm:bottom-5 sm:w-[24rem] bg-paper-light text-ink border border-ink/15 rounded-t-xl sm:rounded-lg shadow-book-lg max-h-[70%] flex-col"></div>
   </div>
 
@@ -795,6 +798,8 @@ document.addEventListener('scroll', e => { if (e.target.dataset && e.target.data
 window.addEventListener('resize', updateArrows);
 window.addEventListener('resize', () => { if (BR.doc) { clearTimeout(BR.renderTimer); BR.renderTimer = setTimeout(renderBookPage, 150); } });
 document.addEventListener('change', e => {
+  if (e.target.id === 'vozSel') { const v = (speechSynthesis.getVoices() || []).find(x => (x.voiceURI || x.name) === e.target.value); if (v) { TTS.voz = v; LS.set('almaTinta.voz', v.voiceURI || v.name); ouvirAmostra(); } }
+  if (e.target.id === 'vozTom') { TTS.tom = +e.target.value; LS.set('almaTinta.vozTom', TTS.tom); renderVozPanel(); ouvirAmostra(); }
   if (e.target.id === 'brSlider') goBookPage(+e.target.value);
   if (e.target.dataset && e.target.dataset.shelf !== undefined) setShelf(e.target.dataset.shelf, e.target.value);
 });
@@ -2135,9 +2140,13 @@ function renderPrefs() {
     <div><p class="text-[10px] uppercase tracking-[0.16em] text-muted mb-2">Alinhamento</p><div class="grid grid-cols-2 gap-2">${opcoes('alinhar', { esquerda: ['Esquerda'], justificado: ['Justificado'] })}</div></div>
     <div><p class="text-[10px] uppercase tracking-[0.16em] text-muted mb-2">Cor da página</p><div class="grid grid-cols-3 gap-2">
       ${[['sepia', 'Papel', '#f6eedb', '#3b2e20'], ['claro', 'Branco', '#ffffff', '#2b2b2b'], ['escuro', 'Noite', '#1d1915', '#ddd3c2']].map(([v, rot, bg, fg]) => `<button data-action="pref" data-k="theme" data-v="${v}" class="pref-op !normal-case !text-xs" style="background:${bg};color:${fg};${R.theme === v ? 'box-shadow:0 0 0 2px rgb(var(--c-wine));' : ''}">${rot}</button>`).join('')}</div></div>
-    ${TX.id ? `<button data-action="ouvir" class="pref-op w-full !py-2.5">${TTS.on ? '✕ Parar a leitura em voz alta' : '🔊 Ouvir o livro em voz alta'}</button>` : ''}
+    ${TX.id ? `<div class="grid grid-cols-2 gap-2"><button data-action="ouvir" class="pref-op !py-2.5">${TTS.on ? '✕ Parar voz' : '🔊 Ouvir'}</button><button data-action="abrirVoz" class="pref-op !py-2.5">⚙ Ajustar voz</button></div>` : ''}
     <button data-action="foco" class="pref-op w-full !py-2.5">⛶ Modo foco — só o texto</button>`;
 }
+document.addEventListener('pointerdown', e => {
+  const vp = $('vozPanel');
+  if (!vp.classList.contains('hidden') && !e.target.closest('#vozPanel') && !e.target.closest('#vozPainelBtn') && !e.target.closest('[data-action="abrirVoz"]')) vp.classList.add('hidden');
+});
 document.addEventListener('pointerdown', e => {
   const pn = $('rPrefsPanel'); if (pn.classList.contains('hidden')) return;
   if (e.target.closest('#rPrefsPanel') || e.target.closest('#rPrefsBtn')) return;
@@ -2180,17 +2189,27 @@ function palavraNoPonto(x, y) {
   return t.slice(a, b).replace(/^['’-]+|['’-]+$/g, '');
 }
 
-const TTS = { on: false, tocando: false, i: 0, partes: [], k: 0, rate: +LS.get('almaTinta.vozVel', 1) || 1, voz: null, geracao: 0 };
-const VELOCIDADES = [0.8, 1, 1.25, 1.5, 1.75];
+const TTS = { on: false, tocando: false, i: 0, partes: [], k: 0, rate: +LS.get('almaTinta.vozVel', 1) || 1, voz: null, geracao: 0, tom: +LS.get('almaTinta.vozTom', 1) || 1, timerFim: 0, timerCap: false };
+const VELOCIDADES = [0.8, 0.9, 1, 1.15, 1.25, 1.5, 1.75];
 function ttsSuportado() { return 'speechSynthesis' in window && typeof SpeechSynthesisUtterance !== 'undefined'; }
+function vozesPt() {
+  if (!ttsSuportado()) return [];
+  const vs = speechSynthesis.getVoices() || [];
+  const pt = vs.filter(v => /^pt/i.test(v.lang));
+  const nota = v => (/^pt[-_]BR/i.test(v.lang) ? 0 : 10) + (/natural|online|neural|enhanced|melhorad|premium/i.test(v.name) ? 0 : 3) + (/google/i.test(v.name) ? 0 : 1);
+  return pt.sort((a, b) => nota(a) - nota(b) || a.name.localeCompare(b.name));
+}
 function escolherVoz() {
   if (!ttsSuportado()) return null;
+  const salva = LS.get('almaTinta.voz', '');
+  if (salva) { const v = (speechSynthesis.getVoices() || []).find(x => (x.voiceURI || x.name) === salva || x.name === salva); if (v) return v; }
+  const melhor = vozesPt()[0]; if (melhor) return melhor;
   const vs = speechSynthesis.getVoices() || [];
   let pt = vs.filter(v => /^pt[-_]BR/i.test(v.lang));
   if (!pt.length) pt = vs.filter(v => /^pt/i.test(v.lang));
   return pt.find(v => /natural|online|google|luciana|francisca|thalita|antonio/i.test(v.name)) || pt[0] || null;
 }
-if (ttsSuportado()) { try { TTS.voz = escolherVoz(); speechSynthesis.addEventListener('voiceschanged', () => { TTS.voz = escolherVoz(); }); } catch (e) {} }
+if (ttsSuportado()) { try { TTS.voz = escolherVoz(); speechSynthesis.addEventListener('voiceschanged', () => { TTS.voz = escolherVoz(); if (!$('vozPanel').classList.contains('hidden')) renderVozPanel(); }); } catch (e) {} }
 const NUM_EXTENSO = ['zero', 'um', 'dois', 'três', 'quatro', 'cinco', 'seis', 'sete', 'oito', 'nove', 'dez', 'onze', 'doze', 'treze', 'catorze', 'quinze', 'dezesseis', 'dezessete', 'dezoito', 'dezenove', 'vinte'];
 function romanoParaNumero(r) { const v = { I: 1, V: 5, X: 10, L: 50, C: 100 }; let n = 0; for (let k = 0; k < r.length; k++) { const a = v[r[k]], b = v[r[k + 1]] || 0; n += a < b ? -a : a; } return n; }
 function numeroFalado(n) { return n <= 20 ? NUM_EXTENSO[n] : String(n); }
@@ -2278,8 +2297,10 @@ function ttsIrBloco(i, k, esperar) {
   const bl = blocosTexto(); let extra = 0;
   while (i < bl.length && !blocoFalavel(bl[i])) { if (bl[i].classList.contains('orn')) extra = 900; i++; }
   if (i >= bl.length) { ttsParar(); toast('Fim da leitura em voz alta ✦'); return; }
+  const novoCap = esperar && bl[i].tagName === 'H3' && i !== TTS.i;
   TTS.i = i; TTS.partes = partesDe(bl[i]); TTS.k = k || 0;
   marcarBlocoVoz(); manterVisivel(bl[i]);
+  if (novoCap && TTS.timerCap) { timerDisparou(); return; }
   const espera = (esperar ? extra + ((TTS.partes[TTS.k] || {}).antes || 0) : 0);
   if (espera > 0) { const g = ++TTS.geracao; TTS.tocando = true; atualizarTtsBar(); setTimeout(() => { if (g === TTS.geracao && TTS.on && TTS.tocando) ttsFalar(); }, espera / TTS.rate); }
   else ttsFalar();
@@ -2290,10 +2311,15 @@ function ttsFalar() {
   if (!parte) { ttsIrBloco(TTS.i + 1, 0, true); return; }
   const u = new SpeechSynthesisUtterance(parte.t);
   u.lang = (TTS.voz && TTS.voz.lang) || 'pt-BR'; if (TTS.voz) u.voice = TTS.voz;
-  u.rate = Math.max(0.5, Math.min(2, TTS.rate * (parte.r || 1))); u.pitch = parte.p || 1;
+  u.rate = Math.max(0.5, Math.min(2, TTS.rate * (parte.r || 1))); u.pitch = Math.max(0.1, Math.min(2, (parte.p || 1) * TTS.tom));
   u.onend = () => {
     if (g !== TTS.geracao || !TTS.tocando) return;
-    const seguir = () => { if (g !== TTS.geracao || !TTS.tocando) return; TTS.k++; if (TTS.k < TTS.partes.length) ttsFalar(); else ttsIrBloco(TTS.i + 1, 0, true); };
+    const seguir = () => {
+      if (g !== TTS.geracao || !TTS.tocando) return;
+      TTS.k++;
+      if (TTS.timerFim && Date.now() >= TTS.timerFim) { timerDisparou(); return; }
+      if (TTS.k < TTS.partes.length) ttsFalar(); else ttsIrBloco(TTS.i + 1, 0, true);
+    };
     const pausa = (parte.depois || 0) / TTS.rate;
     if (pausa > 30) setTimeout(seguir, pausa); else seguir();
   };
@@ -2323,8 +2349,66 @@ function ttsParar() {
   TTS.on = false; TTS.tocando = false; TTS.geracao++;
   try { speechSynthesis.cancel(); } catch (e) {}
   $('reader').classList.remove('ouvindo'); marcarBlocoVoz(); atualizarTtsBar();
+  $('vozPanel').classList.add('hidden'); TTS.timerFim = 0; TTS.timerCap = false; atualizarTimerTxt();
 }
-setInterval(() => { if (TTS.on && TTS.tocando) ATIV.ultimo = Date.now(); }, 5000);
+setInterval(() => { if (TTS.on && TTS.tocando) ATIV.ultimo = Date.now(); atualizarTimerTxt(); if (TTS.on && TTS.tocando && TTS.timerFim && Date.now() >= TTS.timerFim + 20000) timerDisparou(); }, 5000);
+function atualizarTimerTxt() {
+  const el = $('ttsTimer'); if (!el) return;
+  let t = '';
+  if (TTS.timerCap) t = '⏾ fim do cap.';
+  else if (TTS.timerFim) t = '⏾ ' + Math.max(1, Math.ceil((TTS.timerFim - Date.now()) / 60000)) + ' min';
+  el.textContent = t; el.classList.toggle('hidden', !t);
+}
+function timerDisparou() {
+  TTS.timerFim = 0; TTS.timerCap = false; atualizarTimerTxt();
+  if (TTS.on && TTS.tocando) { TTS.tocando = false; TTS.geracao++; try { speechSynthesis.cancel(); } catch (e) {} atualizarTtsBar(); }
+  toast('Timer: a leitura foi pausada. Bom descanso ✦');
+}
+function definirTimer(v) {
+  TTS.timerCap = v === 'cap'; TTS.timerFim = /^\d+$/.test(String(v)) && +v > 0 ? Date.now() + v * 60000 : 0;
+  atualizarTimerTxt(); renderVozPanel();
+  toast(v === 'cap' ? 'A leitura vai parar no fim do capítulo ⏾' : +v > 0 ? `A leitura vai parar em ${v} minutos ⏾` : 'Timer desligado.');
+}
+function indicesCapitulos() { return blocosTexto().map((el, i) => el.tagName === 'H3' ? i : -1).filter(i => i >= 0); }
+function pularCapitulo(d) {
+  const caps = indicesCapitulos(); const atual = TTS.on ? TTS.i : blocoNoTopo();
+  let alvo;
+  if (d > 0) alvo = caps.find(i => i > atual);
+  else { const antes = caps.filter(i => i < atual); alvo = antes.length ? antes[antes.length - 1] : caps[0]; if (TTS.on && TTS.k === 0 && caps.includes(atual)) { const ant = caps.filter(i => i < atual); alvo = ant.length ? ant[ant.length - 1] : atual; } }
+  if (alvo == null) { toast('Este é o último capítulo.'); return; }
+  if (TTS.on) { TTS.tocando = true; ttsIrBloco(alvo, 0, true); } else { irBloco(alvo); }
+}
+function rotuloVoz(v) { if (/^google\s+portugu/i.test(v.name)) return 'Google' + (/^pt[-_]PT/i.test(v.lang) ? ' · Portugal' : ''); return v.name.replace(/^Microsoft\s+|^Google\s+/i, '').replace(/\s*Online\s*\(Natural\)/i, ' (natural)').replace(/\s*-\s*Portuguese.*$/i, '') + (/^pt[-_]PT/i.test(v.lang) ? ' · Portugal' : ''); }
+function renderVozPanel() {
+  const p = $('vozPanel'); const vs = vozesPt(); const atual = TTS.voz ? (TTS.voz.voiceURI || TTS.voz.name) : '';
+  const tim = TTS.timerCap ? 'cap' : TTS.timerFim ? 'on' : '0';
+  p.innerHTML = `<div class="flex items-center justify-between"><p class="eyebrow">Voz da leitura</p><button data-action="vozPainel" class="text-muted hover:text-wine" aria-label="Fechar">✕</button></div>
+    <div><p class="text-[10px] uppercase tracking-[0.16em] text-muted mb-2">Voz ${vs.length ? '· ' + plural(vs.length, 'disponível', 'disponíveis') + ' neste aparelho' : ''}</p>
+      ${vs.length ? `<select id="vozSel" class="field !py-2 !text-sm" aria-label="Escolher voz">${vs.map(v => `<option value="${esc(v.voiceURI || v.name)}" ${(v.voiceURI || v.name) === atual ? 'selected' : ''}>${esc(rotuloVoz(v))}</option>`).join('')}</select>`
+        : '<p class="text-sm text-muted">Este aparelho não informou vozes em português. Será usada a voz padrão.</p>'}
+      <button data-action="vozAmostra" class="pref-op w-full mt-2 !py-2">▶ Ouvir amostra</button></div>
+    <div><div class="flex justify-between items-baseline mb-1"><p class="text-[10px] uppercase tracking-[0.16em] text-muted">Tom</p><button data-action="vozTomPadrao" class="text-[10px] uppercase tracking-[0.14em] text-muted hover:text-wine">Padrão</button></div>
+      <input id="vozTom" type="range" min="0.7" max="1.3" step="0.05" value="${TTS.tom}" class="w-full accent-[#D9B45F]" aria-label="Tom da voz">
+      <div class="flex justify-between text-[10px] text-muted"><span>Mais grave</span><span class="tabular-nums">${TTS.tom.toFixed(2).replace('.', ',')}</span><span>Mais agudo</span></div></div>
+    <div><p class="text-[10px] uppercase tracking-[0.16em] text-muted mb-2">Velocidade</p><div class="grid grid-cols-4 gap-1.5">${VELOCIDADES.map(v => `<button data-action="vozVel" data-v="${v}" class="pref-op !px-1 ${TTS.rate === v ? 'ativa' : ''}">${String(v).replace('.', ',')}×</button>`).join('')}</div></div>
+    <div><p class="text-[10px] uppercase tracking-[0.16em] text-muted mb-2">Timer para dormir</p><div class="grid grid-cols-3 gap-1.5">
+      ${[['0', 'Desligado'], ['15', '15 min'], ['30', '30 min'], ['60', '60 min'], ['cap', 'Fim do capítulo']].map(([v, r]) => `<button data-action="vozTimer" data-v="${v}" class="pref-op !px-1 ${v === 'cap' ? 'col-span-2' : ''} ${(v === tim) || (tim === 'on' && TTS.timerFim && v !== '0' && v !== 'cap' && false) ? 'ativa' : ''}">${r}</button>`).join('')}</div>
+      ${TTS.timerFim ? `<p class="text-[11px] text-wine mt-1.5">Para em ${Math.max(1, Math.ceil((TTS.timerFim - Date.now()) / 60000))} min.</p>` : ''}</div>
+    <div><p class="text-[10px] uppercase tracking-[0.16em] text-muted mb-2">Capítulos</p><div class="grid grid-cols-2 gap-1.5">
+      <button data-action="vozCap" data-d="-1" class="pref-op">⏮ Anterior</button><button data-action="vozCap" data-d="1" class="pref-op">Próximo ⏭</button></div></div>
+    <p class="text-[11px] text-muted leading-snug">A voz vem do seu aparelho. No iPhone, dá para baixar vozes melhores em Ajustes → Acessibilidade → Conteúdo Falado. No computador, o Edge tem as vozes mais naturais.</p>`;
+}
+function ouvirAmostra() {
+  if (!ttsSuportado()) return;
+  const b = S.books.find(x => x.id === TX.id);
+  const txt = limparParaFala((b && b.tagline) || 'Palavras que merecem ser lidas com calma.');
+  const estava = TTS.on && TTS.tocando;
+  if (estava) { TTS.tocando = false; TTS.geracao++; atualizarTtsBar(); }
+  try { speechSynthesis.cancel(); } catch (e) {}
+  const u = new SpeechSynthesisUtterance(txt);
+  u.lang = (TTS.voz && TTS.voz.lang) || 'pt-BR'; if (TTS.voz) u.voice = TTS.voz; u.rate = TTS.rate; u.pitch = TTS.tom;
+  setTimeout(() => speechSynthesis.speak(u), 90);
+}
 
 const DIC = { cache: {}, atual: '' };
 const CLASSES = { subst: 'Substantivo', verb: 'Verbo', adj: 'Adjetivo', adv: 'Advérbio', pron: 'Pronome', prep: 'Preposição', conj: 'Conjunção', interj: 'Interjeição', num: 'Numeral', art: 'Artigo', loc: 'Locução', contr: 'Contração' };
@@ -2913,6 +2997,13 @@ document.addEventListener('click', e => {
     case 'ttsProx': ttsPular(1); break;
     case 'ttsVel': ttsVelocidade(); break;
     case 'ttsParar': ttsParar(); break;
+    case 'vozPainel': { const vp = $('vozPanel'); if (vp.classList.contains('hidden')) { renderVozPanel(); vp.classList.remove('hidden'); } else vp.classList.add('hidden'); break; }
+    case 'vozAmostra': ouvirAmostra(); break;
+    case 'vozTomPadrao': TTS.tom = 1; LS.set('almaTinta.vozTom', 1); renderVozPanel(); break;
+    case 'vozVel': TTS.rate = +el.dataset.v; LS.set('almaTinta.vozVel', TTS.rate); atualizarTtsBar(); renderVozPanel(); break;
+    case 'vozTimer': definirTimer(el.dataset.v); break;
+    case 'vozCap': pularCapitulo(+el.dataset.d); break;
+    case 'abrirVoz': $('rPrefsPanel').classList.add('hidden'); if (!TTS.on) ttsComecar(blocoNoTopo()); setTimeout(() => { renderVozPanel(); $('vozPanel').classList.remove('hidden'); }, 50); break;
     case 'dicFechar': fecharDic(); break;
     case 'imgFechar': fecharImagem(); break;
     case 'imgFormato': IMG.formato = el.dataset.f; desenharImagem(); break;
@@ -2981,6 +3072,7 @@ document.addEventListener('keydown', e => {
   if (!$('dialog').classList.contains('hidden')) closeDialog(false);
   else if (!$('imgModal').classList.contains('hidden')) fecharImagem();
   else if (!$('dicPanel').classList.contains('hidden')) fecharDic();
+  else if (!$('vozPanel').classList.contains('hidden')) $('vozPanel').classList.add('hidden');
   else if (!$('rPrefsPanel').classList.contains('hidden')) $('rPrefsPanel').classList.add('hidden');
   else if ($('reader').classList.contains('foco')) alternarFoco();
   else if (!$('reader').classList.contains('hidden')) closeReader();
