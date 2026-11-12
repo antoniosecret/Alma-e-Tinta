@@ -53,8 +53,27 @@
   </script>
   <style>
     :root { --c-paper: 21 16 13; --c-paper-light: 30 23 18; --c-paper-dark: 15 11 9; --c-paper-darker: 42 32 26; --c-ink: 241 230 207; --c-muted: 176 158 133; --c-wine: 217 180 95; --c-wine-dark: 194 154 66; --c-wine-light: 232 203 134; --c-wine-deep: 94 22 32; --c-gold: 201 160 74; --c-gold-light: 227 194 122; color-scheme: dark; }
-    html.claro { --c-paper: 246 239 226; --c-paper-light: 255 251 243; --c-paper-dark: 236 227 210; --c-paper-darker: 226 214 192; --c-ink: 43 31 23; --c-muted: 112 96 78; --c-wine: 122 31 43; --c-wine-dark: 94 22 32; --c-wine-light: 150 46 62; --c-wine-deep: 214 170 160; --c-gold: 163 124 46; --c-gold-light: 176 136 56; color-scheme: light; }
-    html.claro body { background-blend-mode: multiply; }
+    html.claro { --c-paper: 244 236 220; --c-paper-light: 252 247 237; --c-paper-dark: 234 223 202; --c-paper-darker: 222 207 180; --c-ink: 33 23 15; --c-muted: 88 72 55; --c-wine: 122 31 43; --c-wine-dark: 94 22 32; --c-wine-light: 150 46 62; --c-wine-deep: 196 152 104; --c-gold: 138 98 30; --c-gold-light: 158 114 38; color-scheme: light; }
+    html.claro body {
+      background-image:
+        radial-gradient(ellipse 120% 90% at 50% 40%, transparent 55%, rgba(110,72,34,.16) 100%),
+        url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='260' height='260'><filter id='f'><feTurbulence type='fractalNoise' baseFrequency='.012 .9' numOctaves='2' seed='4'/><feColorMatrix values='0 0 0 0 .45  0 0 0 0 .32  0 0 0 0 .18  0 0 0 .06 0'/></filter><rect width='100%' height='100%' filter='url(%23f)'/></svg>"),
+        url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .4  0 0 0 0 .28  0 0 0 0 .14  0 0 0 .11 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+      background-attachment: fixed, scroll, scroll;
+    }
+    html.claro [data-depth][class*="aspect-[1/2]"] { color: rgba(92,58,30,.2) !important; }
+    html.claro [data-depth][class*="aspect-[11/12]"] { color: rgba(120,78,40,.12) !important; }
+    html.claro [data-depth].rounded-full { opacity: .8; }
+    html.claro #quill path { stroke: #7a4e1c; }
+    html.claro #quill path:first-child { fill: #b8853a; fill-opacity: .3; }
+    .filigrana { color: rgb(var(--c-wine) / .22); }
+    html.claro .filigrana { color: rgb(var(--c-wine) / .42); }
+    html.claro .text-muted\/60, html.claro .text-muted\/70, html.claro .text-muted\/80 { color: rgb(var(--c-muted)); }
+    html.claro .text-ink\/85, html.claro .text-ink\/90, html.claro .text-ink\/95 { color: rgb(var(--c-ink)); }
+    html.claro footer { background-color: rgb(var(--c-paper-dark) / .85); }
+    html.claro .mancha { color: #5c3a1c; opacity: .13; filter: blur(2px); }
+    html.claro .mancha.ouro { color: #a0702a; opacity: .18; }
+    html.claro .numeral { -webkit-text-stroke: 1.2px rgb(var(--c-wine) / .38); }
     html.claro .btn-primary { background: linear-gradient(135deg, #9A3040 0%, #7A1F2B 50%, #5E1620 100%); color: #FFF8EC; }
     html.claro .btn-primary:hover { box-shadow: 0 8px 26px -6px rgba(122,31,43,.45); }
     html.claro .chip.active { color: #FFF8EC; }
@@ -97,7 +116,19 @@
     .fade-in { animation: fadeIn .55s ease both; }
     .fade-in-slow { animation: fadeIn 1s ease both; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
-    @media (prefers-reduced-motion: reduce) { .fade-in, .fade-in-slow { animation: none; } html { scroll-behavior: auto; } }
+    .reveal { opacity: 0; transform: translateY(34px); transition: opacity 1s ease, transform 1s cubic-bezier(.2,.7,.2,1); }
+    .reveal.visivel { opacity: 1; transform: none; }
+    .reveal .reveal-2 { opacity: 0; transform: translateY(18px); transition: opacity .9s ease .25s, transform .9s cubic-bezier(.2,.7,.2,1) .25s; }
+    .reveal.visivel .reveal-2 { opacity: 1; transform: none; }
+    .mancha { position: absolute; pointer-events: none; color: rgb(var(--c-gold)); opacity: .13; filter: blur(2.5px); }
+    .mancha.ouro { color: #8a6a3a; opacity: .16; filter: blur(6px); }
+    .numeral { font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 600; line-height: .8; color: transparent; -webkit-text-stroke: 1px rgb(var(--c-wine) / .28); user-select: none; pointer-events: none; }
+    .vitrine-capa { transition: transform .8s cubic-bezier(.2,.7,.2,1); }
+    .vitrine-item:hover .vitrine-capa { transform: translateY(-6px) rotate(-1deg); }
+    .vitrine-item.inverso:hover .vitrine-capa { transform: translateY(-6px) rotate(1deg); }
+    .sinopse-capitular::first-letter { float: left; font-family: 'Cormorant Garamond', Georgia, serif; font-size: 3.4em; line-height: .82; padding: .06em .12em 0 0; color: rgb(var(--c-wine)); font-weight: 600; }
+    .pena-div { color: rgb(var(--c-wine)); }
+    @media (prefers-reduced-motion: reduce) { .fade-in, .fade-in-slow { animation: none; } html { scroll-behavior: auto; } .reveal, .reveal .reveal-2 { opacity: 1; transform: none; transition: none; } }
     #toast { transition: opacity .3s ease, transform .3s ease; }
     #toast.hide { opacity: 0; transform: translate(-50%, 12px); pointer-events: none; }
     #readerBody p { margin: 0 0 1.25em; }
@@ -132,6 +163,13 @@
     .pref-op { font-size: .7rem; padding: .45rem .7rem; border: 1px solid rgb(var(--c-ink) / .15); border-radius: 3px; color: rgb(var(--c-muted)); transition: all .15s; white-space: nowrap; }
     .pref-op:hover { color: rgb(var(--c-wine)); border-color: rgb(var(--c-wine) / .6); }
     .pref-op.ativa { color: rgb(var(--c-paper)); background: rgb(var(--c-wine)); border-color: rgb(var(--c-wine)); font-weight: 600; }
+    #readerBody .lendo-voz { background: rgba(217,180,95,.14); box-shadow: 0 0 0 .35em rgba(217,180,95,.14); border-radius: 3px; }
+    mark.achado { background: rgba(217,180,95,.5); color: inherit; border-radius: 2px; padding: 0 .08em; }
+    #rToc mark, #home mark { background: rgb(var(--c-wine) / .28); color: inherit; border-radius: 2px; padding: 0 .1em; }
+    #reader.ouvindo #rPagNav { bottom: 84px; }
+    #reader.ouvindo #hlBar { bottom: 92px !important; }
+    #ttsBar { display: none; }
+    #reader.ouvindo #ttsBar { display: flex; }
     .cor-ponto { width: 22px; height: 22px; border-radius: 9999px; border: 2px solid rgba(255,255,255,.25); }
     .cor-ponto.ativa { border-color: #fff; box-shadow: 0 0 0 2px #d9b55c; }
     .tchar { opacity: 0; animation: inkIn .55s ease forwards; }
@@ -231,6 +269,7 @@
         </div>
       </div>
       <div class="flex items-center gap-1 sm:gap-2 shrink-0">
+        <button data-action="ouvir" id="rOuvirBtn" class="hidden w-8 h-8 text-muted hover:text-wine text-base" aria-label="Ouvir o livro" title="Ouvir o livro">🔊</button>
         <button data-action="marcarTexto" id="rMarcaBtn" class="hidden w-8 h-8 text-muted hover:text-wine text-base" aria-label="Marcar onde estou" title="Marcar onde estou">🔖</button>
         <button data-action="rPrefs" id="rPrefsBtn" class="h-8 px-2 text-muted hover:text-wine font-display text-xl font-semibold leading-none" aria-label="Ajustes de leitura" title="Ajustes de leitura">Aa</button>
         <button data-action="foco" class="w-8 h-8 text-muted hover:text-wine text-lg" aria-label="Modo foco" title="Modo foco">⛶</button>
@@ -260,17 +299,30 @@
       <span id="rPagInfo" class="tabular-nums px-1 min-w-[4.5rem] text-center"></span>
       <button data-action="pagProx" class="w-8 h-8 rounded-full hover:bg-white/10" aria-label="Próxima página">›</button>
     </div>
-    <div id="hlBar" style="bottom:20px;left:50%;transform:translateX(-50%)" class="hidden fixed z-[52] bg-ink text-paper-light rounded-full shadow-book-lg pl-3 pr-2 py-2 items-center gap-2 text-sm max-w-[94vw]" role="toolbar" aria-label="Destacar e anotar">
+    <div id="hlBar" style="bottom:20px;left:50%;transform:translateX(-50%);width:max-content" class="hidden fixed z-[52] bg-ink text-paper-light rounded-2xl shadow-book-lg px-3 py-2 items-center justify-center flex-wrap gap-x-2 gap-y-1.5 text-sm max-w-[94vw]" role="toolbar" aria-label="Destacar e anotar">
       <button data-action="hlCor" data-cor="ouro" class="cor-ponto" style="background:#d9b55c" aria-label="Destacar em dourado"></button>
       <button data-action="hlCor" data-cor="vinho" class="cor-ponto" style="background:#b03a4a" aria-label="Destacar em vinho"></button>
       <button data-action="hlCor" data-cor="verde" class="cor-ponto" style="background:#6ea05a" aria-label="Destacar em verde"></button>
       <button data-action="hlCor" data-cor="azul" class="cor-ponto" style="background:#5a87be" aria-label="Destacar em azul"></button>
-      <span class="w-px h-5 bg-white/20 mx-0.5"></span>
+      <span class="w-px h-5 bg-current opacity-20 mx-0.5"></span>
       <button data-action="hlNota" class="px-2.5 py-1 rounded-full hover:bg-white/10 whitespace-nowrap">✎ Nota</button>
       <button data-action="hlMarca" id="hlMarcaBtn" class="px-2.5 py-1 rounded-full hover:bg-white/10 whitespace-nowrap">🔖</button>
-      <button data-action="hlLimpar" id="hlLimpar" class="px-2.5 py-1 rounded-full hover:bg-white/10 text-white/70 whitespace-nowrap">Apagar</button>
-      <button data-action="hlFechar" class="px-2 py-1 text-white/60 hover:text-white" aria-label="Fechar">✕</button>
+      <button data-action="hlLimpar" id="hlLimpar" class="px-2.5 py-1 rounded-full hover:bg-white/10 opacity-70 whitespace-nowrap">Apagar</button>
+      <button data-action="hlFechar" class="px-2 py-1 opacity-60 hover:opacity-100" aria-label="Fechar">✕</button>
+      <span class="basis-full h-0"></span>
+      <button data-action="hlOuvir" class="px-2.5 py-1 rounded-full hover:bg-white/10 whitespace-nowrap">🔊 Ouvir daqui</button>
+      <button data-action="hlDic" id="hlDicBtn" class="hidden px-2.5 py-1 rounded-full hover:bg-white/10 whitespace-nowrap max-w-[11rem] truncate">📖 <span id="hlPalavra"></span></button>
+      <button data-action="hlImagem" class="px-2.5 py-1 rounded-full hover:bg-white/10 whitespace-nowrap">↗ Imagem</button>
     </div>
+    <div id="ttsBar" style="bottom:18px;left:50%;transform:translateX(-50%)" class="fixed z-[52] bg-ink text-paper-light rounded-full shadow-book-lg px-2 py-1.5 items-center gap-1 text-sm" role="toolbar" aria-label="Leitura em voz alta">
+      <span class="px-2 text-[10px] uppercase tracking-[0.16em] opacity-70 hidden sm:inline">Ouvindo</span>
+      <button data-action="ttsAnt" class="w-9 h-9 rounded-full hover:bg-white/10" aria-label="Parágrafo anterior">⏮</button>
+      <button data-action="ttsPlay" id="ttsPlay" class="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-base" aria-label="Pausar">⏸</button>
+      <button data-action="ttsProx" class="w-9 h-9 rounded-full hover:bg-white/10" aria-label="Próximo parágrafo">⏭</button>
+      <button data-action="ttsVel" id="ttsVel" class="h-9 px-3 rounded-full hover:bg-white/10 tabular-nums text-xs font-semibold" aria-label="Velocidade">1×</button>
+      <button data-action="ttsParar" class="w-9 h-9 rounded-full hover:bg-white/10 opacity-60 hover:opacity-100" aria-label="Parar de ouvir">✕</button>
+    </div>
+    <div id="dicPanel" class="hidden absolute inset-x-0 bottom-0 z-[54] sm:inset-x-auto sm:right-5 sm:bottom-5 sm:w-[24rem] bg-paper-light text-ink border border-ink/15 rounded-t-xl sm:rounded-lg shadow-book-lg max-h-[70%] flex-col"></div>
   </div>
 
   <div id="bookReader" class="fixed inset-0 z-50 hidden flex-col" style="background:#0b0907" role="dialog" aria-modal="true" aria-label="Leitor do livro">
@@ -313,6 +365,22 @@
   </div>
 
   <!-- DIÁLOGO -->
+  <div id="imgModal" class="hidden fixed inset-0 z-[56] bg-black/80 backdrop-blur-sm items-center justify-center p-4" role="dialog" aria-modal="true" aria-label="Trecho como imagem">
+    <div class="bg-paper-light text-ink rounded-lg shadow-book-lg w-full max-w-md max-h-full overflow-y-auto p-5 space-y-4">
+      <div class="flex items-center justify-between"><p class="eyebrow">Trecho como imagem</p><button data-action="imgFechar" class="text-muted hover:text-wine" aria-label="Fechar">✕</button></div>
+      <div class="grid grid-cols-2 gap-2">
+        <button data-action="imgFormato" data-f="post" class="pref-op" id="imgFPost">Post · 4:5</button>
+        <button data-action="imgFormato" data-f="story" class="pref-op" id="imgFStory">Story · 9:16</button>
+      </div>
+      <div class="flex justify-center bg-black/20 rounded p-2"><img id="imgPrevia" alt="Prévia do trecho como imagem" class="max-h-[52vh] w-auto rounded shadow-book"></div>
+      <div class="grid grid-cols-2 gap-2">
+        <button data-action="imgCompartilhar" id="imgShareBtn" class="btn-primary !px-3 !py-3">Compartilhar</button>
+        <button data-action="imgBaixar" class="btn-outline !px-3 !py-3">Baixar imagem</button>
+      </div>
+      <p class="text-[11px] text-muted text-center">No celular, você também pode tocar e segurar a imagem para salvar.</p>
+    </div>
+  </div>
+
   <div id="dialog" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-[55] hidden items-center justify-center p-4">
     <div class="bg-paper-light border border-ink/10 shadow-book-lg p-8 rounded-sm max-w-sm w-full space-y-5 text-center fade-in">
       <div id="dIcon" class="w-12 h-12 border border-wine/40 rounded-full flex items-center justify-center mx-auto text-xl text-wine">🔒</div>
@@ -650,17 +718,24 @@ function fillHome() {
       </div>
       <div class="rule mb-8"></div>
       ${list.length ? `<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-x-5 gap-y-10 md:gap-x-8">${list.map(cardHtml).join('')}</div>`
-        : `<p class="text-center font-display italic text-2xl text-muted py-14">Nenhuma obra encontrada.</p>`}
+        : `<p class="text-center font-display italic text-2xl text-muted py-14">Nenhuma obra com esse título, autor ou gênero.</p>`}
+      ${S.q.trim().length >= 3 ? '<div id="buscaTexto" class="mt-14"></div>' : ''}
     </section>`;
+    if (S.q.trim().length >= 3) buscarNosTextos(S.q.trim());
     return;
   }
   const recent = byRecent(S.books).slice(0, 12);
   let html = continuarLendoHtml();
-  html += carousel('car-recent', 'Lançamentos recentes', 'Novidades', recent, null);
-  presentGenres().forEach((g, i) => {
-    const list = byRecent(S.books.filter(b => b.genre === g));
-    html += carousel('car-g' + i, g, plural(list.length, 'obra', 'obras'), list, g);
-  });
+  if (S.books.length <= LIMITE_VITRINE) {
+    html += vitrineHtml(byRecent(S.books));
+  } else {
+    html += vitrineHtml(recent.slice(0, 1), 'Lançamento');
+    html += carousel('car-recent', 'Lançamentos recentes', 'Novidades', recent, null);
+    presentGenres().forEach((g, i) => {
+      const list = byRecent(S.books.filter(b => b.genre === g));
+      html += carousel('car-g' + i, g, plural(list.length, 'obra', 'obras'), list, g);
+    });
+  }
   home.innerHTML = html;
   requestAnimationFrame(updateArrows); setTimeout(updateArrows, 400);
 }
@@ -756,7 +831,9 @@ function heroHtml(b) {
   if (animate) setTimeout(() => { const ql = $('quill'); if (ql) ql.classList.remove('writing'); }, total + 300);
   const after = d => animate ? `style="animation-delay:${total + d}ms"` : '';
   const size = q.length > 140 ? 'text-3xl md:text-[2.6rem]' : q.length > 80 ? 'text-3xl md:text-5xl' : 'text-4xl md:text-6xl';
+  const fil = lado => `<svg viewBox="0 0 120 120" class="filigrana absolute top-0 ${lado === 'e' ? '-left-2 md:-left-20' : '-right-2 md:-right-20 -scale-x-100'} w-16 md:w-28 pointer-events-none" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" aria-hidden="true"><path d="M4 116 V42 C4 20 20 4 42 4 H116"/><path d="M14 112 V48 C14 29 29 14 48 14 H112" opacity=".55"/><path d="M42 4 C42 22 32 34 14 42"/><path d="M27 27 c10 -3 17 4 13 12 c-4 7 -13 5 -13 -1 c0 -5 5 -7 8 -4"/><path d="M60 14 c6 4 14 4 20 0 M14 60 c4 6 4 14 0 20" opacity=".7"/><circle cx="4" cy="116" r="2.4" fill="currentColor"/><circle cx="116" cy="4" r="2.4" fill="currentColor"/><circle cx="66" cy="22" r="1.4" fill="currentColor"/><circle cx="22" cy="66" r="1.4" fill="currentColor"/></svg>`;
   return `<div class="relative text-center max-w-4xl mx-auto">
+    ${fil('e')}${fil('d')}
     <span aria-hidden="true" class="absolute left-1/2 -translate-x-1/2 -top-10 md:-top-14 font-display text-[10rem] md:text-[14rem] leading-none text-wine/[0.07] select-none pointer-events-none">“</span>
     <svg viewBox="0 0 64 64" class="relative w-14 h-14 mx-auto" aria-hidden="true">
       <path d="M18 44 h28 l-3 14 h-22 z" fill="#1E1712" stroke="#D9B45F" stroke-width="1.2" stroke-linejoin="round"/>
@@ -1542,7 +1619,7 @@ async function extrairTextoPdf(doc, opts, onProg) {
   return saida.join('\n\n');
 }
 
-const TX = { id: null, cache: {}, t0: 0, salvarTimer: null, caps: [], irPara: null, pronto: false };
+const TX = { id: null, cache: {}, t0: 0, salvarTimer: null, caps: [], irPara: null, pronto: false, busca: '', termoIr: '' };
 function hasText(b) { return !!(b.hasText || (S.restricted[b.id] || {}).hasText); }
 function posicaoTxt(id) {
   const r = BIB.livros[id] || {}; const pct = progressPct(id);
@@ -1590,13 +1667,13 @@ async function openTextBook(b) {
     if (r.shelf !== 'lidos') r.shelf = 'lendo';
     bibSave();
     $('rMeta').textContent = `${b.author || ''} · ${fmtDuracao(r.palavras / 220 * 60)} de leitura`;
-    $('rMarcaBtn').classList.remove('hidden');
+    $('rMarcaBtn').classList.remove('hidden'); $('rOuvirBtn').classList.remove('hidden');
     pintarAnotacoes();
     iniciarSessao(b.id, 'texto');
     const sc = $('rScroll');
     requestAnimationFrame(() => {
       rIrFrac(r.frac || 0, true); TX.pronto = true; atualizarTexto(false);
-      if (TX.irPara != null) { const alvo = TX.irPara; TX.irPara = null; irBloco(alvo); }
+      if (TX.irPara != null) { const alvo = TX.irPara; TX.irPara = null; irBloco(alvo); if (TX.termoIr) { marcarTermo(blocosTexto()[alvo], TX.termoIr); TX.termoIr = ''; } }
     });
     TX.t0 = Date.now();
   } catch (e) {
@@ -1605,7 +1682,9 @@ async function openTextBook(b) {
 }
 function renderTextToc() {
   const el = $('rToc');
-  const head = `<div class="sticky top-0 bg-paper-light border-b border-ink/10 px-5 py-4 flex items-center justify-between"><p class="eyebrow">Sumário</p><button data-action="rTocToggle" class="text-muted hover:text-wine md:hidden" aria-label="Fechar sumário">✕</button></div>`;
+  const head = `<div class="sticky top-0 z-10 bg-paper-light border-b border-ink/10 px-5 py-4"><div class="flex items-center justify-between"><p class="eyebrow">Sumário</p><button data-action="rTocToggle" class="text-muted hover:text-wine md:hidden" aria-label="Fechar sumário">✕</button></div>
+    <input id="rBusca" type="search" value="${esc(TX.busca || '')}" placeholder="🔍 Buscar neste livro…" autocomplete="off" class="field !py-2 !px-3 !text-sm mt-3" aria-label="Buscar neste livro"></div>`;
+  if ((TX.busca || '').trim().length >= 2) { el.innerHTML = head + resultadosNoLivro(TX.busca.trim()); return; }
   const notas = secaoAnotacoesTexto();
   if (!TX.caps.length) { el.innerHTML = head + notas + '<p class="px-5 py-6 text-sm text-muted font-display italic">Este texto não tem capítulos marcados.</p>'; return; }
   el.innerHTML = head + notas + (notas ? '<p class="eyebrow px-5 pt-5">Capítulos</p>' : '') + '<div class="py-2">' + TX.caps.map((h, i) => {
@@ -1639,9 +1718,9 @@ function fecharTexto(rerender, jaSalvo) {
   if (!TX.id) return;
   if (!jaSalvo) atualizarTexto(true);
   encerrarSessao();
-  fecharBarra();
+  fecharBarra(); ttsParar(); fecharDic(); TX.busca = '';
   TX.id = null; TX.caps = [];
-  $('rMarcaBtn').classList.add('hidden');
+  $('rMarcaBtn').classList.add('hidden'); $('rOuvirBtn').classList.add('hidden');
   SS.set('almaTinta.lendoAgora', '');
   $('rTocBtn').classList.add('hidden'); $('rToc').classList.add('hidden');
   if (rerender) render(true);
@@ -1690,7 +1769,7 @@ setInterval(() => {
 }, 15000);
 (() => { const s = BIB.sessao; if (s && Date.now() - (s.fim || 0) > 600000) encerrarSessao(); })();
 
-const HL = { i: null, top: 0 };
+const HL = { i: null, top: 0, palavra: '' };
 const CORES = { ouro: '#d9b55c', vinho: '#b03a4a', verde: '#6ea05a', azul: '#5a87be' };
 function blocosTexto() { return [...$('readerBody').children]; }
 function trechoDe(el) { const t = (el.textContent || '').replace(/\s+/g, ' ').trim(); return t.length > 160 ? t.slice(0, 160).replace(/\s\S*$/, '') + '…' : t; }
@@ -1714,6 +1793,8 @@ function abrirBarra(i) {
   document.querySelectorAll('#hlBar [data-cor]').forEach(b => b.classList.toggle('ativa', !!n && n.cor === b.dataset.cor));
   $('hlLimpar').classList.toggle('hidden', !n);
   $('hlMarcaBtn').textContent = marcaTextoDe(TX.id, i) ? '🔖 Tirar' : '🔖';
+  const pal = HL.palavra || '';
+  $('hlDicBtn').classList.toggle('hidden', pal.length < 2); $('hlPalavra').textContent = pal;
   const bar = $('hlBar'); bar.classList.remove('hidden'); bar.classList.add('flex');
   if (!LS.get('almaTinta.dicaNotas', false)) { LS.set('almaTinta.dicaNotas', true); toast('Escolha uma cor para destacar, ou escreva uma nota sobre este trecho.'); }
 }
@@ -1795,6 +1876,7 @@ $('readerBody').addEventListener('click', e => {
   if (!TX.id) return;
   const bl = blocosTexto(); const el = bl.find(b => b.contains(e.target));
   if (!el || el.classList.contains('orn') || !(el.textContent || '').trim()) return;
+  HL.palavra = e.detail ? palavraNoPonto(e.clientX, e.clientY) : '';
   abrirBarra(bl.indexOf(el));
 });
 document.addEventListener('pointerdown', e => {
@@ -2076,6 +2158,419 @@ function alternarTemaSite() {
   toast(claro ? 'Tema claro ativado ☀' : 'Tema escuro ativado ☾');
 }
 
+function palavraNoPonto(x, y) {
+  const rb = $('readerBody'); const antes = rb.style.userSelect; rb.style.userSelect = 'text'; rb.style.webkitUserSelect = 'text';
+  let node = null, off = 0;
+  try {
+    if (document.caretPositionFromPoint) { const p = document.caretPositionFromPoint(x, y); if (p) { node = p.offsetNode; off = p.offset; } }
+    else if (document.caretRangeFromPoint) { const r = document.caretRangeFromPoint(x, y); if (r) { node = r.startContainer; off = r.startOffset; } }
+  } catch (e) {}
+  rb.style.userSelect = antes; rb.style.webkitUserSelect = '';
+  if (!node || node.nodeType !== 3) return '';
+  const t = node.textContent; const letra = /[A-Za-zÀ-ÖØ-öø-ÿ'’-]/;
+  let a = off, b = off;
+  while (a > 0 && letra.test(t[a - 1])) a--;
+  while (b < t.length && letra.test(t[b])) b++;
+  return t.slice(a, b).replace(/^['’-]+|['’-]+$/g, '');
+}
+
+const TTS = { on: false, tocando: false, i: 0, partes: [], k: 0, rate: +LS.get('almaTinta.vozVel', 1) || 1, voz: null, geracao: 0 };
+const VELOCIDADES = [0.8, 1, 1.25, 1.5, 1.75];
+function ttsSuportado() { return 'speechSynthesis' in window && typeof SpeechSynthesisUtterance !== 'undefined'; }
+function escolherVoz() {
+  if (!ttsSuportado()) return null;
+  const vs = speechSynthesis.getVoices() || [];
+  let pt = vs.filter(v => /^pt[-_]BR/i.test(v.lang));
+  if (!pt.length) pt = vs.filter(v => /^pt/i.test(v.lang));
+  return pt.find(v => /natural|online|google|luciana|francisca|thalita|antonio/i.test(v.name)) || pt[0] || null;
+}
+if (ttsSuportado()) { try { TTS.voz = escolherVoz(); speechSynthesis.addEventListener('voiceschanged', () => { TTS.voz = escolherVoz(); }); } catch (e) {} }
+function partesDe(el) {
+  const t = (el.textContent || '').replace(/\s+/g, ' ').trim(); if (!t) return [];
+  const frases = t.match(/[^.!?…;:]+[.!?…;:]*["”»’)]*\s{0,9}/g) || [t];
+  const out = []; let cur = '';
+  frases.forEach(f => {
+    if ((cur + f).length > 220 && cur) { out.push(cur.trim()); cur = ''; }
+    while (f.length > 260) { const c = f.lastIndexOf(' ', 240); const corte = c > 60 ? c : 240; out.push(f.slice(0, corte).trim()); f = f.slice(corte); }
+    cur += f;
+  });
+  if (cur.trim()) out.push(cur.trim());
+  return out;
+}
+function blocoFalavel(el) { return !!el && !el.classList.contains('orn') && /[A-Za-zÀ-ÿ0-9]/.test(el.textContent || ''); }
+function marcarBlocoVoz() {
+  document.querySelectorAll('#readerBody .lendo-voz').forEach(b => b.classList.remove('lendo-voz'));
+  const el = blocosTexto()[TTS.i]; if (el && TTS.on) el.classList.add('lendo-voz');
+}
+function manterVisivel(el) {
+  if (!el) return;
+  const a = el.getBoundingClientRect(), b = $('rScroll').getBoundingClientRect();
+  if (paginado()) { if (a.left >= b.right - 5 || a.right <= b.left + 5) rIr(posEl(el)); return; }
+  if (a.top < b.top + 60 || a.top > b.bottom - 160) $('rScroll').scrollTo({ top: Math.max(0, posEl(el) - 110), behavior: 'smooth' });
+}
+function atualizarTtsBar() {
+  $('ttsPlay').textContent = TTS.tocando ? '⏸' : '▶';
+  $('ttsPlay').setAttribute('aria-label', TTS.tocando ? 'Pausar' : 'Continuar');
+  $('ttsVel').textContent = String(TTS.rate).replace('.', ',') + '×';
+  $('rOuvirBtn').classList.toggle('!text-wine', TTS.on);
+}
+function ttsComecar(i) {
+  if (!ttsSuportado()) { toast('Este navegador não tem leitura em voz alta. Tente pelo Chrome ou pelo Safari.'); return; }
+  if (!TTS.voz) TTS.voz = escolherVoz();
+  TTS.on = true; $('reader').classList.add('ouvindo');
+  if (!LS.get('almaTinta.dicaVoz', false)) { LS.set('almaTinta.dicaVoz', true); toast('Ouvindo o livro 🔊 A voz depende do seu aparelho.'); }
+  ttsIrBloco(i, 0);
+}
+function ttsIrBloco(i, k) {
+  const bl = blocosTexto();
+  while (i < bl.length && !blocoFalavel(bl[i])) i++;
+  if (i >= bl.length) { ttsParar(); toast('Fim da leitura em voz alta ✦'); return; }
+  TTS.i = i; TTS.partes = partesDe(bl[i]); TTS.k = k || 0;
+  marcarBlocoVoz(); manterVisivel(bl[i]); ttsFalar();
+}
+function ttsFalar() {
+  const g = ++TTS.geracao;
+  const txt = TTS.partes[TTS.k];
+  if (!txt) { ttsIrBloco(TTS.i + 1, 0); return; }
+  const u = new SpeechSynthesisUtterance(txt);
+  u.lang = (TTS.voz && TTS.voz.lang) || 'pt-BR'; if (TTS.voz) u.voice = TTS.voz; u.rate = TTS.rate;
+  u.onend = () => { if (g !== TTS.geracao || !TTS.tocando) return; TTS.k++; if (TTS.k < TTS.partes.length) ttsFalar(); else ttsIrBloco(TTS.i + 1, 0); };
+  u.onerror = e => { if (g !== TTS.geracao || ['interrupted', 'canceled'].includes(e.error)) return; TTS.tocando = false; atualizarTtsBar(); toast('A leitura em voz alta parou. Toque em ▶ para continuar.'); };
+  TTS.tocando = true; atualizarTtsBar(); ATIV.ultimo = Date.now();
+  const falar = () => { if (g === TTS.geracao) speechSynthesis.speak(u); };
+  if (speechSynthesis.speaking || speechSynthesis.pending) { speechSynthesis.cancel(); setTimeout(falar, 90); } else falar();
+}
+function ttsAlternar() {
+  if (!TTS.on) return;
+  if (TTS.tocando) { TTS.tocando = false; TTS.geracao++; speechSynthesis.cancel(); atualizarTtsBar(); }
+  else ttsFalar();
+}
+function ttsPular(d) {
+  if (!TTS.on) return;
+  const bl = blocosTexto();
+  if (d < 0) { let j = TTS.k > 0 ? TTS.i : TTS.i - 1; while (j > 0 && !blocoFalavel(bl[j])) j--; ttsIrBloco(Math.max(0, j), 0); }
+  else ttsIrBloco(TTS.i + 1, 0);
+}
+function ttsVelocidade() {
+  const i = VELOCIDADES.indexOf(TTS.rate); TTS.rate = VELOCIDADES[(i + 1) % VELOCIDADES.length];
+  LS.set('almaTinta.vozVel', TTS.rate); atualizarTtsBar();
+  if (TTS.on && TTS.tocando) ttsFalar();
+}
+function ttsParar() {
+  if (!TTS.on) return;
+  TTS.on = false; TTS.tocando = false; TTS.geracao++;
+  try { speechSynthesis.cancel(); } catch (e) {}
+  $('reader').classList.remove('ouvindo'); marcarBlocoVoz(); atualizarTtsBar();
+}
+setInterval(() => { if (TTS.on && TTS.tocando) ATIV.ultimo = Date.now(); }, 5000);
+
+const DIC = { cache: {}, atual: '' };
+const CLASSES = { subst: 'Substantivo', verb: 'Verbo', adj: 'Adjetivo', adv: 'Advérbio', pron: 'Pronome', prep: 'Preposição', conj: 'Conjunção', interj: 'Interjeição', num: 'Numeral', art: 'Artigo', loc: 'Locução', contr: 'Contração' };
+const CLASSE_OK = /substantivo|verbo|adjetivo|adv[ée]rbio|pronome|preposi|conjun|interjei|numeral|artigo|locu|forma|contra|express|particípio|subst|verb|adj|adv/i;
+function nomeClasse(h) {
+  const m = h.match(/\{\{-([a-z]+)-/i);
+  if (m) return CLASSES[m[1].toLowerCase()] || m[1];
+  return h.replace(/\{\{[^{}]*\}\}/g, '').replace(/\[\[(?:[^\]|]*\|)?([^\]]*)\]\]/g, '$1').trim();
+}
+function limparWiki(t) {
+  let s = t.replace(/<ref[^>]*>[\s\S]*?<\/ref>/g, '').replace(/<ref[^>]*\/>/g, '');
+  let guarda = 0;
+  while (/\{\{[^{}]*\}\}/.test(s) && guarda++ < 8) {
+    s = s.replace(/\{\{([^{}]*)\}\}/g, (m, c) => {
+      const p = c.split('|').map(x => x.trim()); const n = (p[0] || '').toLowerCase();
+      if (/^(escopo|escopo2|termo|rótulo|rotulo|uso|registro)$/.test(n)) { const v = p.slice(1).filter(x => x && !/^(pt|br|pt-br|pt-pt)$/i.test(x) && !/=/.test(x)); return v.length ? '(' + v.join(', ') + ') ' : ''; }
+      if (/^(l|link|lig)$/.test(n)) return p[2] || '';
+      return '';
+    });
+  }
+  return s.replace(/\[\[(?:[^\]|]*\|)?([^\]]*)\]\]/g, '$1').replace(/'{2,}/g, '').replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').replace(/^[\s:;,.]+/, '').trim();
+}
+function definicoesPt(wt) {
+  const linhas = String(wt || '').split('\n'); let dentro = false, classe = ''; const grupos = [];
+  for (const l of linhas) {
+    const lang = l.match(/^=\s*\{\{-([a-z-]+)-\}\}\s*=\s*$/i);
+    if (lang) { dentro = lang[1].toLowerCase() === 'pt'; classe = ''; continue; }
+    if (!dentro) continue;
+    const h = l.match(/^==+\s*(.+?)\s*==+\s*$/);
+    if (h) { const n = nomeClasse(h[1]); classe = CLASSE_OK.test(n) || CLASSE_OK.test(h[1]) ? n : ''; continue; }
+    const d = l.match(/^#(?![*:#])\s*(.+)$/);
+    if (d && classe) {
+      const txt = limparWiki(d[1]); if (!txt || txt.length < 2) continue;
+      let g = grupos.find(x => x.classe === classe); if (!g) { g = { classe, defs: [] }; grupos.push(g); }
+      if (g.defs.length < 6) g.defs.push(txt);
+    }
+  }
+  return grupos;
+}
+async function buscarDefinicao(palavra) {
+  const chave = palavra.toLowerCase();
+  if (DIC.cache[chave]) return DIC.cache[chave];
+  const base = 'https:' + BARRAS + 'pt.wiktionary.org/w/api.php?action=parse&format=json&formatversion=2&prop=wikitext&redirects=1&origin=*&page=';
+  const tentar = async p => { const r = await fetch(base + encodeURIComponent(p)).then(x => x.json()); return r && r.parse ? definicoesPt(r.parse.wikitext) : []; };
+  let g = await tentar(chave);
+  if (!g.length && palavra !== chave) g = await tentar(palavra);
+  DIC.cache[chave] = g; return g;
+}
+function fecharDic() { const p = $('dicPanel'); p.classList.add('hidden'); p.classList.remove('flex'); DIC.atual = ''; }
+async function abrirDic(palavra) {
+  const p = $('dicPanel'); DIC.atual = palavra;
+  const links = `<div class="flex gap-5 px-5 py-3 border-t border-ink/10 text-[11px] uppercase tracking-[0.14em]">
+    <a href="${'https:' + BARRAS}pt.wiktionary.org/wiki/${encodeURIComponent(palavra.toLowerCase())}" target="_blank" rel="noopener" class="text-wine hover:underline">Wikcionário ↗</a>
+    <a href="${'https:' + BARRAS}www.dicio.com.br/pesquisa.php?q=${encodeURIComponent(palavra.toLowerCase())}" target="_blank" rel="noopener" class="text-wine hover:underline">Dicio ↗</a></div>`;
+  const topo = `<div class="flex items-center justify-between px-5 pt-4 pb-3 border-b border-ink/10"><div><p class="eyebrow">Dicionário</p><p class="font-display text-3xl font-semibold leading-tight">${esc(palavra)}</p></div><button data-action="dicFechar" class="text-muted hover:text-wine text-lg" aria-label="Fechar dicionário">✕</button></div>`;
+  p.innerHTML = topo + `<div class="px-5 py-6 text-sm text-muted italic">Procurando o significado…</div>` + links;
+  p.classList.remove('hidden'); p.classList.add('flex');
+  let corpo;
+  try {
+    const grupos = await buscarDefinicao(palavra);
+    if (DIC.atual !== palavra) return;
+    corpo = grupos.length ? grupos.map(g => `<div><p class="text-[10px] uppercase tracking-[0.18em] text-wine font-semibold">${esc(g.classe)}</p>
+      <ol class="mt-2 space-y-2 list-decimal pl-5 text-[15px] leading-relaxed">${g.defs.map(d => `<li>${esc(d)}</li>`).join('')}</ol></div>`).join('')
+      : `<p class="text-sm text-muted">Não encontrei “${esc(palavra)}” no dicionário aberto. Se for uma forma do verbo ou plural, tente nos links abaixo.</p>`;
+  } catch (e) {
+    if (DIC.atual !== palavra) return;
+    corpo = `<p class="text-sm text-muted">Não consegui consultar o dicionário agora. Verifique a internet ou use os links abaixo.</p>`;
+  }
+  p.innerHTML = topo + `<div class="px-5 py-4 space-y-5 overflow-y-auto">${corpo}</div>` + links;
+}
+
+const SITE_PUBLICO = 'antoniosecret.github.io/Alma-e-Tinta';
+const IMG = { formato: 'post', texto: '', livro: null, canvas: null };
+function trechoParaImagem(t) {
+  t = t.replace(/\s+/g, ' ').trim();
+  if (t.length <= 520) return t;
+  const corte = t.slice(0, 520); const fim = Math.max(corte.lastIndexOf('. '), corte.lastIndexOf('! '), corte.lastIndexOf('? '), corte.lastIndexOf('… '));
+  return fim > 200 ? corte.slice(0, fim + 1) : corte.slice(0, corte.lastIndexOf(' ')) + '…';
+}
+function quebrarLinhas(ctx, texto, largura) {
+  const palavras = texto.split(' '); const linhas = []; let atual = '';
+  palavras.forEach(p => { const tent = atual ? atual + ' ' + p : p; if (ctx.measureText(tent).width > largura && atual) { linhas.push(atual); atual = p; } else atual = tent; });
+  if (atual) linhas.push(atual);
+  return linhas;
+}
+function espacar(ctx, px) { if ('letterSpacing' in ctx) ctx.letterSpacing = px + 'px'; }
+async function desenharImagem() {
+  const story = IMG.formato === 'story';
+  $('imgFPost').classList.toggle('ativa', !story); $('imgFStory').classList.toggle('ativa', story);
+  try { if (document.fonts) await Promise.all(["italic 400 60px 'Cormorant Garamond'", "600 40px 'Cormorant Garamond'", "500 20px Inter"].map(f => document.fonts.load(f).catch(() => null))); } catch (e) {}
+  const W = 1080, H = story ? 1920 : 1350;
+  const c = document.createElement('canvas'); c.width = W; c.height = H;
+  const x = c.getContext('2d');
+  const fundo = x.createLinearGradient(0, 0, W, H); fundo.addColorStop(0, '#22170f'); fundo.addColorStop(1, '#0d0907');
+  x.fillStyle = fundo; x.fillRect(0, 0, W, H);
+  const brilho = x.createRadialGradient(W * 0.2, H * 0.15, 0, W * 0.2, H * 0.15, W * 0.9); brilho.addColorStop(0, 'rgba(120,30,40,.38)'); brilho.addColorStop(1, 'rgba(120,30,40,0)');
+  x.fillStyle = brilho; x.fillRect(0, 0, W, H);
+  for (let k = 0; k < 70; k++) { x.fillStyle = `rgba(217,180,95,${(Math.random() * 0.35 + 0.05).toFixed(2)})`; x.beginPath(); x.arc(Math.random() * W, Math.random() * H, Math.random() * 2.2 + 0.4, 0, Math.PI * 2); x.fill(); }
+  x.strokeStyle = 'rgba(217,180,95,.45)'; x.lineWidth = 2; x.strokeRect(44, 44, W - 88, H - 88);
+  x.strokeStyle = 'rgba(217,180,95,.18)'; x.lineWidth = 1; x.strokeRect(58, 58, W - 116, H - 116);
+  const margem = 130, largura = W - margem * 2;
+  const topo = story ? 330 : 230, base = H - (story ? 470 : 360);
+  x.fillStyle = 'rgba(217,180,95,.85)'; x.font = "600 180px 'Cormorant Garamond', Georgia, serif"; x.textAlign = 'center'; x.textBaseline = 'alphabetic';
+  x.fillText('“', W / 2, topo);
+  let tam = story ? 66 : 60, linhas = [], alt = 0;
+  for (; tam >= 30; tam -= 2) {
+    x.font = `italic 400 ${tam}px 'Cormorant Garamond', Georgia, serif`;
+    linhas = quebrarLinhas(x, IMG.texto, largura); alt = linhas.length * tam * 1.36;
+    if (alt <= base - topo - 40) break;
+  }
+  x.fillStyle = '#F1E6CF';
+  let y = topo + 30 + Math.max(0, (base - topo - 40 - alt) / 2) + tam;
+  linhas.forEach(l => { x.fillText(l, W / 2, y); y += tam * 1.36; });
+  const yAss = H - (story ? 380 : 270);
+  x.strokeStyle = 'rgba(217,180,95,.6)'; x.lineWidth = 1.5; x.beginPath(); x.moveTo(W / 2 - 90, yAss - 62); x.lineTo(W / 2 + 90, yAss - 62); x.stroke();
+  x.fillStyle = '#D9B45F'; x.font = "italic 600 44px 'Cormorant Garamond', Georgia, serif"; x.fillText(IMG.livro.title, W / 2, yAss, W - 200);
+  x.fillStyle = 'rgba(241,230,207,.75)'; x.font = "400 30px 'Cormorant Garamond', Georgia, serif"; x.fillText(IMG.livro.author || '', W / 2, yAss + 50);
+  espacar(x, 6); x.fillStyle = 'rgba(217,180,95,.8)'; x.font = "600 22px Inter, Arial, sans-serif"; x.fillText('ALMA & TINTA', W / 2, H - (story ? 170 : 120));
+  espacar(x, 1); x.fillStyle = 'rgba(241,230,207,.5)'; x.font = "400 20px Inter, Arial, sans-serif"; x.fillText(SITE_PUBLICO, W / 2, H - (story ? 136 : 88));
+  espacar(x, 0);
+  IMG.canvas = c; $('imgPrevia').src = c.toDataURL('image/png');
+}
+async function abrirImagemTrecho(i) {
+  const el = blocosTexto()[i]; const b = S.books.find(x => x.id === TX.id); if (!el || !b) return;
+  IMG.texto = trechoParaImagem(el.textContent || ''); IMG.livro = b;
+  const m = $('imgModal'); m.classList.remove('hidden'); m.classList.add('flex');
+  $('imgShareBtn').textContent = navigator.share ? 'Compartilhar' : 'Copiar imagem';
+  await desenharImagem();
+}
+function fecharImagem() { const m = $('imgModal'); m.classList.add('hidden'); m.classList.remove('flex'); }
+function blobDaImagem() { return new Promise(res => IMG.canvas.toBlob(res, 'image/png')); }
+function nomeImagem() { return 'alma-e-tinta-' + (IMG.livro.title || 'trecho').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') + '.png'; }
+async function baixarImagem() {
+  if (!IMG.canvas) return;
+  const blob = await blobDaImagem(); const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url; a.download = nomeImagem(); document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 4000);
+  toast('Imagem baixada ✦');
+}
+async function compartilharImagem() {
+  if (!IMG.canvas) return;
+  const blob = await blobDaImagem();
+  const legenda = `“${IMG.texto.length > 140 ? IMG.texto.slice(0, 140).replace(/\s\S*$/, '') + '…' : IMG.texto}” — ${IMG.livro.title}, ${IMG.livro.author || ''}`;
+  try {
+    const f = new File([blob], nomeImagem(), { type: 'image/png' });
+    if (navigator.canShare && navigator.canShare({ files: [f] })) { await navigator.share({ files: [f], text: legenda }); return; }
+    if (navigator.clipboard && window.ClipboardItem) { await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]); toast('Imagem copiada. É só colar onde quiser ✦'); return; }
+  } catch (e) { if (e && e.name === 'AbortError') return; }
+  baixarImagem();
+}
+
+function normCh(t) { return t.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase(); }
+function normalizarIgual(t) { const n = normCh(t); return n.length === t.length ? n : [...t].map(c => { const k = normCh(c); return k.length === 1 ? k : c.toLowerCase(); }).join(''); }
+function acharEm(texto, q) { const n = normalizarIgual(texto), alvo = normalizarIgual(q); const out = []; let p = n.indexOf(alvo); while (p >= 0 && out.length < 50) { out.push(p); p = n.indexOf(alvo, p + alvo.length); } return out; }
+function trechoBusca(texto, pos, len) {
+  let a = Math.max(0, pos - 70), b = Math.min(texto.length, pos + len + 110);
+  if (a > 0) { const s = texto.indexOf(' ', a); if (s > -1 && s < pos) a = s + 1; }
+  if (b < texto.length) { const s = texto.lastIndexOf(' ', b); if (s > pos + len) b = s; }
+  return (a > 0 ? '…' : '') + esc(texto.slice(a, pos)) + '<mark>' + esc(texto.slice(pos, pos + len)) + '</mark>' + esc(texto.slice(pos + len, b)) + (b < texto.length ? '…' : '');
+}
+const BLOCOS = {};
+function blocosDoTexto(id, texto) {
+  if (BLOCOS[id] && BLOCOS[id].fonte === texto) return BLOCOS[id].lista;
+  const d = document.createElement('div'); d.innerHTML = formatPreview(texto);
+  let cap = ''; const lista = [...d.children].map(el => { if (el.tagName === 'H3') cap = el.textContent.split(' — ')[0]; return { t: (el.textContent || '').replace(/\s+/g, ' '), cap, h: el.tagName === 'H3' }; });
+  BLOCOS[id] = { fonte: texto, lista }; return lista;
+}
+function procurar(lista, q, limite) {
+  const res = []; let total = 0;
+  lista.forEach((b, i) => { const ps = acharEm(b.t, q); total += ps.length; if (ps.length && res.length < limite) res.push({ i, cap: b.cap, html: trechoBusca(b.t, ps[0], q.length), n: ps.length }); });
+  return { res, total };
+}
+function resultadosNoLivro(q) {
+  const lista = blocosTexto().map(el => ({ t: (el.textContent || '').replace(/\s+/g, ' '), cap: capDoBloco(el) }));
+  const { res, total } = procurar(lista, q, 80);
+  TX.resBusca = res.map(r => r.i);
+  if (!res.length) return `<p class="px-5 py-6 text-sm text-muted font-display italic">Nada encontrado para “${esc(q)}”.</p>`;
+  return `<p class="px-5 pt-4 text-[11px] text-muted">${plural(total, 'ocorrência', 'ocorrências')}${res.length < total ? ' · mostrando ' + res.length + ' trechos' : ''}</p><div class="py-2">${res.map(r => `<button data-action="buscaIr" data-i="${r.i}" class="w-full text-left px-5 py-2.5 hover:bg-wine/5 block"><span class="text-[10px] uppercase tracking-wider text-muted block">${esc(r.cap || 'Início')}${r.n > 1 ? ' · ' + r.n + '×' : ''}</span><span class="text-[14px] text-ink leading-snug block">${r.html}</span></button>`).join('')}</div>`;
+}
+function irResultadoBusca(i) {
+  const el = blocosTexto()[i]; if (!el) return;
+  irBloco(i); marcarTermo(el, TX.busca.trim());
+  if (window.innerWidth < 768) $('rToc').classList.add('hidden');
+}
+function limparMarcas() {
+  document.querySelectorAll('#readerBody mark.achado').forEach(m => { const t = document.createTextNode(m.textContent); m.replaceWith(t); t.parentNode && t.parentNode.normalize(); });
+}
+function marcarTermo(el, q) {
+  limparMarcas(); if (!el || !q) return;
+  const alvo = normalizarIgual(q); const nos = []; const w = document.createTreeWalker(el, NodeFilter.SHOW_TEXT); let n;
+  while ((n = w.nextNode())) nos.push(n);
+  nos.forEach(no => {
+    const t = no.textContent; const nt = normalizarIgual(t); const ps = []; let p = nt.indexOf(alvo);
+    while (p >= 0) { ps.push(p); p = nt.indexOf(alvo, p + alvo.length); }
+    for (let k = ps.length - 1; k >= 0; k--) { const r = document.createRange(); r.setStart(no, ps[k]); r.setEnd(no, ps[k] + q.length); const m = document.createElement('mark'); m.className = 'achado'; try { r.surroundContents(m); } catch (e) {} }
+  });
+  setTimeout(() => { if (el.isConnected) { const m = el.querySelector('mark.achado'); if (m && paginado()) { const a = m.getBoundingClientRect(), b = $('rScroll').getBoundingClientRect(); if (a.left >= b.right - 5) rIr(posEl(m)); } } }, 80);
+}
+let buscaGlobalVez = 0;
+async function buscarNosTextos(q) {
+  const vez = ++buscaGlobalVez; const caixa = () => $('buscaTexto');
+  const livros = S.books.filter(b => hasText(b) && canAccess(b));
+  if (!caixa()) return;
+  if (!ONLINE || !livros.length) { caixa().innerHTML = ''; return; }
+  caixa().innerHTML = `<p class="eyebrow">Dentro dos livros</p><p class="text-sm text-muted italic mt-3">Procurando “${esc(q)}” nos textos…</p>`;
+  const grupos = [];
+  for (const b of livros) {
+    let texto = TX.cache[b.id];
+    if (!texto) { try { texto = (await api('getFullText', b.id, PWD || '')).text || ''; TX.cache[b.id] = texto; } catch (e) { texto = ''; } }
+    if (vez !== buscaGlobalVez) return;
+    if (!texto) continue;
+    const { res, total } = procurar(blocosDoTexto(b.id, texto), q, 4);
+    if (res.length) grupos.push({ b, res, total });
+  }
+  if (vez !== buscaGlobalVez || !caixa()) return;
+  caixa().innerHTML = `<div class="flex items-end justify-between gap-4 pb-4"><div><p class="eyebrow">Dentro dos livros</p><h3 class="font-display text-3xl font-semibold mt-1">Trechos com “${esc(q)}”</h3></div></div><div class="rule mb-6"></div>`
+    + (grupos.length ? `<div class="space-y-10">${grupos.map(({ b, res, total }) => `<section>
+      <div class="flex items-baseline justify-between gap-4"><a href="#obra-${esc(b.id)}" class="font-display text-2xl font-semibold text-ink hover:text-wine">${esc(b.title)}</a><span class="text-[11px] text-muted shrink-0">${plural(total, 'ocorrência', 'ocorrências')}</span></div>
+      <div class="mt-3 divide-y divide-ink/10 border-y border-ink/10">${res.map(r => `<button data-action="abrirBusca" data-id="${esc(b.id)}" data-i="${r.i}" data-q="${esc(q)}" class="w-full text-left py-3.5 hover:bg-wine/5 px-1 block"><span class="text-[10px] uppercase tracking-wider text-muted block">${esc(r.cap || 'Início')}</span><span class="font-display text-lg leading-snug text-ink block mt-0.5">${r.html}</span></button>`).join('')}</div>
+      </section>`).join('')}</div>`
+      : `<p class="text-center font-display italic text-xl text-muted py-6">Nenhum trecho dos livros tem “${esc(q)}”.</p>`);
+}
+
+const LIMITE_VITRINE = 6;
+function semente(txt) { let h = 2166136261; for (const c of String(txt)) { h ^= c.charCodeAt(0); h = Math.imul(h, 16777619); } return () => { h ^= h << 13; h ^= h >>> 17; h ^= h << 5; return ((h >>> 0) % 10000) / 10000; }; }
+function manchaTinta(seed, classe, estilo) {
+  const rnd = semente(seed); const n = 16; const pts = [];
+  for (let k = 0; k < n; k++) { const ang = k / n * Math.PI * 2; const r = 62 + rnd() * 30 * (k % 3 === 0 ? 1.4 : 1); pts.push([100 + Math.cos(ang) * r, 100 + Math.sin(ang) * r]); }
+  let d = ''; for (let k = 0; k < n; k++) { const a = pts[k], b = pts[(k + 1) % n]; const mx = (a[0] + b[0]) / 2, my = (a[1] + b[1]) / 2; d += (k === 0 ? `M${mx.toFixed(1)} ${my.toFixed(1)} ` : '') + `Q${b[0].toFixed(1)} ${b[1].toFixed(1)} ${((b[0] + pts[(k + 2) % n][0]) / 2).toFixed(1)} ${((b[1] + pts[(k + 2) % n][1]) / 2).toFixed(1)} `; }
+  let gotas = ''; for (let k = 0; k < 9; k++) { const ang = rnd() * Math.PI * 2, dist = 100 + rnd() * 60; gotas += `<circle cx="${(100 + Math.cos(ang) * dist).toFixed(1)}" cy="${(100 + Math.sin(ang) * dist).toFixed(1)}" r="${(1 + rnd() * 3.2).toFixed(1)}"/>`; }
+  return `<svg class="mancha ${classe || ''}" style="${estilo || ''}" viewBox="-60 -60 320 320" aria-hidden="true"><g fill="currentColor"><path d="${d}Z"/>${gotas}</g></svg>`;
+}
+function divisoriaPena(extra) {
+  return `<div class="pena-div flex items-center justify-center gap-4 ${extra || ''}" aria-hidden="true">
+    <span class="h-px w-16 sm:w-28 bg-gradient-to-r from-transparent to-current opacity-50"></span>
+    <svg viewBox="0 0 64 40" class="w-12 h-8" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M50 4 C40 7 28 16 20 30 C29 26 41 18 50 4 Z" fill="currentColor" fill-opacity=".14"/>
+      <path d="M50 4 L16 35"/><path d="M33 17 l-4 -2 M38 13 l-4 -2.5 M28 22 l-3.5 -1.5"/>
+      <path d="M12 36 c3 0 4 -2 6 -1" opacity=".7"/><circle cx="10" cy="37" r="1.4" fill="currentColor" stroke="none"/>
+    </svg>
+    <span class="h-px w-16 sm:w-28 bg-gradient-to-l from-transparent to-current opacity-50"></span></div>`;
+}
+function tempoEstimado(b) {
+  const r = BIB.livros[b.id] || {};
+  const seg = r.palavras ? r.palavras / 220 * 60 : (+b.pages || 0) * 240 / 220 * 60;
+  return seg > 0 ? fmtDuracao(seg) : '';
+}
+function resumoSinopse(t) {
+  t = String(t || '').replace(/\s+/g, ' ').trim();
+  if (t.length <= 300) return t;
+  const c = t.slice(0, 300); const f = Math.max(c.lastIndexOf('. '), c.lastIndexOf('? '), c.lastIndexOf('! '));
+  return f > 140 ? c.slice(0, f + 1) : c.slice(0, c.lastIndexOf(' ')) + '…';
+}
+function vitrineHtml(livros, rotulo) {
+  if (!livros.length) return '';
+  const autores = [...new Set(S.books.map(b => b.author).filter(Boolean))];
+  const titulo = rotulo ? 'Em destaque' : autores.length === 1 ? `Livros de ${autores[0]}` : 'O acervo';
+  const cab = `<div class="text-center reveal mt-20 md:mt-24">
+      <p class="eyebrow">${esc(rotulo || 'O acervo')}</p>
+      <h2 class="font-display text-4xl md:text-5xl font-semibold mt-2">${esc(titulo)}</h2>
+      ${divisoriaPena('mt-5')}</div>`;
+  const itens = livros.map((b, k) => {
+    const inverso = k % 2 === 1;
+    const acesso = canAccess(b), online = acesso && hasOnline(b);
+    const pct = progressPct(b.id), sh = shelfOf(b.id);
+    const tempo = tempoEstimado(b);
+    const meta = [b.genre, b.year, b.pages ? b.pages + ' páginas' : '', tempo ? '≈ ' + tempo + ' de leitura' : ''].filter(Boolean);
+    const leitura = online ? `<button data-action="readFull" data-id="${esc(b.id)}" class="btn-primary">📖 ${sh === 'lidos' ? 'Ler de novo' : pct > 0 ? 'Continuar (' + pct + '%)' : 'Ler agora'}</button>`
+      : `<button data-action="read" data-id="${esc(b.id)}" class="btn-primary">${acesso ? 'Ler a prévia' : '🔒 Ler a prévia'}</button>`;
+    return `${k ? divisoriaPena('mt-16 md:mt-24 reveal') : ''}
+    <section class="vitrine-item reveal relative grid md:grid-cols-12 gap-10 md:gap-14 items-center mt-14 md:mt-20 ${inverso ? 'inverso' : ''}">
+      <div class="relative md:col-span-5 ${inverso ? 'md:order-2' : ''} flex justify-center py-6">
+        ${manchaTinta(b.id, '', 'width:135%;left:-18%;top:-14%')}
+        ${manchaTinta(b.id + 'ouro', 'ouro', 'width:110%;left:5%;top:0%')}
+        <a href="#obra-${esc(b.id)}" class="vitrine-capa tilt spine relative block w-52 sm:w-60 md:w-72 aspect-[2/3] overflow-hidden rounded-[3px] bg-paper-darker shadow-book-lg z-10" aria-label="${esc(b.title)}">
+          ${coverFrame(b)}<span class="glare"></span>
+          ${pct > 0 && sh !== 'lidos' ? `<div class="absolute bottom-0 inset-x-0 z-10 h-1.5 bg-black/55"><div class="h-full bg-gradient-to-r from-gold to-wine-light" style="width:${pct}%"></div></div>` : ''}
+        </a>
+      </div>
+      <div class="relative md:col-span-7 ${inverso ? 'md:order-1 md:text-right' : ''} reveal-2">
+        <span class="numeral absolute -top-10 md:-top-14 ${inverso ? 'left-0' : 'right-0'} text-[6rem] md:text-[9rem]">${String(k + 1).padStart(2, '0')}</span>
+        <div class="relative">
+          <p class="eyebrow">${esc(meta.slice(0, 2).join(' · '))}</p>
+          <h3 class="font-display text-4xl md:text-6xl font-semibold leading-[1.02] mt-3"><a href="#obra-${esc(b.id)}" class="hover:text-wine transition-colors">${esc(b.title)}</a></h3>
+          <p class="font-display italic text-xl text-muted mt-2">${esc(b.author || '')}</p>
+          ${b.tagline ? `<blockquote class="mt-6 font-display italic text-2xl md:text-[1.7rem] leading-snug text-ink/95 ${inverso ? 'md:border-r-2 md:pr-5 md:border-l-0 md:pl-0 border-l-2 pl-5' : 'border-l-2 pl-5'} border-wine/60">“${esc(b.tagline)}”</blockquote>` : ''}
+          ${b.synopsis ? `<p class="mt-6 text-[15px] md:text-base leading-relaxed text-ink/85 ${!inverso && resumoSinopse(b.synopsis).length > 140 ? 'sinopse-capitular' : ''} max-w-xl ${inverso ? 'md:ml-auto' : ''}">${esc(resumoSinopse(b.synopsis))}</p>` : ''}
+          ${meta.length > 2 ? `<p class="mt-5 text-[11px] uppercase tracking-[0.16em] text-muted">${esc(meta.slice(2).join(' · '))}</p>` : ''}
+          <div class="mt-7 flex flex-wrap gap-3 ${inverso ? 'md:justify-end' : ''}">
+            ${leitura}
+            <a href="#obra-${esc(b.id)}" class="btn-outline">Conhecer a obra</a>
+            <button data-action="fav" data-id="${esc(b.id)}" class="arrow !w-12 !h-12 ${S.favs.has(b.id) ? '!text-wine' : ''}" aria-label="${S.favs.has(b.id) ? 'Remover da estante' : 'Guardar na estante'}" title="${S.favs.has(b.id) ? 'Remover da estante' : 'Guardar na estante'}">${S.favs.has(b.id) ? '♥' : '♡'}</button>
+          </div>
+        </div>
+      </div>
+    </section>`;
+  }).join('');
+  return cab + itens + `<div class="mt-20 md:mt-28 reveal">${divisoriaPena()}</div>`;
+}
+const REVELAR = 'IntersectionObserver' in window ? new IntersectionObserver(ents => ents.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visivel'); REVELAR.unobserve(e.target); } }), { rootMargin: '0px 0px -8% 0px', threshold: 0.08 }) : null;
+function observarRevelar() {
+  document.querySelectorAll('.reveal:not(.visivel):not([data-obs])').forEach(el => {
+    el.dataset.obs = '1';
+    if (!REVELAR || REDUCE) el.classList.add('visivel'); else REVELAR.observe(el);
+  });
+}
+new MutationObserver(() => observarRevelar()).observe(document.body, { childList: true, subtree: true });
+
 const TEXTO_FORM = { alterado: false, ocupado: false };
 async function extrairParaFormulario(silencioso) {
   if (TEXTO_FORM.ocupado) return;
@@ -2340,6 +2835,22 @@ document.addEventListener('click', e => {
     case 'hlMarca': if (HL.i !== null) { const i = HL.i; fecharBarra(); alternarMarcaTexto(i); } break;
     case 'hlLimpar': if (HL.i !== null) { const i = HL.i; salvarAnotacao(i, n => { n.cor = ''; n.nota = ''; }); fecharBarra(); toast('Destaque apagado.'); } break;
     case 'hlFechar': fecharBarra(); break;
+    case 'hlOuvir': if (HL.i !== null) { const i = HL.i; fecharBarra(); ttsComecar(i); } break;
+    case 'hlDic': if (HL.palavra) { const pal = HL.palavra; fecharBarra(); abrirDic(pal); } break;
+    case 'hlImagem': if (HL.i !== null) { const i = HL.i; fecharBarra(); abrirImagemTrecho(i); } break;
+    case 'ouvir': if (TTS.on) ttsParar(); else ttsComecar(blocoNoTopo()); break;
+    case 'ttsPlay': ttsAlternar(); break;
+    case 'ttsAnt': ttsPular(-1); break;
+    case 'ttsProx': ttsPular(1); break;
+    case 'ttsVel': ttsVelocidade(); break;
+    case 'ttsParar': ttsParar(); break;
+    case 'dicFechar': fecharDic(); break;
+    case 'imgFechar': fecharImagem(); break;
+    case 'imgFormato': IMG.formato = el.dataset.f; desenharImagem(); break;
+    case 'imgCompartilhar': compartilharImagem(); break;
+    case 'imgBaixar': baixarImagem(); break;
+    case 'buscaIr': irResultadoBusca(+el.dataset.i); break;
+    case 'abrirBusca': { const b = S.books.find(x => x.id === id); if (b) { TX.irPara = +el.dataset.i; TX.termoIr = el.dataset.q || ''; openTextBook(b); } break; }
     case 'marcarTexto': if (TX.id) alternarMarcaTexto(blocoNoTopo()); break;
     case 'marcarPdf': alternarMarcaPdf(); break;
     case 'irBlocoToc': irBloco(+el.dataset.i); if (window.innerWidth < 768) $('rToc').classList.add('hidden'); break;
@@ -2372,6 +2883,10 @@ function refreshCoverPreview() {
 }
 document.addEventListener('input', e => {
   if (e.target.id === 'search') { S.q = e.target.value; clearTimeout(searchTimer); searchTimer = setTimeout(fillHome, 120); }
+  if (e.target.id === 'rBusca') {
+    TX.busca = e.target.value; clearTimeout(searchTimer);
+    searchTimer = setTimeout(() => { const pos = $('rBusca').selectionStart; renderTextToc(); const inp = $('rBusca'); inp.focus(); try { inp.setSelectionRange(pos, pos); } catch (err) {} }, 180);
+  }
   if (e.target.id === 'f-title' || e.target.id === 'f-author') refreshCoverPreview();
 });
 document.addEventListener('change', e => {
@@ -2395,6 +2910,8 @@ document.addEventListener('keydown', e => {
   }
   if (e.key !== 'Escape') return;
   if (!$('dialog').classList.contains('hidden')) closeDialog(false);
+  else if (!$('imgModal').classList.contains('hidden')) fecharImagem();
+  else if (!$('dicPanel').classList.contains('hidden')) fecharDic();
   else if (!$('rPrefsPanel').classList.contains('hidden')) $('rPrefsPanel').classList.add('hidden');
   else if ($('reader').classList.contains('foco')) alternarFoco();
   else if (!$('reader').classList.contains('hidden')) closeReader();
@@ -2456,6 +2973,7 @@ if (!REDUCE) {
   }
   function draw() {
     ctx.clearRect(0, 0, W, H);
+    const claro = document.documentElement.classList.contains('claro');
     const dy = (window.scrollY - lastY) * 0.2; lastY = window.scrollY;
     for (const p of parts) {
       if (!REDUCE) {
@@ -2463,9 +2981,10 @@ if (!REDUCE) {
         if (p.y < -12 || p.x < -12 || p.x > W + 12) Object.assign(p, mk(false));
         if (p.y > H + 14) p.y = -8;
       }
-      const tw = (Math.sin(p.ph * 2.3) + 1) / 2, al = p.a * (0.35 + 0.65 * tw), R = p.r * 4;
+      const tw = (Math.sin(p.ph * 2.3) + 1) / 2, al = p.a * (0.35 + 0.65 * tw) * (claro ? 1.25 : 1), R = p.r * (claro ? 3.2 : 4);
+      const cor = claro ? '150,100,32' : '242,208,128';
       const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, R);
-      g.addColorStop(0, `rgba(242,208,128,${al.toFixed(3)})`); g.addColorStop(0.35, `rgba(242,208,128,${(al * 0.35).toFixed(3)})`); g.addColorStop(1, 'rgba(242,208,128,0)');
+      g.addColorStop(0, `rgba(${cor},${al.toFixed(3)})`); g.addColorStop(0.35, `rgba(${cor},${(al * 0.35).toFixed(3)})`); g.addColorStop(1, `rgba(${cor},0)`);
       ctx.fillStyle = g; ctx.beginPath(); ctx.arc(p.x, p.y, R, 0, 6.283); ctx.fill();
     }
     if (!REDUCE) requestAnimationFrame(draw);
