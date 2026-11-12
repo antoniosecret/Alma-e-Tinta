@@ -2191,17 +2191,64 @@ function escolherVoz() {
   return pt.find(v => /natural|online|google|luciana|francisca|thalita|antonio/i.test(v.name)) || pt[0] || null;
 }
 if (ttsSuportado()) { try { TTS.voz = escolherVoz(); speechSynthesis.addEventListener('voiceschanged', () => { TTS.voz = escolherVoz(); }); } catch (e) {} }
-function partesDe(el) {
-  const t = (el.textContent || '').replace(/\s+/g, ' ').trim(); if (!t) return [];
-  const frases = t.match(/[^.!?…;:]+[.!?…;:]*["”»’)]*\s{0,9}/g) || [t];
-  const out = []; let cur = '';
-  frases.forEach(f => {
-    if ((cur + f).length > 220 && cur) { out.push(cur.trim()); cur = ''; }
-    while (f.length > 260) { const c = f.lastIndexOf(' ', 240); const corte = c > 60 ? c : 240; out.push(f.slice(0, corte).trim()); f = f.slice(corte); }
-    cur += f;
+const NUM_EXTENSO = ['zero', 'um', 'dois', 'três', 'quatro', 'cinco', 'seis', 'sete', 'oito', 'nove', 'dez', 'onze', 'doze', 'treze', 'catorze', 'quinze', 'dezesseis', 'dezessete', 'dezoito', 'dezenove', 'vinte'];
+function romanoParaNumero(r) { const v = { I: 1, V: 5, X: 10, L: 50, C: 100 }; let n = 0; for (let k = 0; k < r.length; k++) { const a = v[r[k]], b = v[r[k + 1]] || 0; n += a < b ? -a : a; } return n; }
+function numeroFalado(n) { return n <= 20 ? NUM_EXTENSO[n] : String(n); }
+const ABREVIACOES = /(?:^|\s)(sr|sra|srta|dr|dra|prof|profa|etc|p|pág|pp|cap|séc|vol|ed|nº|n|art|av|obs)\.$/i;
+function limparParaFala(t) {
+  return String(t || '')
+    .replace(/[“”«»"]/g, '')
+    .replace(/\s{0,9}[—–]\s{0,9}/g, ', ')
+    .replace(/…|\.{3,}/g, '... ')
+    .replace(/\(([^)]{1,120})\)/g, ', $1,')
+    .replace(/[*_✦❦§•#>]+/g, ' ')
+    .replace(/\s+([,.;:!?])/g, '$1')
+    .replace(/,\s*,+/g, ',')
+    .replace(/,\s*([.!?;:])/g, '$1')
+    .replace(/\b[A-ZÀ-Ý]{4,}\b/g, w => w.charAt(0) + w.slice(1).toLowerCase())
+    .replace(/^[\s,]+|[\s,]+$/g, '')
+    .replace(/\s{2,}/g, ' ');
+}
+function frasesDe(t) {
+  const brutas = t.match(/[^.!?]+(?:[.!?]+["”»’)]*)?\s{0,9}/g) || [t];
+  const out = [];
+  brutas.forEach(f => {
+    const ant = out[out.length - 1];
+    if (ant && (ABREVIACOES.test(ant.trim()) || /^\s*[a-zà-ÿ0-9,;]/.test(f) || ant.trim().length < 4)) out[out.length - 1] = ant + f;
+    else out.push(f);
   });
-  if (cur.trim()) out.push(cur.trim());
-  return out;
+  const finais = [];
+  out.forEach(f => {
+    f = f.trim(); if (!f) return;
+    while (f.length > 240) {
+      let c = -1; for (const sep of ['; ', ': ', ', ']) { const k = f.lastIndexOf(sep, 220); if (k > 70) { c = k + 1; break; } }
+      if (c < 0) { const k = f.lastIndexOf(' ', 220); c = k > 60 ? k : 220; }
+      finais.push(f.slice(0, c).trim()); f = f.slice(c).trim();
+    }
+    if (f) finais.push(f);
+  });
+  return finais;
+}
+function pausaDepoisDaFrase(f) { return /\.\.\.$/.test(f) ? 520 : /[?!]["”»’)]*$/.test(f) ? 300 : /[.]["”»’)]*$/.test(f) ? 220 : 120; }
+function partesDe(el) {
+  const tag = el.tagName;
+  const bruto = (el.innerText || el.textContent || '').replace(/\s+/g, ' ').trim();
+  if (!bruto) return [];
+  if (tag === 'H3' || tag === 'H4') {
+    const pedacos = bruto.split(/\s+[—–-]\s+/);
+    const caixaNormal = x => (x === x.toUpperCase() && /[A-ZÀ-Ý]{3}/.test(x)) ? x.charAt(0) + x.slice(1).toLowerCase() : x;
+    const falar = pedacos.map(caixaNormal).map(x => x.replace(/^(parte|livro|cap[ií]tulo|seção)\s+([IVXLC]+)\b/i, (m, w, r) => w + ' ' + numeroFalado(romanoParaNumero(r.toUpperCase()))));
+    const lista = falar.map((x, k) => ({ t: limparParaFala(x) + '.', r: 0.92, p: 0.96, depois: k < falar.length - 1 ? 480 : (tag === 'H3' ? 1000 : 750) }));
+    lista[0].antes = 600;
+    return lista.filter(x => x.t.length > 1);
+  }
+  const epigrafe = tag === 'BLOCKQUOTE';
+  const frases = frasesDe(limparParaFala(bruto));
+  return frases.map((f, k) => ({
+    t: f, r: epigrafe ? 0.88 : 1, p: epigrafe ? 0.97 : 1,
+    antes: k === 0 && epigrafe ? 350 : 0,
+    depois: k === frases.length - 1 ? (epigrafe ? 850 : 420) : pausaDepoisDaFrase(f) + (epigrafe ? 120 : 0)
+  }));
 }
 function blocoFalavel(el) { return !!el && !el.classList.contains('orn') && /[A-Za-zÀ-ÿ0-9]/.test(el.textContent || ''); }
 function marcarBlocoVoz() {
@@ -2227,20 +2274,29 @@ function ttsComecar(i) {
   if (!LS.get('almaTinta.dicaVoz', false)) { LS.set('almaTinta.dicaVoz', true); toast('Ouvindo o livro 🔊 A voz depende do seu aparelho.'); }
   ttsIrBloco(i, 0);
 }
-function ttsIrBloco(i, k) {
-  const bl = blocosTexto();
-  while (i < bl.length && !blocoFalavel(bl[i])) i++;
+function ttsIrBloco(i, k, esperar) {
+  const bl = blocosTexto(); let extra = 0;
+  while (i < bl.length && !blocoFalavel(bl[i])) { if (bl[i].classList.contains('orn')) extra = 900; i++; }
   if (i >= bl.length) { ttsParar(); toast('Fim da leitura em voz alta ✦'); return; }
   TTS.i = i; TTS.partes = partesDe(bl[i]); TTS.k = k || 0;
-  marcarBlocoVoz(); manterVisivel(bl[i]); ttsFalar();
+  marcarBlocoVoz(); manterVisivel(bl[i]);
+  const espera = (esperar ? extra + ((TTS.partes[TTS.k] || {}).antes || 0) : 0);
+  if (espera > 0) { const g = ++TTS.geracao; TTS.tocando = true; atualizarTtsBar(); setTimeout(() => { if (g === TTS.geracao && TTS.on && TTS.tocando) ttsFalar(); }, espera / TTS.rate); }
+  else ttsFalar();
 }
 function ttsFalar() {
   const g = ++TTS.geracao;
-  const txt = TTS.partes[TTS.k];
-  if (!txt) { ttsIrBloco(TTS.i + 1, 0); return; }
-  const u = new SpeechSynthesisUtterance(txt);
-  u.lang = (TTS.voz && TTS.voz.lang) || 'pt-BR'; if (TTS.voz) u.voice = TTS.voz; u.rate = TTS.rate;
-  u.onend = () => { if (g !== TTS.geracao || !TTS.tocando) return; TTS.k++; if (TTS.k < TTS.partes.length) ttsFalar(); else ttsIrBloco(TTS.i + 1, 0); };
+  const parte = TTS.partes[TTS.k];
+  if (!parte) { ttsIrBloco(TTS.i + 1, 0, true); return; }
+  const u = new SpeechSynthesisUtterance(parte.t);
+  u.lang = (TTS.voz && TTS.voz.lang) || 'pt-BR'; if (TTS.voz) u.voice = TTS.voz;
+  u.rate = Math.max(0.5, Math.min(2, TTS.rate * (parte.r || 1))); u.pitch = parte.p || 1;
+  u.onend = () => {
+    if (g !== TTS.geracao || !TTS.tocando) return;
+    const seguir = () => { if (g !== TTS.geracao || !TTS.tocando) return; TTS.k++; if (TTS.k < TTS.partes.length) ttsFalar(); else ttsIrBloco(TTS.i + 1, 0, true); };
+    const pausa = (parte.depois || 0) / TTS.rate;
+    if (pausa > 30) setTimeout(seguir, pausa); else seguir();
+  };
   u.onerror = e => { if (g !== TTS.geracao || ['interrupted', 'canceled'].includes(e.error)) return; TTS.tocando = false; atualizarTtsBar(); toast('A leitura em voz alta parou. Toque em ▶ para continuar.'); };
   TTS.tocando = true; atualizarTtsBar(); ATIV.ultimo = Date.now();
   const falar = () => { if (g === TTS.geracao) speechSynthesis.speak(u); };
