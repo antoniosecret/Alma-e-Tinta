@@ -20,7 +20,10 @@
   <meta property="og:image:height" content="640">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://antoniosecret.github.io/Alma-e-Tinta/capa.jpg">
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http:%2F%2Fwww.w3.org%2F2000%2Fsvg' viewBox='0 0 48 48'%3E%3Ccircle cx='24' cy='24' r='23' fill='%2315100D' stroke='%23D9B45F' stroke-width='1.5'%2F%3E%3Ctext x='24' y='31' text-anchor='middle' font-family='Georgia,serif' font-weight='700' font-size='19' fill='%23E8CB86'%3EA%26T%3C%2Ftext%3E%3C%2Fsvg%3E">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://antoniosecret.github.io/Alma-e-Tinta/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://antoniosecret.github.io/Alma-e-Tinta/favicon-16.png">
+  <link rel="icon" href="https://antoniosecret.github.io/Alma-e-Tinta/favicon.ico" sizes="48x48">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://antoniosecret.github.io/Alma-e-Tinta/apple-touch-icon.png">
   <script>try { if (localStorage.getItem('almaTinta.temaSite') === '"claro"') document.documentElement.classList.add('claro'); } catch (e) {}</script>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -269,11 +272,11 @@
         </div>
       </div>
       <div class="flex items-center gap-1 sm:gap-2 shrink-0">
-        <button data-action="ouvir" id="rOuvirBtn" class="hidden w-8 h-8 text-muted hover:text-wine text-base" aria-label="Ouvir o livro" title="Ouvir o livro">🔊</button>
+        <button data-action="ouvir" id="rOuvirBtn" class="hidden h-8 px-1.5 sm:px-2.5 sm:border sm:border-ink/15 rounded-full text-muted hover:text-wine hover:border-wine/50 text-base items-center gap-1.5" aria-label="Ouvir o livro" title="Ouvir o livro em voz alta">🔊<span class="hidden sm:inline text-[10px] uppercase tracking-[0.14em] font-semibold">Ouvir</span></button>
         <button data-action="marcarTexto" id="rMarcaBtn" class="hidden w-8 h-8 text-muted hover:text-wine text-base" aria-label="Marcar onde estou" title="Marcar onde estou">🔖</button>
         <button data-action="rPrefs" id="rPrefsBtn" class="h-8 px-2 text-muted hover:text-wine font-display text-xl font-semibold leading-none" aria-label="Ajustes de leitura" title="Ajustes de leitura">Aa</button>
         <button data-action="foco" class="w-8 h-8 text-muted hover:text-wine text-lg" aria-label="Modo foco" title="Modo foco">⛶</button>
-        <span class="w-px h-5 bg-ink/15 mx-1"></span>
+        <span class="hidden sm:block w-px h-5 bg-ink/15 mx-1"></span>
         <button data-action="closeReader" class="text-muted hover:text-wine text-xl px-2" aria-label="Fechar">✕</button>
       </div>
     </div>
@@ -913,6 +916,7 @@ function viewObra(id) {
           return `<div class="space-y-2 max-w-md"><p class="text-sm text-muted">${shelfOf(b.id) === 'lidos' ? `✓ Você leu este livro${r.finishedAt ? ' em ' + fmtDataHora(r.finishedAt) : ''}` : `Você está em: ${posicaoTxt(b.id)}`}</p>${progressBar(pct)}</div>`; })()}
         <div class="flex flex-wrap gap-3 pt-2">
           ${access && hasOnline(b) ? `<button data-action="readFull" data-id="${esc(b.id)}" class="btn-primary">📖 ${shelfOf(b.id) === 'lidos' ? 'Ler de novo' : (progressPct(b.id) > 0 ? 'Continuar leitura (' + progressPct(b.id) + '%)' : 'Ler online')}</button>` : ''}
+          ${access && hasText(b) ? `<button data-action="ouvirLivro" data-id="${esc(b.id)}" class="btn-outline">🔊 Ouvir</button>` : ''}
           <button data-action="read" data-id="${esc(b.id)}" class="${access && hasOnline(b) ? 'btn-outline' : 'btn-primary'}">${access ? 'Ler a prévia' : '🔒 Ler a prévia'}</button>
           ${access ? (pdf ? `<a href="${esc(pdf)}" target="_blank" rel="noopener" data-download="${esc(b.id)}" data-origem="pagina" class="btn-outline">Baixar PDF completo ↗</a>` : '')
                    : `<button data-action="restricted" class="btn-outline">🔒 Baixar PDF</button>`}
@@ -1667,12 +1671,13 @@ async function openTextBook(b) {
     if (r.shelf !== 'lidos') r.shelf = 'lendo';
     bibSave();
     $('rMeta').textContent = `${b.author || ''} · ${fmtDuracao(r.palavras / 220 * 60)} de leitura`;
-    $('rMarcaBtn').classList.remove('hidden'); $('rOuvirBtn').classList.remove('hidden');
+    $('rMarcaBtn').classList.remove('hidden'); $('rOuvirBtn').classList.remove('hidden'); $('rOuvirBtn').classList.add('inline-flex');
     pintarAnotacoes();
     iniciarSessao(b.id, 'texto');
     const sc = $('rScroll');
     requestAnimationFrame(() => {
       rIrFrac(r.frac || 0, true); TX.pronto = true; atualizarTexto(false);
+      if (TX.ouvirAoAbrir) { TX.ouvirAoAbrir = false; setTimeout(() => ttsComecar(blocoNoTopo()), 250); }
       if (TX.irPara != null) { const alvo = TX.irPara; TX.irPara = null; irBloco(alvo); if (TX.termoIr) { marcarTermo(blocosTexto()[alvo], TX.termoIr); TX.termoIr = ''; } }
     });
     TX.t0 = Date.now();
@@ -1720,7 +1725,7 @@ function fecharTexto(rerender, jaSalvo) {
   encerrarSessao();
   fecharBarra(); ttsParar(); fecharDic(); TX.busca = '';
   TX.id = null; TX.caps = [];
-  $('rMarcaBtn').classList.add('hidden'); $('rOuvirBtn').classList.add('hidden');
+  $('rMarcaBtn').classList.add('hidden'); $('rOuvirBtn').classList.add('hidden'); $('rOuvirBtn').classList.remove('inline-flex');
   SS.set('almaTinta.lendoAgora', '');
   $('rTocBtn').classList.add('hidden'); $('rToc').classList.add('hidden');
   if (rerender) render(true);
@@ -2130,6 +2135,7 @@ function renderPrefs() {
     <div><p class="text-[10px] uppercase tracking-[0.16em] text-muted mb-2">Alinhamento</p><div class="grid grid-cols-2 gap-2">${opcoes('alinhar', { esquerda: ['Esquerda'], justificado: ['Justificado'] })}</div></div>
     <div><p class="text-[10px] uppercase tracking-[0.16em] text-muted mb-2">Cor da página</p><div class="grid grid-cols-3 gap-2">
       ${[['sepia', 'Papel', '#f6eedb', '#3b2e20'], ['claro', 'Branco', '#ffffff', '#2b2b2b'], ['escuro', 'Noite', '#1d1915', '#ddd3c2']].map(([v, rot, bg, fg]) => `<button data-action="pref" data-k="theme" data-v="${v}" class="pref-op !normal-case !text-xs" style="background:${bg};color:${fg};${R.theme === v ? 'box-shadow:0 0 0 2px rgb(var(--c-wine));' : ''}">${rot}</button>`).join('')}</div></div>
+    ${TX.id ? `<button data-action="ouvir" class="pref-op w-full !py-2.5">${TTS.on ? '✕ Parar a leitura em voz alta' : '🔊 Ouvir o livro em voz alta'}</button>` : ''}
     <button data-action="foco" class="pref-op w-full !py-2.5">⛶ Modo foco — só o texto</button>`;
 }
 document.addEventListener('pointerdown', e => {
@@ -2553,6 +2559,7 @@ function vitrineHtml(livros, rotulo) {
           ${meta.length > 2 ? `<p class="mt-5 text-[11px] uppercase tracking-[0.16em] text-muted">${esc(meta.slice(2).join(' · '))}</p>` : ''}
           <div class="mt-7 flex flex-wrap gap-3 ${inverso ? 'md:justify-end' : ''}">
             ${leitura}
+            ${online && hasText(b) ? `<button data-action="ouvirLivro" data-id="${esc(b.id)}" class="btn-outline">🔊 Ouvir</button>` : ''}
             <a href="#obra-${esc(b.id)}" class="btn-outline">Conhecer a obra</a>
             <button data-action="fav" data-id="${esc(b.id)}" class="arrow !w-12 !h-12 ${S.favs.has(b.id) ? '!text-wine' : ''}" aria-label="${S.favs.has(b.id) ? 'Remover da estante' : 'Guardar na estante'}" title="${S.favs.has(b.id) ? 'Remover da estante' : 'Guardar na estante'}">${S.favs.has(b.id) ? '♥' : '♡'}</button>
           </div>
@@ -2811,6 +2818,12 @@ document.addEventListener('click', e => {
     case 'previewDraft': openReader({ title: $('f-title').value.trim(), author: $('f-author').value.trim() }, $('f-preview').value); break;
     case 'closeReader': closeReader(); break;
     case 'readFull': if (book) openBook(book); break;
+    case 'ouvirLivro': if (book) {
+      if (!ttsSuportado()) { toast('Este navegador não tem leitura em voz alta. Tente pelo Chrome ou pelo Safari.'); break; }
+      try { const u0 = new SpeechSynthesisUtterance(' '); u0.volume = 0; speechSynthesis.speak(u0); } catch (err) {}
+      if (TX.id === book.id && leitorAberto()) { ttsComecar(blocoNoTopo()); break; }
+      TX.ouvirAoAbrir = true; openTextBook(book);
+    } break;
     case 'readPdf': if (book) openPdfBook(book); break;
     case 'readText': { const bk = BR.book; if (bk) { closeBook(); openTextBook(bk); } break; }
     case 'rTocToggle': { const f = rFrac(); $('rToc').classList.toggle('hidden'); if (paginado()) { layoutLeitor(); rIrFrac(f, true); } break; }
@@ -2838,7 +2851,7 @@ document.addEventListener('click', e => {
     case 'hlOuvir': if (HL.i !== null) { const i = HL.i; fecharBarra(); ttsComecar(i); } break;
     case 'hlDic': if (HL.palavra) { const pal = HL.palavra; fecharBarra(); abrirDic(pal); } break;
     case 'hlImagem': if (HL.i !== null) { const i = HL.i; fecharBarra(); abrirImagemTrecho(i); } break;
-    case 'ouvir': if (TTS.on) ttsParar(); else ttsComecar(blocoNoTopo()); break;
+    case 'ouvir': $('rPrefsPanel').classList.add('hidden'); if (TTS.on) ttsParar(); else ttsComecar(blocoNoTopo()); break;
     case 'ttsPlay': ttsAlternar(); break;
     case 'ttsAnt': ttsPular(-1); break;
     case 'ttsProx': ttsPular(1); break;
