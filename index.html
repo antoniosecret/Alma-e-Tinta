@@ -1,0 +1,1961 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alma & Tinta — Biblioteca Digital</title>
+  <meta name="description" content="Alma & Tinta — a biblioteca digital de Antônio José. Leia prévias e livros completos online, com a sua estante e o seu progresso de leitura.">
+  <meta name="theme-color" content="#15100D">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Alma & Tinta">
+  <meta property="og:title" content="Alma & Tinta — Biblioteca Digital">
+  <meta property="og:description" content="Palavras que merecem ser lidas com calma. Leia online os livros de Antônio José.">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:image" content="capa.png">
+  <meta property="og:image:width" content="1280">
+  <meta property="og:image:height" content="640">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http:%2F%2Fwww.w3.org%2F2000%2Fsvg' viewBox='0 0 48 48'%3E%3Ccircle cx='24' cy='24' r='23' fill='%2315100D' stroke='%23D9B45F' stroke-width='1.5'%2F%3E%3Ctext x='24' y='31' text-anchor='middle' font-family='Georgia,serif' font-weight='700' font-size='19' fill='%23E8CB86'%3EA%26T%3C%2Ftext%3E%3C%2Fsvg%3E">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400;1,500;1,600&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            paper: { DEFAULT: '#15100D', light: '#1E1712', dark: '#0F0B09', darker: '#2A201A' },
+            ink: '#F1E6CF',
+            muted: '#B09E85',
+            wine: { DEFAULT: '#D9B45F', dark: '#C29A42', light: '#E8CB86', deep: '#5E1620' },
+            gold: { DEFAULT: '#C9A04A', light: '#E3C27A' }
+          },
+          fontFamily: {
+            display: ['Cormorant Garamond', 'Georgia', 'serif'],
+            book: ['EB Garamond', 'Georgia', 'serif'],
+            sans: ['Inter', 'sans-serif']
+          },
+          boxShadow: {
+            book: '0 1px 2px rgba(0,0,0,.5), 0 14px 28px -10px rgba(0,0,0,.85)',
+            'book-lg': '0 2px 4px rgba(0,0,0,.5), 0 30px 50px -14px rgba(0,0,0,.95), 0 0 40px -10px rgba(217,180,95,.25)',
+            card: '0 1px 2px rgba(0,0,0,.4), 0 10px 40px -12px rgba(0,0,0,.7)'
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    html { scroll-behavior: smooth; }
+    body {
+      background-color: #15100D; color: #F1E6CF; font-family: 'Inter', sans-serif;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .85  0 0 0 0 .7  0 0 0 0 .45  0 0 0 .05 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    }
+    .eyebrow { font-size: .68rem; text-transform: uppercase; letter-spacing: .24em; color: #D9B45F; font-weight: 600; }
+    .btn-primary { background: linear-gradient(135deg, #E8CB86 0%, #D9B45F 45%, #B8893A 100%); color: #15100D; font-size: .72rem; font-weight: 600; text-transform: uppercase; letter-spacing: .14em; padding: .85rem 1.6rem; border-radius: 2px; transition: background .25s, box-shadow .25s, transform .25s; display: inline-flex; align-items: center; justify-content: center; gap: .4rem; }
+    .btn-primary:hover { filter: brightness(1.08); box-shadow: 0 8px 26px -6px rgba(217,180,95,.55); transform: translateY(-1px); }
+    .btn-primary:disabled { opacity: .6; cursor: wait; transform: none; }
+    .btn-outline { border: 1px solid rgba(241,230,207,.28); color: #F1E6CF; font-size: .72rem; font-weight: 600; text-transform: uppercase; letter-spacing: .14em; padding: .8rem 1.5rem; border-radius: 2px; transition: all .25s; display: inline-flex; align-items: center; justify-content: center; gap: .4rem; }
+    .btn-outline:hover { border-color: #D9B45F; color: #D9B45F; background: rgba(217,180,95,.06); }
+    .btn-link { font-size: .72rem; font-weight: 600; text-transform: uppercase; letter-spacing: .14em; color: #D9B45F; transition: color .2s; }
+    .btn-link:hover { color: #E8CB86; text-decoration: underline; text-underline-offset: 4px; }
+    .field { width: 100%; background: #110D0B; border: 1px solid rgba(241,230,207,.16); color: #F1E6CF; font-size: .9rem; padding: .7rem 1rem; border-radius: 2px; transition: border-color .2s, box-shadow .2s; }
+    select.field option, select.field optgroup { background-color: #1E1712; color: #F1E6CF; }
+    select.field { color-scheme: dark; }
+    .field::placeholder { color: rgba(176,158,133,.6); }
+    .field:focus { outline: none; border-color: #D9B45F; box-shadow: 0 0 0 3px rgba(217,180,95,.15); }
+    .label { display: block; font-size: .68rem; text-transform: uppercase; letter-spacing: .14em; color: #D9B45F; font-weight: 600; margin-bottom: .4rem; }
+    .chip { font-size: .68rem; text-transform: uppercase; letter-spacing: .14em; padding: .45rem 1rem; border: 1px solid rgba(241,230,207,.18); color: #B09E85; border-radius: 999px; transition: all .2s; white-space: nowrap; background: rgba(30,23,18,.6); }
+    .chip:hover { color: #D9B45F; border-color: #D9B45F; }
+    .chip.active { background: #D9B45F; color: #15100D; border-color: #D9B45F; font-weight: 600; }
+    .nav-link { font-size: .78rem; letter-spacing: .12em; text-transform: uppercase; color: #B09E85; padding: .5rem .8rem; position: relative; transition: color .2s; white-space: nowrap; font-weight: 500; }
+    .nav-link:hover { color: #D9B45F; }
+    .nav-link.active { color: #D9B45F; }
+    .nav-link.active::after { content: ''; position: absolute; left: .8rem; right: .8rem; bottom: -2px; height: 1px; background: #D9B45F; }
+    .ornament { display: flex; align-items: center; gap: 1rem; color: #C9A04A; }
+    .ornament::before, .ornament::after { content: ''; flex: 1; height: 1px; background: linear-gradient(to right, transparent, rgba(201,160,74,.55), transparent); }
+    .rule { height: 1px; background: linear-gradient(to right, transparent, rgba(241,230,207,.16), transparent); }
+    .skeleton { background: linear-gradient(90deg, #1E1712 0%, #2A201A 50%, #1E1712 100%); background-size: 200% 100%; animation: shimmer 1.4s infinite; }
+    @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+    .fade-in { animation: fadeIn .55s ease both; }
+    .fade-in-slow { animation: fadeIn 1s ease both; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+    @media (prefers-reduced-motion: reduce) { .fade-in, .fade-in-slow { animation: none; } html { scroll-behavior: auto; } }
+    #toast { transition: opacity .3s ease, transform .3s ease; }
+    #toast.hide { opacity: 0; transform: translate(-50%, 12px); pointer-events: none; }
+    #readerBody p { margin: 0 0 1.25em; }
+    #readerBody h3 { font-family: 'Cormorant Garamond', serif; font-weight: 600; font-size: 1.45em; margin: 1.6em 0 1em; text-align: center; }
+    #readerBody h4 { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.15em; margin: 1.5em 0 .75em; text-align: center; }
+    #readerBody .orn { text-align: center; margin: 1.75em 0; letter-spacing: 1em; opacity: .75; }
+    #readerBody blockquote { border-left: 2px solid currentColor; padding-left: 1em; opacity: .85; font-style: italic; margin: 0 0 1.25em; }
+    .tchar { opacity: 0; animation: inkIn .55s ease forwards; }
+    @keyframes inkIn { from { opacity: 0; filter: blur(4px); transform: translateY(2px); } to { opacity: 1; filter: none; transform: none; } }
+    .quill { transform-origin: 30% 90%; }
+    .quill.writing { animation: quillWrite .32s ease-in-out infinite; }
+    @keyframes quillWrite { 0%,100% { transform: rotate(0) translate(0,0); } 50% { transform: rotate(-7deg) translate(2px,-2px); } }
+    .tilt { transform-style: preserve-3d; transition: transform .6s cubic-bezier(.2,.8,.2,1), box-shadow .3s; will-change: transform; }
+    .tilt .glare { position: absolute; inset: 0; z-index: 3; pointer-events: none; opacity: 0; transition: opacity .35s;
+      background: radial-gradient(circle at var(--gx,50%) var(--gy,50%), rgba(255,236,190,.32), rgba(255,236,190,0) 55%); }
+    .tilt:hover .glare, .tilt.touching .glare { opacity: 1; }
+    .tilt:hover, .tilt.touching { box-shadow: 0 2px 4px rgba(0,0,0,.5), 0 30px 50px -14px rgba(0,0,0,.95), 0 0 40px -10px rgba(217,180,95,.25); }
+    @media (prefers-reduced-motion: reduce) { .tchar { animation: none; opacity: 1; } .quill.writing { animation: none; } }
+    .hide-scrollbar::-webkit-scrollbar { display: none; }
+    .hide-scrollbar { scrollbar-width: none; }
+    .spine::before { content: ''; position: absolute; inset: 0 auto 0 0; width: 9px; z-index: 2; pointer-events: none;
+      background: linear-gradient(to right, rgba(0,0,0,.28), rgba(255,255,255,.12) 55%, rgba(0,0,0,0)); }
+    .spine::after { content: ''; position: absolute; inset: 0; z-index: 2; pointer-events: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,.06); border-radius: inherit; }
+    .arrow { width: 2.25rem; height: 2.25rem; border-radius: 999px; border: 1px solid rgba(241,230,207,.22); color: #F1E6CF; display: inline-flex; align-items: center; justify-content: center; transition: all .2s; font-size: 1.1rem; line-height: 1; }
+    .arrow:hover { border-color: #D9B45F; color: #D9B45F; background: #1E1712; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col selection:bg-wine selection:text-paper">
+
+  <!-- CAMADAS DE PROFUNDIDADE (parallax) -->
+  <div class="fixed inset-0 z-0 pointer-events-none overflow-hidden" aria-hidden="true">
+    <div data-depth="0.05" class="absolute -top-[15vh] -left-[20vw] w-[60vw] h-[60vw] rounded-full bg-wine-deep/40 blur-[120px]"></div>
+    <div data-depth="0.12" class="absolute top-[10vh] -right-[15vw] w-[45vw] h-[45vw] rounded-full bg-gold/10 blur-[110px]"></div>
+    <div data-depth="0.08" class="absolute top-[120vh] left-[35vw] w-[55vw] h-[55vw] rounded-full bg-wine-deep/30 blur-[130px]"></div>
+    <div data-depth="0.18" class="absolute top-[200vh] -left-[10vw] w-[40vw] h-[40vw] rounded-full bg-gold/[0.07] blur-[110px]"></div>
+    <div data-depth="0.32" data-rot="-28" class="absolute top-[18vh] left-[4vw] w-[22vw] max-w-[260px] min-w-[150px] aspect-[1/2] text-gold/[0.07]"><svg viewBox="0 0 200 400" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-full h-full"><path d="M58 384 L72 330 C84 250 104 150 150 62 C165 36 180 18 192 8 C194 40 186 92 170 142 C154 192 128 244 94 302 L72 338 Z" fill="currentColor" fill-opacity=".35"/><path d="M60 378 L184 22"/><path d="M96 300 L74 296 M112 262 L84 254 M128 222 L96 210 M142 184 L108 168 M156 146 L122 126 M168 108 L138 86 M178 72 L156 50 M106 270 L132 286 M124 232 L150 240 M140 194 L164 196 M154 156 L174 152 M166 118 L182 108"/><path d="M58 384 L52 398" stroke-width="3"/></svg></div>
+    <div data-depth="0.22" data-rot="12" class="absolute top-[78vh] right-[6vw] w-[24vw] max-w-[300px] min-w-[160px] aspect-[11/12] text-wine-deep/30"><svg viewBox="0 0 220 240" fill="currentColor" class="w-full h-full"><path d="M104 52 C138 48 162 72 160 104 C158 128 172 140 166 158 C158 182 128 176 112 186 C96 196 70 192 60 170 C50 148 34 140 44 116 C54 92 70 56 104 52 Z"/><path d="M118 184 C122 204 120 222 114 234 C110 220 108 202 112 186 Z"/><path d="M70 176 C68 190 64 200 58 206 C58 194 60 184 64 176 Z"/><circle cx="182" cy="84" r="12"/><circle cx="196" cy="120" r="6"/><circle cx="30" cy="84" r="9"/><circle cx="16" cy="140" r="5"/><circle cx="150" cy="30" r="7"/><circle cx="62" cy="34" r="4"/><circle cx="188" cy="176" r="8"/><circle cx="40" cy="200" r="4"/></svg></div>
+    <div data-depth="0.4" data-rot="20" class="absolute top-[150vh] left-[24vw] w-[18vw] max-w-[220px] min-w-[130px] aspect-[1/2] text-gold/[0.06]"><svg viewBox="0 0 200 400" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-full h-full"><path d="M58 384 L72 330 C84 250 104 150 150 62 C165 36 180 18 192 8 C194 40 186 92 170 142 C154 192 128 244 94 302 L72 338 Z" fill="currentColor" fill-opacity=".35"/><path d="M60 378 L184 22"/><path d="M96 300 L74 296 M112 262 L84 254 M128 222 L96 210 M142 184 L108 168 M156 146 L122 126 M168 108 L138 86 M178 72 L156 50 M106 270 L132 286 M124 232 L150 240 M140 194 L164 196 M154 156 L174 152 M166 118 L182 108"/><path d="M58 384 L52 398" stroke-width="3"/></svg></div>
+    <div data-depth="0.26" data-rot="-8" class="absolute top-[175vh] left-[2vw] w-[16vw] max-w-[200px] min-w-[120px] aspect-[11/12] text-gold/[0.05]"><svg viewBox="0 0 220 240" fill="currentColor" class="w-full h-full"><path d="M104 52 C138 48 162 72 160 104 C158 128 172 140 166 158 C158 182 128 176 112 186 C96 196 70 192 60 170 C50 148 34 140 44 116 C54 92 70 56 104 52 Z"/><path d="M118 184 C122 204 120 222 114 234 C110 220 108 202 112 186 Z"/><path d="M70 176 C68 190 64 200 58 206 C58 194 60 184 64 176 Z"/><circle cx="182" cy="84" r="12"/><circle cx="196" cy="120" r="6"/><circle cx="30" cy="84" r="9"/><circle cx="16" cy="140" r="5"/><circle cx="150" cy="30" r="7"/><circle cx="62" cy="34" r="4"/><circle cx="188" cy="176" r="8"/><circle cx="40" cy="200" r="4"/></svg></div>
+    <div data-depth="0.3" data-rot="-35" class="absolute top-[245vh] right-[14vw] w-[20vw] max-w-[240px] min-w-[140px] aspect-[1/2] text-gold/[0.06]"><svg viewBox="0 0 200 400" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-full h-full"><path d="M58 384 L72 330 C84 250 104 150 150 62 C165 36 180 18 192 8 C194 40 186 92 170 142 C154 192 128 244 94 302 L72 338 Z" fill="currentColor" fill-opacity=".35"/><path d="M60 378 L184 22"/><path d="M96 300 L74 296 M112 262 L84 254 M128 222 L96 210 M142 184 L108 168 M156 146 L122 126 M168 108 L138 86 M178 72 L156 50 M106 270 L132 286 M124 232 L150 240 M140 194 L164 196 M154 156 L174 152 M166 118 L182 108"/><path d="M58 384 L52 398" stroke-width="3"/></svg></div>
+    <div data-depth="0.18" data-rot="30" class="absolute top-[290vh] left-[40vw] w-[22vw] max-w-[260px] min-w-[150px] aspect-[11/12] text-wine-deep/25"><svg viewBox="0 0 220 240" fill="currentColor" class="w-full h-full"><path d="M104 52 C138 48 162 72 160 104 C158 128 172 140 166 158 C158 182 128 176 112 186 C96 196 70 192 60 170 C50 148 34 140 44 116 C54 92 70 56 104 52 Z"/><path d="M118 184 C122 204 120 222 114 234 C110 220 108 202 112 186 Z"/><path d="M70 176 C68 190 64 200 58 206 C58 194 60 184 64 176 Z"/><circle cx="182" cy="84" r="12"/><circle cx="196" cy="120" r="6"/><circle cx="30" cy="84" r="9"/><circle cx="16" cy="140" r="5"/><circle cx="150" cy="30" r="7"/><circle cx="62" cy="34" r="4"/><circle cx="188" cy="176" r="8"/><circle cx="40" cy="200" r="4"/></svg></div>
+  </div>
+  <!-- POEIRA DOURADA -->
+  <canvas id="dust" class="fixed inset-0 z-0 pointer-events-none" aria-hidden="true"></canvas>
+
+
+  <!-- CABEÇALHO -->
+  <header class="border-b border-ink/10 bg-paper/90 backdrop-blur-md sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between gap-4">
+      <a href="#acervo" class="flex items-center gap-3 shrink-0 group" aria-label="Alma & Tinta — início">
+        <svg viewBox="0 0 48 48" class="w-11 h-11 shrink-0 transition-transform duration-500 group-hover:rotate-[8deg]" aria-hidden="true">
+          <circle cx="24" cy="24" r="22.5" fill="#1E1712" stroke="#D9B45F" stroke-width="1.2"/>
+          <circle cx="24" cy="24" r="19.5" fill="none" stroke="#D9B45F" stroke-width=".5" stroke-dasharray="1.2 1.6"/>
+          <text x="17.5" y="30.5" text-anchor="middle" font-family="Cormorant Garamond, Georgia, serif" font-weight="700" font-size="20" fill="#E8CB86">A</text>
+          <text x="24" y="27" text-anchor="middle" font-family="Cormorant Garamond, Georgia, serif" font-style="italic" font-weight="600" font-size="13" fill="#C9A04A">&amp;</text>
+          <text x="30.5" y="30.5" text-anchor="middle" font-family="Cormorant Garamond, Georgia, serif" font-weight="700" font-size="20" fill="#E8CB86">T</text>
+        </svg>
+        <div class="leading-none">
+          <p class="font-display text-[1.6rem] sm:text-[1.75rem] font-semibold text-ink whitespace-nowrap">Alma <span class="italic text-gold font-medium">&</span> Tinta</p>
+          <p class="text-[9px] uppercase tracking-[0.3em] text-muted mt-1 hidden sm:block">Biblioteca Digital</p>
+        </div>
+      </a>
+      <nav class="hidden md:flex items-center gap-1" id="navDesktop"></nav>
+      <div id="headerActions" class="flex items-center gap-2"></div>
+    </div>
+    <nav class="md:hidden border-t border-ink/10 px-2 flex items-center justify-around overflow-x-auto hide-scrollbar" id="navMobile"></nav>
+  </header>
+
+  <div id="banner" class="relative z-[1]"></div>
+
+  <main id="view" class="relative z-[1] max-w-7xl mx-auto px-4 sm:px-6 pb-10 flex-grow w-full"></main>
+
+  <!-- RODAPÉ -->
+  <footer class="relative z-[1] bg-paper-dark/90 border-t border-ink/10 text-ink/80 mt-20">
+    <div class="max-w-7xl mx-auto px-6 py-12 grid gap-10 md:grid-cols-3 text-sm">
+      <div class="space-y-3">
+        <p class="font-display text-3xl text-ink font-semibold">Alma <span class="italic text-gold-light font-medium">&</span> Tinta</p>
+        <p class="font-display italic text-lg text-muted leading-snug max-w-xs">Palavras que merecem ser lidas com calma.</p>
+      </div>
+      <div class="space-y-3">
+        <p class="text-[10px] uppercase tracking-[0.3em] text-gold-light">Navegação</p>
+        <div class="flex flex-col gap-1.5 text-muted text-sm">
+          <a href="#acervo" class="hover:text-wine">Acervo</a>
+          <a href="#estante" class="hover:text-wine">Minha biblioteca</a>
+          <a href="#sobre" class="hover:text-wine">Sobre a biblioteca</a>
+          <button id="editorBtn" data-action="login" class="text-left hover:text-wine mt-2 text-xs uppercase tracking-[0.18em] text-muted/70">✒ Área do autor</button>
+        </div>
+      </div>
+      <div class="space-y-3" id="footerContact"></div>
+    </div>
+    <div class="border-t border-ink/10 py-5 text-center text-[11px] text-muted/60 tracking-wide leading-relaxed px-6">© 2026 Alma & Tinta — Todos os direitos reservados.<br>Os livros e textos deste site são protegidos pela Lei 9.610/98. É proibida a reprodução ou redistribuição sem autorização do autor.</div>
+  </footer>
+
+  <!-- LEITOR -->
+  <div id="reader" class="fixed inset-0 z-50 hidden flex-col" role="dialog" aria-modal="true" aria-label="Leitor de prévia">
+    <div class="h-14 shrink-0 border-b border-ink/10 bg-paper-light px-3 sm:px-6 flex items-center justify-between gap-3">
+      <div class="flex items-center gap-3 min-w-0">
+        <button data-action="rTocToggle" id="rTocBtn" class="hidden arrow !w-9 !h-9 shrink-0" aria-label="Sumário" title="Sumário">☰</button>
+        <div class="min-w-0">
+          <p id="rTitle" class="font-display text-ink font-semibold text-lg leading-tight truncate"></p>
+          <p id="rAuthor" class="text-[10px] text-wine uppercase tracking-widest truncate"></p>
+        </div>
+      </div>
+      <div class="flex items-center gap-1 sm:gap-2 shrink-0">
+        <button data-action="fontDown" class="w-8 h-8 text-muted hover:text-wine text-xs font-semibold" aria-label="Diminuir letra">A−</button>
+        <button data-action="fontUp" class="w-8 h-8 text-muted hover:text-wine text-base font-semibold" aria-label="Aumentar letra">A+</button>
+        <span class="w-px h-5 bg-ink/15 mx-1"></span>
+        <button data-action="theme" data-theme="sepia" class="w-5 h-5 rounded-full border border-ink/30" style="background:#f6eedb" aria-label="Tema papel"></button>
+        <button data-action="theme" data-theme="claro" class="w-5 h-5 rounded-full border border-ink/30" style="background:#ffffff" aria-label="Tema claro"></button>
+        <button data-action="theme" data-theme="escuro" class="w-5 h-5 rounded-full border border-ink/30" style="background:#1d1915" aria-label="Tema noturno"></button>
+        <span class="w-px h-5 bg-ink/15 mx-1"></span>
+        <button data-action="closeReader" class="text-muted hover:text-wine text-xl px-2" aria-label="Fechar">✕</button>
+      </div>
+    </div>
+    <div class="h-0.5 bg-ink/10 shrink-0"><div id="rProgress" class="h-full bg-wine w-0 transition-[width] duration-150"></div></div>
+    <div class="flex-1 flex min-h-0 relative">
+    <aside id="rToc" class="hidden absolute md:static z-20 inset-y-0 left-0 w-72 max-w-[85vw] bg-paper-light border-r border-ink/10 overflow-y-auto shadow-book-lg md:shadow-none"></aside>
+    <div id="rScroll" class="flex-1 overflow-y-auto">
+      <article id="rPage" class="max-w-2xl mx-auto px-6 sm:px-14 py-14 sm:my-10 sm:rounded-sm shadow-card">
+        <header class="text-center space-y-3 pb-8 mb-10" id="rHead">
+          <span id="rLabel" class="text-[10px] uppercase tracking-[0.35em] font-semibold" data-accent>Degustação da obra</span>
+          <h2 id="rMainTitle" class="font-display text-3xl md:text-4xl font-semibold leading-tight" data-head></h2>
+          <p id="rMeta" class="text-sm opacity-70 font-display italic"></p>
+        </header>
+        <div id="readerBody" class="font-book leading-relaxed select-none"></div>
+        <footer class="text-center pt-10 mt-10 space-y-5" id="rFoot"></footer>
+      </article>
+    </div>
+    </div>
+  </div>
+
+  <div id="bookReader" class="fixed inset-0 z-50 hidden flex-col" style="background:#0b0907" role="dialog" aria-modal="true" aria-label="Leitor do livro">
+    <div class="h-14 shrink-0 border-b border-ink/10 bg-paper-light px-3 sm:px-5 flex items-center justify-between gap-3">
+      <div class="flex items-center gap-3 min-w-0">
+        <button data-action="tocToggle" class="arrow !w-9 !h-9 shrink-0" aria-label="Sumário" title="Sumário">☰</button>
+        <div class="min-w-0">
+          <p id="brTitle" class="font-display text-lg font-semibold leading-tight truncate"></p>
+          <p id="brInfo" class="text-[10px] uppercase tracking-widest text-wine truncate"></p>
+        </div>
+      </div>
+      <div class="flex items-center gap-1 sm:gap-2 shrink-0">
+        <button data-action="readText" id="brTextoBtn" class="hidden text-[10px] font-semibold uppercase tracking-[0.14em] text-wine border border-wine/40 rounded-sm px-2.5 py-1.5 mr-1" title="Ler em texto">Aa Texto</button>
+        <button data-action="brZoomOut" class="w-8 h-8 text-muted hover:text-wine text-lg" aria-label="Diminuir página">−</button>
+        <button data-action="brZoomIn" class="w-8 h-8 text-muted hover:text-wine text-lg" aria-label="Aumentar página">+</button>
+        <span class="w-px h-5 bg-ink/15 mx-1"></span>
+        <button data-action="closeBook" class="text-muted hover:text-wine text-xl px-2" aria-label="Fechar">✕</button>
+      </div>
+    </div>
+    <div class="flex-1 relative overflow-hidden flex min-h-0">
+      <aside id="brToc" class="hidden absolute md:static z-20 inset-y-0 left-0 w-72 max-w-[85vw] bg-paper-light border-r border-ink/10 overflow-y-auto shadow-book-lg md:shadow-none"></aside>
+      <div class="flex-1 relative min-w-0 flex">
+      <div id="brStage" class="flex-1 overflow-auto relative touch-pan-y">
+        <div id="brLoading" class="absolute inset-0 flex flex-col items-center justify-center gap-4 text-muted px-6 text-center">
+          <div class="w-10 h-10 rounded-full border-2 border-wine/30 border-t-wine animate-spin"></div>
+          <p class="font-display italic text-xl">Abrindo o livro…</p>
+        </div>
+        <canvas id="brCanvas" class="block mx-auto my-6 shadow-book-lg rounded-[2px] bg-white"></canvas>
+      </div>
+      <button data-action="brPrev" class="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 arrow !w-11 !h-11 !bg-paper-light/85 z-10 !hidden sm:!inline-flex" aria-label="Página anterior">‹</button>
+      <button data-action="brNext" class="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 arrow !w-11 !h-11 !bg-paper-light/85 z-10 !hidden sm:!inline-flex" aria-label="Próxima página">›</button>
+      </div>
+    </div>
+    <div class="shrink-0 bg-paper-light border-t border-ink/10 px-4 sm:px-6 py-3 flex items-center gap-4">
+      <span id="brPage" class="text-xs text-muted tabular-nums whitespace-nowrap"></span>
+      <input id="brSlider" type="range" min="1" max="1" value="1" class="flex-1 accent-[#D9B45F]" aria-label="Ir para a página">
+      <span id="brLeft" class="text-xs text-muted whitespace-nowrap hidden sm:inline"></span>
+    </div>
+  </div>
+
+  <!-- DIÁLOGO -->
+  <div id="dialog" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-[55] hidden items-center justify-center p-4">
+    <div class="bg-paper-light border border-ink/10 shadow-book-lg p-8 rounded-sm max-w-sm w-full space-y-5 text-center fade-in">
+      <div id="dIcon" class="w-12 h-12 border border-wine/40 rounded-full flex items-center justify-center mx-auto text-xl text-wine">🔒</div>
+      <div>
+        <h3 id="dTitle" class="font-display text-2xl text-ink font-semibold"></h3>
+        <p id="dMsg" class="text-sm text-muted mt-2 leading-relaxed"></p>
+      </div>
+      <input id="dInput" type="password" autocomplete="current-password" class="field hidden text-center !text-lg tracking-widest" aria-label="Senha">
+      <div class="flex gap-3">
+        <button data-action="dialogOk" id="dOk" class="btn-primary flex-1">OK</button>
+        <button data-action="dialogCancel" id="dCancel" class="btn-outline">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" role="status" class="hide fixed bottom-6 left-1/2 -translate-x-1/2 z-[60] bg-ink text-paper-light text-sm px-5 py-3 rounded-sm shadow-book-lg max-w-[90vw] text-center"></div>
+
+<script>
+const BARRAS = '/' + '/';
+const ID_DO_APPS_SCRIPT = 'AKfycbyQCT4jUOQ1UByDuGmbKGgpNFu4K59WBfXNtik6QpPDln-12vielXUprCup6ig-FKWs';
+const API_URL = ID_DO_APPS_SCRIPT ? 'https:' + BARRAS + 'script.google.com/macros/s/' + ID_DO_APPS_SCRIPT + '/exec' : '';
+const SVG_NS = 'http:' + BARRAS + 'www.w3.org/2000/svg';
+const CDN_PDFJS = 'https:' + BARRAS + 'cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/';
+const GENRES = ['Poesia', 'Romance', 'Conto', 'Crônica', 'Ensaio', 'Ficção', 'Educação', 'Infantil', 'Biografia', 'Espiritualidade'];
+
+const SS = {
+  get(k) { try { return sessionStorage.getItem(k); } catch (e) { return null; } },
+  set(k, v) { try { if (v == null || v === '') sessionStorage.removeItem(k); else sessionStorage.setItem(k, v); } catch (e) {} }
+};
+const LS = {
+  get(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch (e) { return false; } }
+};
+
+const DEMO_BOOKS = [{
+  id: 'o-cacto', title: 'O Cacto', author: 'Antônio José', genre: 'Poesia', year: 2026,
+  tagline: 'Sobre a resiliência das raízes profundas diante dos ventos da incerteza.',
+  synopsis: 'Uma coletânea poética que explora sentimentos de transformação, introspecção e conexões profundas.',
+  pdfUrl: '',
+  previewText: '# Capítulo I — A Resiliência da Raiz\n\nNão há pressa no crescer do cacto.\nEle guarda o orvalho da noite\ncomo quem guarda um segredo antigo.\n\nNo deserto vasto,\nonde o sol dita as regras da sobrevivência,\nele permanece ereto, verde e firme.\n\nSuas espinhas não são para ferir,\nmas para proteger a essência da vida que reside dentro.',
+  isLocked: false, createdAt: 0
+}];
+
+const S = {
+  mode: 'loading',
+  books: [], restricted: {}, config: {}, downloads: { porLivro: {}, recentes: [], total: 0, planilha: '' },
+  isAdmin: false, db: null, assets: null,
+  route: { name: 'acervo' },
+  q: '', genre: 'Todos', sort: 'recent',
+  editing: null,
+  quoteId: null,
+  quoteWritten: false,
+  bibTab: 'lendo',
+  tiltEl: null,
+  favs: new Set(LS.get('almaTinta.favs', [])),
+  reader: Object.assign({ size: 20, theme: 'escuro' }, LS.get('almaTinta.reader3', {})),
+};
+
+const $ = id => document.getElementById(id);
+function esc(s) { return String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
+function safeUrl(u) { try { const url = new URL(u); return /^https?:$/.test(url.protocol) ? url.href : ''; } catch (e) { return ''; } }
+function newId() { return 'o' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
+function words(t) { return String(t || '').trim().split(/\s+/).filter(Boolean).length; }
+function readMinutes(t) { return Math.max(1, Math.round(words(t) / 180)); }
+function plural(n, one, many) { return `${n} ${n === 1 ? one : many}`; }
+function pubTime(b) { const t = Number(b.publicadoEm) || Number(b.createdAt) || 0; return t > 946684800000 ? t : 0; }
+function fmtDataHora(ms) {
+  if (!ms) return '';
+  const d = new Date(ms);
+  return d.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' }) + ' às ' + d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+}
+function fmtDataLonga(ms) {
+  if (!ms) return '';
+  const d = new Date(ms);
+  return d.toLocaleDateString('pt-BR', { day: 'numeric', month: 'long', year: 'numeric' }) + ', às ' + d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+}
+function paraCampoData(ms) {
+  const d = new Date(ms || Date.now());
+  return new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+}
+function avisoDireitos(b) {
+  const ano = (b && (b.year || (pubTime(b) ? new Date(pubTime(b)).getFullYear() : ''))) || new Date().getFullYear();
+  const autor = (b && b.author) || 'o autor';
+  return `© ${esc(ano)} ${esc(autor)}. Todos os direitos reservados. Proibida a reprodução, total ou parcial, e a redistribuição deste livro sem autorização do autor (Lei 9.610/98).`;
+}
+function logDownload(id, origem) {
+  if (!ONLINE || !id) return;
+  try { api('registrarDownload', id, origem).catch(() => {}); } catch (e) {}
+}
+
+let toastTimer;
+function toast(msg) {
+  const t = $('toast'); t.textContent = msg; t.classList.remove('hide');
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.add('hide'), 3400);
+}
+
+let dialogResolve = null;
+function dialog({ title, msg, icon = '🔒', ok = 'OK', cancel = null, input = false }) {
+  $('dTitle').textContent = title; $('dMsg').textContent = msg; $('dIcon').textContent = icon;
+  $('dOk').textContent = ok;
+  $('dCancel').classList.toggle('hidden', !cancel); if (cancel) $('dCancel').textContent = cancel;
+  const inp = $('dInput'); inp.value = ''; inp.classList.toggle('hidden', !input);
+  const d = $('dialog'); d.classList.remove('hidden'); d.classList.add('flex');
+  setTimeout(() => (input ? inp : $('dOk')).focus(), 30);
+  return new Promise(res => { dialogResolve = res; });
+}
+function closeDialog(val) {
+  const d = $('dialog'); d.classList.add('hidden'); d.classList.remove('flex');
+  const inp = $('dInput'); const withInput = !inp.classList.contains('hidden');
+  const out = val && withInput ? inp.value : val;
+  inp.value = ''; inp.classList.add('hidden');
+  if (dialogResolve) { dialogResolve(out); dialogResolve = null; }
+}
+$('dInput').addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); closeDialog(true); } });
+
+const TONES = {
+  'Poesia': ['#2f4a3a', '#1a2c22'], 'Romance': ['#7a1f2b', '#43101a'], 'Conto': ['#7a5a26', '#45320f'],
+  'Crônica': ['#2e4756', '#182a35'], 'Ensaio': ['#4a3f35', '#28211b'], 'Ficção': ['#3d2d5c', '#211735'],
+  'Educação': ['#23415f', '#122538'], 'Infantil': ['#2f6b6b', '#1a4040'], 'Biografia': ['#5a3a2e', '#321f18'],
+  'Espiritualidade': ['#4b3a63', '#2a1f3a']
+};
+const coverCache = {};
+function wrapWords(text, max) {
+  const ws = String(text).split(/\s+/); const lines = []; let line = '';
+  ws.forEach(w => { if ((line + ' ' + w).trim().length > max && line) { lines.push(line); line = w; } else line = (line + ' ' + w).trim(); });
+  if (line) lines.push(line); return lines.slice(0, 4);
+}
+function genCover(b) {
+  const key = [b.title, b.author, b.genre].join('|');
+  if (coverCache[key]) return coverCache[key];
+  const [a, c] = TONES[b.genre] || ['#4a3f35', '#28211b'];
+  const lines = wrapWords(String(b.title || 'Sem título'), 13);
+  const y0 = 280 - (lines.length - 1) * 23;
+  const tl = lines.map((l, i) => `<text x="200" y="${y0 + i * 46}" text-anchor="middle" font-family="Cormorant Garamond, Georgia, serif" font-weight="600" font-size="44" fill="#E9CF7A">${esc(l)}</text>`).join('');
+  const yEnd = y0 + (lines.length - 1) * 46 + 30;
+  const svg = `<svg xmlns="${SVG_NS}" viewBox="0 0 400 600">
+    <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${a}"/><stop offset="1" stop-color="${c}"/></linearGradient>
+    <filter id="t"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2"/><feColorMatrix values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .12 0"/></filter></defs>
+    <rect width="400" height="600" fill="url(#g)"/><rect width="400" height="600" filter="url(#t)"/>
+    <rect x="26" y="26" width="348" height="548" fill="none" stroke="#E9CF7A" stroke-opacity=".55"/>
+    <rect x="34" y="34" width="332" height="532" fill="none" stroke="#E9CF7A" stroke-opacity=".25"/>
+    <path d="M200 102 C206 114 213 121 213 130 a13 13 0 0 1 -26 0 C187 121 194 114 200 102 Z" fill="#E9CF7A" fill-opacity=".8"/>
+    ${tl}
+    <line x1="170" y1="${yEnd}" x2="230" y2="${yEnd}" stroke="#E9CF7A" stroke-opacity=".6"/>
+    <text x="200" y="${yEnd + 34}" text-anchor="middle" font-family="Cormorant Garamond, Georgia, serif" font-style="italic" font-size="22" fill="#F6EEDB" fill-opacity=".85">${esc(b.author || '')}</text>
+    <text x="200" y="532" text-anchor="middle" font-family="Cormorant Garamond, Georgia, serif" font-size="13" fill="#E9CF7A" fill-opacity=".65" letter-spacing="5">ALMA &amp; TINTA</text>
+  </svg>`;
+  return (coverCache[key] = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg));
+}
+function coverSrc(b) {
+  if (b.coverUrl && String(b.coverUrl).startsWith('https:' + '/' + '/')) return b.coverUrl;
+  if (typeof b.coverData === 'string' && b.coverData.startsWith('data:image/')) return b.coverData;
+  return genCover(b);
+}
+function coverFrame(b, imgClass = '') {
+  const src = esc(coverSrc(b)); const fb = esc(b.id || '');
+  return `<img src="${src}" data-fallback="${fb}" alt="" aria-hidden="true" class="absolute inset-0 w-full h-full object-cover blur-xl scale-110 opacity-50">
+          <img src="${src}" data-fallback="${fb}" alt="Capa de ${esc(b.title)}" loading="lazy" class="relative w-full h-full object-contain ${imgClass}">`;
+}
+document.addEventListener('error', e => {
+  const img = e.target;
+  if (img.tagName === 'IMG' && img.dataset.fallback !== undefined && !img.dataset.failed) {
+    img.dataset.failed = '1';
+    const b = S.books.find(x => x.id === img.dataset.fallback) || { title: '', author: '' };
+    img.src = genCover(b);
+  }
+}, true);
+
+function content(b) { return b.isLocked ? (S.restricted[b.id] || null) : b; }
+function canAccess(b) { return !b.isLocked || (S.isAdmin && !!S.restricted[b.id]); }
+function pdfLink(b) {
+  const c = content(b); if (!c) return '';
+  return c.pdfUrl ? safeUrl(c.pdfUrl) : '';
+}
+
+function inline(s) {
+  return esc(s).replace(/[*]{2}(.+?)[*]{2}/g, '<strong>$1</strong>').replace(/[*](.+?)[*]/g, '<em>$1</em>');
+}
+function formatPreview(text) {
+  return String(text || '').replace(/\r/g, '').split(/\n{2,}/).map(block => {
+    const t = block.trim(); if (!t) return '';
+    if (/^(-{3,}|\*{3,}|❦)$/.test(t)) return '<div class="orn">✦</div>';
+    if (t.startsWith('## ')) return `<h4>${inline(t.slice(3))}</h4>`;
+    if (t.startsWith('# ')) return `<h3>${inline(t.slice(2))}</h3>`;
+    if (t.startsWith('> ')) return `<blockquote>${t.split('\n').map(l => inline(l.replace(/^>\s?/, ''))).join('<br>')}</blockquote>`;
+    return `<p>${t.split('\n').map(inline).join('<br>')}</p>`;
+  }).join('');
+}
+
+function byRecent(list) { return list.slice().sort((a, b) => pubTime(b) - pubTime(a)); }
+function sorted(list) {
+  const arr = list.slice();
+  if (S.sort === 'title') return arr.sort((a, b) => a.title.localeCompare(b.title, 'pt-BR'));
+  if (S.sort === 'author') return arr.sort((a, b) => a.author.localeCompare(b.author, 'pt-BR') || a.title.localeCompare(b.title, 'pt-BR'));
+  return byRecent(arr);
+}
+function norm(s) { return String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, ''); }
+function filtered() {
+  const q = norm(S.q);
+  return sorted(S.books).filter(b =>
+    (S.genre === 'Todos' || b.genre === S.genre) &&
+    (!q || norm(b.title).includes(q) || norm(b.author).includes(q) || norm(b.genre).includes(q) || norm(b.synopsis).includes(q)));
+}
+function presentGenres() {
+  const list = GENRES.filter(g => S.books.some(b => b.genre === g));
+  S.books.forEach(b => { if (b.genre && !list.includes(b.genre)) list.push(b.genre); });
+  return list;
+}
+
+function firstSentence(t) { const m = String(t || '').match(/^.{20,220}?[.!?…](\s|$)/); return m ? m[0].trim() : String(t || '').slice(0, 200); }
+function quoteText(b) { return b.tagline || firstSentence(b.synopsis); }
+function pickQuote() {
+  const pool = S.books.filter(b => quoteText(b));
+  if (!pool.length) return null;
+  const kept = pool.find(b => b.id === S.quoteId);
+  if (kept) return kept;
+  const open = pool.filter(b => !b.isLocked);
+  const from = open.length ? open : pool;
+  const pick = from[Math.floor(Math.random() * from.length)];
+  S.quoteId = pick.id;
+  return pick;
+}
+
+function parseRoute() {
+  const h = decodeURIComponent(location.hash.slice(1));
+  if (h.startsWith('obra-')) return { name: 'obra', id: h.slice(5) };
+  if (['estante', 'sobre', 'painel'].includes(h)) return { name: h };
+  return { name: 'acervo' };
+}
+window.addEventListener('hashchange', () => {
+  SS.set('almaTinta.rota', location.hash);
+  const prev = S.route.name; S.route = parseRoute();
+  if (S.route.name !== 'painel') S.editing = null;
+  render(true);
+  if (prev !== S.route.name || S.route.name === 'obra') window.scrollTo({ top: 0, behavior: 'instant' });
+});
+
+function render(full) {
+  renderChrome();
+  const r = S.route.name;
+  if (!full) {
+    if (r === 'acervo' && $('home')) { fillAcervo(); return; }
+    if (r === 'painel' && S.editing) return;
+  }
+  const v = $('view');
+  if (r === 'obra') v.innerHTML = viewObra(S.route.id);
+  else if (r === 'estante') v.innerHTML = viewEstante();
+  else if (r === 'sobre') v.innerHTML = viewSobre();
+  else if (r === 'painel') { const ed = S.editing && S.isAdmin; v.innerHTML = ed ? viewForm() : viewPainel(); if (ed) { restaurarRascunho(); carregarTextoAtual(); } }
+  else { v.innerHTML = viewAcervo(); fillAcervo(); }
+}
+
+function renderChrome() {
+  const links = [['acervo', 'Acervo'], ['estante', 'Minha Biblioteca'], ['sobre', 'Sobre']];
+  if (S.isAdmin) links.push(['painel', 'Painel']);
+  const cur = S.route.name === 'obra' ? 'acervo' : S.route.name;
+  const html = links.map(([h, l]) => `<a href="#${h}" class="nav-link ${cur === h ? 'active' : ''}">${l}${h === 'estante' && S.favs.size ? ` <span class="text-wine">·${S.favs.size}</span>` : ''}</a>`).join('');
+  $('navDesktop').innerHTML = html; $('navMobile').innerHTML = html;
+  $('headerActions').innerHTML = S.isAdmin
+    ? `<button data-action="newBook" class="btn-primary !py-2.5 !px-4 whitespace-nowrap">+ Publicar</button>` : '';
+  const banners = {
+    slow: 'O acervo está demorando para responder. Continuamos tentando…',
+    offline: 'Modo demonstração: abra o site publicado para ver o acervo completo.',
+    error: 'Não foi possível carregar o acervo agora. Tente abrir a página novamente mais tarde.'
+  };
+  $('banner').innerHTML = banners[S.mode]
+    ? `<div class="bg-wine/10 border-b border-wine/20 text-wine text-xs text-center px-4 py-2.5">${banners[S.mode]}</div>` : '';
+  const eb = $('editorBtn'); if (eb) { eb.dataset.action = S.isAdmin ? 'logout' : 'login'; eb.textContent = S.isAdmin ? '✒ Sair da área do autor' : '✒ Área do autor'; }
+  const c = S.config.contact;
+  $('footerContact').innerHTML = c ? `<p class="text-[10px] uppercase tracking-[0.3em] text-gold-light">Contato</p>
+    <p class="text-muted">${esc(c)}</p>
+    ${/@/.test(c) ? `<a href="mailto:${esc(c)}" class="text-wine hover:text-wine-light text-sm">Escrever um e-mail →</a>` : ''}` : '';
+}
+
+function viewAcervo() {
+  return `
+  <section id="hero" class="pt-14 md:pt-20"></section>
+  <section class="max-w-2xl mx-auto mt-10 md:mt-12 fade-in" style="animation-delay:.15s">
+    <div class="relative">
+      <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="8.5" cy="8.5" r="6"/><path d="M13 13l5 5" stroke-linecap="round"/></svg>
+      <input id="search" type="search" value="${esc(S.q)}" placeholder="Buscar por título, autor ou gênero…" aria-label="Buscar no acervo"
+        class="field !py-4 !pl-11 !pr-4 !text-base !rounded-full shadow-card !bg-paper-light">
+    </div>
+    <div id="chips" class="flex gap-2 mt-4 overflow-x-auto hide-scrollbar pb-1 justify-start sm:justify-center"></div>
+  </section>
+  <div id="home" class="mt-6"></div>`;
+}
+
+const REDUCE = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+function fillAcervo() {
+  const hero = $('hero');
+  const loading = S.mode === 'loading' && !S.books.length;
+  const pick = loading ? null : pickQuote();
+  const key = loading ? 'loading' : (pick ? pick.id + (canAccess(pick) ? '' : ':l') : 'none');
+  if (hero.dataset.key !== key) { hero.dataset.key = key; hero.innerHTML = heroHtml(pick); }
+  const genres = presentGenres();
+  if (S.genre !== 'Todos' && !genres.includes(S.genre)) S.genre = 'Todos';
+  $('chips').innerHTML = genres.length > 1
+    ? ['Todos', ...genres].map(g => `<button data-action="genre" data-genre="${esc(g)}" class="chip ${S.genre === g ? 'active' : ''}">${esc(g)}</button>`).join('') : '';
+  fillHome();
+}
+
+function fillHome() {
+  const home = $('home'); if (!home) return;
+  if (S.mode === 'loading' && !S.books.length) {
+    home.innerHTML = `<div class="mt-12"><div class="h-3 w-28 skeleton rounded"></div><div class="h-7 w-56 skeleton rounded mt-3"></div>
+      <div class="flex gap-6 mt-6 overflow-hidden">${Array.from({ length: 6 }, () => `<div class="shrink-0 w-[42%] sm:w-[30%] md:w-[22%] lg:w-[17%]"><div class="aspect-[2/3] skeleton rounded-sm"></div><div class="h-3 skeleton mt-3 w-3/4 rounded"></div></div>`).join('')}</div></div>`;
+    return;
+  }
+  if (!S.books.length) {
+    home.innerHTML = `<div class="text-center py-16 space-y-5">
+      <p class="font-display italic text-2xl text-muted">O acervo ainda está vazio.</p>
+      ${S.isAdmin ? `<button data-action="newBook" class="btn-primary">Publicar a primeira obra</button>` : ''}</div>`;
+    return;
+  }
+  if (S.q.trim() || S.genre !== 'Todos') {
+    const list = filtered();
+    const title = S.q.trim() ? `Resultados para “${esc(S.q.trim())}”` : esc(S.genre);
+    const sub = S.q.trim() && S.genre !== 'Todos' ? `em ${esc(S.genre)} · ` : '';
+    home.innerHTML = `<section class="mt-10 fade-in">
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-5">
+        <div><p class="eyebrow">${S.q.trim() ? 'Busca' : 'Gênero'}</p>
+          <h2 class="font-display text-4xl font-semibold mt-1">${title}</h2>
+          <p class="text-sm text-muted mt-1">${sub}${plural(list.length, 'obra', 'obras')}</p></div>
+        <div class="flex items-center gap-3">
+          <select id="sort" class="field !w-44 !py-2.5" aria-label="Ordenar">
+            <option value="recent" ${S.sort === 'recent' ? 'selected' : ''}>Mais recentes</option>
+            <option value="title" ${S.sort === 'title' ? 'selected' : ''}>Título (A–Z)</option>
+                      </select>
+          <button data-action="clearFilters" class="btn-link whitespace-nowrap">Limpar ✕</button>
+        </div>
+      </div>
+      <div class="rule mb-8"></div>
+      ${list.length ? `<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-x-5 gap-y-10 md:gap-x-8">${list.map(cardHtml).join('')}</div>`
+        : `<p class="text-center font-display italic text-2xl text-muted py-14">Nenhuma obra encontrada.</p>`}
+    </section>`;
+    return;
+  }
+  const recent = byRecent(S.books).slice(0, 12);
+  let html = continuarLendoHtml();
+  html += carousel('car-recent', 'Lançamentos recentes', 'Novidades', recent, null);
+  presentGenres().forEach((g, i) => {
+    const list = byRecent(S.books.filter(b => b.genre === g));
+    html += carousel('car-g' + i, g, plural(list.length, 'obra', 'obras'), list, g);
+  });
+  home.innerHTML = html;
+  requestAnimationFrame(updateArrows); setTimeout(updateArrows, 400);
+}
+
+function continuarLendoHtml() {
+  const lendo = S.books.filter(b => shelfOf(b.id) === 'lendo' && canAccess(b))
+    .sort((a, z) => ((BIB.livros[z.id] || {}).lastRead || 0) - ((BIB.livros[a.id] || {}).lastRead || 0));
+  if (!lendo.length) return '';
+  const b = lendo[0]; const r = BIB.livros[b.id] || {}; const pct = progressPct(b.id);
+  const resto = lendo.slice(1);
+  return `<section class="mt-14 fade-in">
+    <p class="eyebrow">Continue de onde parou</p>
+    <div class="mt-4 flex flex-col sm:flex-row gap-6 sm:items-center bg-paper-light/80 border border-ink/10 rounded-sm p-5 sm:p-6 shadow-card">
+      <a href="#obra-${esc(b.id)}" class="tilt spine relative w-24 sm:w-28 aspect-[2/3] shrink-0 overflow-hidden rounded-[3px] bg-paper-darker shadow-book">${coverFrame(b)}<span class="glare"></span></a>
+      <div class="flex-1 min-w-0 space-y-2">
+        <h3 class="font-display text-3xl font-semibold leading-tight">${esc(b.title)}</h3>
+        <p class="text-sm text-muted">${posicaoTxt(b.id)}</p>
+        ${progressBar(pct, 'max-w-md')}
+      </div>
+      <button data-action="readFull" data-id="${esc(b.id)}" class="btn-primary shrink-0">📖 Continuar leitura</button>
+    </div>
+    ${resto.length ? `<div class="flex gap-5 overflow-x-auto hide-scrollbar pt-6 pb-2">${resto.map(x => `<button data-action="readFull" data-id="${esc(x.id)}" class="shrink-0 w-60 text-left flex gap-3 items-center bg-paper-light/60 border border-ink/10 rounded-sm p-3 hover:border-wine/50 transition">
+        <span class="spine relative w-12 aspect-[2/3] shrink-0 overflow-hidden rounded-[2px] bg-paper-darker">${coverFrame(x)}</span>
+        <span class="min-w-0 flex-1"><span class="block font-display text-lg leading-tight truncate">${esc(x.title)}</span><span class="block text-xs text-muted mb-1.5">${progressPct(x.id)}% lido</span>${progressBar(progressPct(x.id))}</span></button>`).join('')}</div>` : ''}
+  </section>`;
+}
+
+function carousel(id, title, eyebrow, list, genre) {
+  return `<section class="mt-16 fade-in">
+    <div class="flex items-end justify-between gap-4 mb-6">
+      <div><p class="eyebrow">${esc(eyebrow)}</p><h2 class="font-display text-3xl md:text-4xl font-semibold mt-1">${esc(title)}</h2></div>
+      <div class="flex items-center gap-2">
+        ${genre ? `<button data-action="genre" data-genre="${esc(genre)}" class="btn-link mr-2">Ver todos</button>` : ''}
+        <button data-action="scroll" data-target="${id}" data-dir="-1" class="arrow hidden md:inline-flex" aria-label="Anteriores">‹</button>
+        <button data-action="scroll" data-target="${id}" data-dir="1" class="arrow hidden md:inline-flex" aria-label="Próximos">›</button>
+      </div>
+    </div>
+    <div id="${id}" data-carousel class="flex gap-5 md:gap-8 overflow-x-auto snap-x snap-mandatory hide-scrollbar pt-2 pb-6 -mx-4 px-4 sm:mx-0 sm:px-0 scroll-smooth">
+      ${list.map(b => `<div class="snap-start shrink-0 w-[42%] sm:w-[30%] md:w-[22%] lg:w-[17%]">${cardHtml(b)}</div>`).join('')}
+    </div>
+  </section>`;
+}
+function updateArrows() {
+  document.querySelectorAll('[data-carousel]').forEach(el => {
+    const fits = el.scrollWidth <= el.clientWidth + 4;
+    document.querySelectorAll(`[data-target="${el.id}"]`).forEach(b => {
+      b.style.visibility = fits ? 'hidden' : '';
+      const dir = +b.dataset.dir;
+      b.style.opacity = (dir < 0 && el.scrollLeft < 4) || (dir > 0 && el.scrollLeft + el.clientWidth >= el.scrollWidth - 4) ? '.35' : '';
+    });
+  });
+}
+document.addEventListener('scroll', e => { if (e.target.dataset && e.target.dataset.carousel !== undefined) updateArrows(); }, true);
+window.addEventListener('resize', updateArrows);
+window.addEventListener('resize', () => { if (BR.doc) { clearTimeout(BR.renderTimer); BR.renderTimer = setTimeout(renderBookPage, 150); } });
+document.addEventListener('change', e => {
+  if (e.target.id === 'brSlider') goBookPage(+e.target.value);
+  if (e.target.dataset && e.target.dataset.shelf !== undefined) setShelf(e.target.dataset.shelf, e.target.value);
+});
+document.addEventListener('input', e => { if (e.target.id === 'brSlider') $('brPage').textContent = `Página ${e.target.value} de ${BR.pages}`; });
+(() => {
+  let x0 = null, y0 = null;
+  document.addEventListener('pointerdown', e => { if (e.target.closest && e.target.closest('#brStage')) { x0 = e.clientX; y0 = e.clientY; } }, { passive: true });
+  document.addEventListener('pointerup', e => {
+    if (x0 === null) return;
+    const dx = e.clientX - x0, dy = e.clientY - y0; x0 = null;
+    if (BR.zoom <= 1 && Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.5) goBookPage(BR.page + (dx < 0 ? 1 : -1));
+    else if (Math.abs(dx) < 10 && Math.abs(dy) < 10 && window.innerWidth < 640) {
+      const w = window.innerWidth;
+      if (e.clientX < w * 0.3) goBookPage(BR.page - 1); else if (e.clientX > w * 0.7) goBookPage(BR.page + 1);
+    }
+  }, { passive: true });
+})();
+document.addEventListener('visibilitychange', () => { if (document.hidden && BR.book) { const r = bib(BR.book.id); r.seconds = (r.seconds || 0) + Math.min((Date.now() - BR.lastTurn) / 1000, 600); BR.lastTurn = Date.now(); bibSave(); } else if (BR.book) BR.lastTurn = Date.now(); });
+window.addEventListener('load', updateArrows);
+window.addEventListener('hashchange', () => setTimeout(updateArrows, 400));
+
+function heroHtml(b) {
+  if (S.mode === 'loading' && !S.books.length) return `<div class="max-w-3xl mx-auto text-center space-y-5"><div class="h-12 w-12 mx-auto skeleton rounded-full"></div><div class="h-10 skeleton rounded"></div><div class="h-10 w-2/3 mx-auto skeleton rounded"></div><div class="h-3 w-40 mx-auto skeleton rounded mt-6"></div></div>`;
+  if (!b) return `<div class="text-center max-w-3xl mx-auto fade-in-slow">
+      <p class="eyebrow">Biblioteca Digital</p>
+      <h1 class="font-display italic text-4xl md:text-6xl font-medium leading-[1.1] mt-6 text-ink">Palavras que merecem ser lidas com calma.</h1></div>`;
+  const q = quoteText(b);
+  const animate = !S.quoteWritten && !REDUCE;
+  S.quoteWritten = true;
+  const chars = [...q].length;
+  const step = Math.min(42, 4200 / Math.max(1, chars));
+  const total = animate ? Math.round(chars * step) : 0;
+  let k = 0;
+  const textHtml = animate
+    ? q.split(' ').map(w => `<span class="inline-block whitespace-nowrap">${[...w].map(ch => `<span class="tchar" style="animation-delay:${Math.round((k++) * step)}ms">${esc(ch)}</span>`).join('')}</span>`).join(' ')
+    : esc(q);
+  if (animate) setTimeout(() => { const ql = $('quill'); if (ql) ql.classList.remove('writing'); }, total + 300);
+  const after = d => animate ? `style="animation-delay:${total + d}ms"` : '';
+  const size = q.length > 140 ? 'text-3xl md:text-[2.6rem]' : q.length > 80 ? 'text-3xl md:text-5xl' : 'text-4xl md:text-6xl';
+  return `<div class="relative text-center max-w-4xl mx-auto">
+    <span aria-hidden="true" class="absolute left-1/2 -translate-x-1/2 -top-10 md:-top-14 font-display text-[10rem] md:text-[14rem] leading-none text-wine/[0.07] select-none pointer-events-none">“</span>
+    <svg viewBox="0 0 64 64" class="relative w-14 h-14 mx-auto" aria-hidden="true">
+      <path d="M18 44 h28 l-3 14 h-22 z" fill="#1E1712" stroke="#D9B45F" stroke-width="1.2" stroke-linejoin="round"/>
+      <path d="M22 44 v-4 a4 3 0 0 1 4 -3 h12 a4 3 0 0 1 4 3 v4" fill="#1E1712" stroke="#D9B45F" stroke-width="1.2"/>
+      <ellipse cx="32" cy="44" rx="14" ry="2" fill="#0F0B09" stroke="#D9B45F" stroke-width=".8"/>
+      <g id="quill" class="quill ${animate ? 'writing' : ''}">
+        <path d="M31 43 L50 6 C56 12 54 22 45 28 C41 31 37 35 33 41 Z" fill="#E8CB86" fill-opacity=".18" stroke="#E8CB86" stroke-width="1.1" stroke-linejoin="round"/>
+        <path d="M31 43 L48 12" stroke="#E8CB86" stroke-width=".8"/>
+        <path d="M40 24 l6 -3 M37 30 l6 -2 M43 18 l5 -3" stroke="#E8CB86" stroke-width=".6" opacity=".7"/>
+      </g>
+    </svg>
+    <blockquote class="relative font-display italic font-medium ${size} leading-[1.15] mt-6 text-ink" aria-label="${esc(q)}">${textHtml}</blockquote>
+    <div class="ornament max-w-xs mx-auto mt-8 text-sm ${animate ? 'fade-in' : ''}" ${after(100)}><span>✦</span></div>
+    <p class="mt-5 font-display text-xl text-muted ${animate ? 'fade-in' : ''}" ${after(250)}>— <a href="#obra-${esc(b.id)}" class="italic text-wine hover:underline underline-offset-4">${esc(b.title)}</a>, ${esc(b.author)}</p>
+    <div class="mt-8 flex flex-wrap justify-center gap-3 ${animate ? 'fade-in' : ''}" ${after(450)}>
+      <button data-action="read" data-id="${esc(b.id)}" class="btn-primary">${canAccess(b) ? '' : '🔒 '}Ler a prévia</button>
+      <a href="#obra-${esc(b.id)}" class="btn-outline">Conhecer a obra</a>
+    </div>
+  </div>`;
+}
+
+function cardHtml(b) {
+  const fav = S.favs.has(b.id);
+  return `
+  <article class="group relative">
+    <a href="#obra-${esc(b.id)}" class="tilt spine block relative aspect-[2/3] overflow-hidden rounded-[3px] bg-paper-darker shadow-book">
+      ${coverFrame(b)}<span class="glare"></span>
+      ${(() => { const sh = shelfOf(b.id), pct = progressPct(b.id);
+        if (sh === 'lidos') return `<span class="absolute bottom-2 left-3 z-10 bg-paper-light/95 text-wine text-[9px] font-semibold uppercase tracking-widest px-2 py-0.5 rounded-sm shadow">✓ Lido</span>`;
+        if (pct > 0) return `<div class="absolute bottom-0 inset-x-0 z-10 h-1.5 bg-black/55"><div class="h-full bg-gradient-to-r from-gold to-wine-light" style="width:${pct}%"></div></div>`;
+        return ''; })()}
+      ${b.isLocked ? `<span class="absolute top-2 left-3 z-10 bg-paper-light/95 text-wine text-[9px] font-semibold uppercase tracking-widest px-2 py-0.5 rounded-sm shadow">🔒 Restrito</span>` : ''}
+    </a>
+    <button data-action="fav" data-id="${esc(b.id)}" aria-label="${fav ? 'Remover da estante' : 'Guardar na estante'}" title="${fav ? 'Remover da estante' : 'Guardar na estante'}"
+      class="absolute top-2 right-2 z-10 w-8 h-8 rounded-full bg-paper-light/95 shadow flex items-center justify-center text-sm ${fav ? 'text-wine' : 'text-muted opacity-0 group-hover:opacity-100 focus:opacity-100 hover:text-wine'} transition">${fav ? '♥' : '♡'}</button>
+    <div class="pt-4 space-y-0.5">
+      <p class="text-[10px] uppercase tracking-[0.2em] text-wine/80 font-semibold">${esc(b.genre)}</p>
+      <a href="#obra-${esc(b.id)}" class="block font-display font-semibold text-ink text-lg md:text-xl leading-tight hover:text-wine transition-colors line-clamp-2">${esc(b.title)}</a>
+      <p class="text-sm text-muted font-display italic">${esc(b.author)}</p>
+    </div>
+  </article>`;
+}
+
+function viewObra(id) {
+  const b = S.books.find(x => x.id === id);
+  if (!b) {
+    if (S.mode === 'loading' || S.mode === 'slow') return `<div class="grid md:grid-cols-[320px_1fr] gap-12 pt-12"><div class="aspect-[2/3] skeleton rounded-sm"></div><div class="space-y-4"><div class="h-10 skeleton w-2/3 rounded"></div><div class="h-4 skeleton w-1/3 rounded"></div><div class="h-24 skeleton rounded"></div></div></div>`;
+    return `<div class="text-center py-24 space-y-5"><p class="font-display italic text-2xl text-muted">Esta obra não foi encontrada.</p><a href="#acervo" class="btn-outline">Voltar ao acervo</a></div>`;
+  }
+  const c = content(b); const access = canAccess(b); const pdf = access ? pdfLink(b) : '';
+  const fav = S.favs.has(b.id);
+  const prevText = c ? c.previewText : '';
+  const meta = [pubTime(b) && `Publicado em ${fmtDataLonga(pubTime(b))}`, b.pages && `${esc(b.pages)} páginas`, prevText && `Prévia de ${readMinutes(prevText)} min`].filter(Boolean);
+  const sameGenre = byRecent(S.books).filter(x => x.genre === b.genre && x.id !== b.id).slice(0, 10);
+  const sameAuthor = byRecent(S.books).filter(x => x.author === b.author && x.id !== b.id && x.genre !== b.genre).slice(0, 10);
+  return `
+  <div class="fade-in pt-10">
+    <a href="#acervo" class="btn-link">← Voltar ao acervo</a>
+    <div class="grid md:grid-cols-[320px_1fr] gap-10 md:gap-16 mt-8 items-start">
+      <div class="tilt spine relative aspect-[2/3] w-60 sm:w-64 md:w-full mx-auto overflow-hidden rounded-[3px] shadow-book-lg bg-paper-darker">
+        ${coverFrame(b)}<span class="glare"></span>
+      </div>
+      <div class="space-y-6">
+        <div class="flex flex-wrap gap-2">
+          <button data-action="genreFilter" data-genre="${esc(b.genre)}" class="chip">${esc(b.genre)}</button>
+          ${b.isLocked ? `<span class="chip !text-wine !border-wine/40">🔒 Restrito</span>` : ''}
+        </div>
+        <div>
+          <h1 class="font-display text-5xl md:text-6xl font-semibold leading-[1.05] text-ink">${esc(b.title)}</h1>
+          <p class="mt-3 font-display text-2xl text-muted italic">por <button data-action="authorFilter" data-author="${esc(b.author)}" class="text-wine not-italic hover:underline underline-offset-4">${esc(b.author)}</button></p>
+        </div>
+        ${b.tagline ? `<p class="font-display italic text-2xl text-ink/90 leading-snug border-l-2 border-gold pl-5">“${esc(b.tagline)}”</p>` : ''}
+        <div class="font-book text-lg text-ink/85 leading-relaxed whitespace-pre-line">${esc(b.synopsis)}</div>
+        ${meta.length ? `<p class="text-xs uppercase tracking-[0.14em] text-muted">${meta.join(' · ')}</p>` : ''}
+        ${(() => { const r = BIB.livros[b.id]; const pct = progressPct(b.id);
+          if (!r || !(r.pages || r.modo === 'texto') || !access) return '';
+          return `<div class="space-y-2 max-w-md"><p class="text-sm text-muted">${shelfOf(b.id) === 'lidos' ? `✓ Você leu este livro${r.finishedAt ? ' em ' + fmtDataHora(r.finishedAt) : ''}` : `Você está em: ${posicaoTxt(b.id)}`}</p>${progressBar(pct)}</div>`; })()}
+        <div class="flex flex-wrap gap-3 pt-2">
+          ${access && hasOnline(b) ? `<button data-action="readFull" data-id="${esc(b.id)}" class="btn-primary">📖 ${shelfOf(b.id) === 'lidos' ? 'Ler de novo' : (progressPct(b.id) > 0 ? 'Continuar leitura (' + progressPct(b.id) + '%)' : 'Ler online')}</button>` : ''}
+          <button data-action="read" data-id="${esc(b.id)}" class="${access && hasOnline(b) ? 'btn-outline' : 'btn-primary'}">${access ? 'Ler a prévia' : '🔒 Ler a prévia'}</button>
+          ${access ? (pdf ? `<a href="${esc(pdf)}" target="_blank" rel="noopener" data-download="${esc(b.id)}" data-origem="pagina" class="btn-outline">Baixar PDF completo ↗</a>` : '')
+                   : `<button data-action="restricted" class="btn-outline">🔒 Baixar PDF</button>`}
+          <button data-action="fav" data-id="${esc(b.id)}" class="btn-outline ${fav ? '!text-wine !border-wine/50' : ''}">${fav ? '♥ Favorito' : '♡ Favoritar'}</button>
+        </div>
+        <div class="flex items-center gap-3">
+          <label for="shelf-sel" class="text-xs uppercase tracking-[0.14em] text-muted">Na minha biblioteca:</label>
+          <select id="shelf-sel" data-shelf="${esc(b.id)}" class="field !w-auto !py-2 !text-sm">
+            <option value="" ${!shelfOf(b.id) ? 'selected' : ''}>— não adicionado —</option>
+            ${SHELVES.filter(x => x[0] !== 'favoritos').map(([k, l]) => `<option value="${k}" ${shelfOf(b.id) === k ? 'selected' : ''}>${l}</option>`).join('')}
+          </select>
+        </div>
+        ${access && pdf && /drive\.google\.com/.test(pdf) ? `<p class="text-xs text-muted">O PDF abre no Google Drive, em uma nova aba.</p>` : ''}
+        <p class="text-[11px] text-muted/80 leading-relaxed border-t border-ink/10 pt-4 max-w-xl">${avisoDireitos(b)}</p>
+        ${S.isAdmin ? `<div class="pt-5 border-t border-ink/10"><button data-action="edit" data-id="${esc(b.id)}" class="btn-link">✎ Editar esta obra</button></div>` : ''}
+      </div>
+    </div>
+    ${sameAuthor.length ? carousel('car-author', 'Outros livros', 'Continue lendo', sameAuthor, null) : ''}
+    ${sameGenre.length ? carousel('car-genre', `Mais de ${b.genre}`, 'Você também pode gostar', sameGenre, b.genre) : ''}
+  </div>`;
+}
+
+function viewEstante() {
+  const ids = new Set(S.books.map(b => b.id));
+  const conta = { lendo: 0, quero: 0, lidos: 0, favoritos: 0 };
+  S.books.forEach(b => { const sh = shelfOf(b.id); if (conta[sh] !== undefined) conta[sh]++; if (S.favs.has(b.id)) conta.favoritos++; });
+  const tab = S.bibTab;
+  let list = tab === 'favoritos' ? S.books.filter(b => S.favs.has(b.id)) : S.books.filter(b => shelfOf(b.id) === tab);
+  list = list.sort((a, z) => ((BIB.livros[z.id] || {}).lastRead || 0) - ((BIB.livros[a.id] || {}).lastRead || 0) || pubTime(z) - pubTime(a));
+  const segTotal = Object.keys(BIB.livros).filter(id => ids.has(id)).reduce((n, id) => n + (BIB.livros[id].seconds || 0), 0);
+  const vazio = {
+    lendo: 'Nenhuma leitura em andamento. Abra um livro com “Ler online” e ele aparece aqui, com o seu progresso.',
+    quero: 'Sua lista de desejos está vazia. Na página de um livro, escolha “Quero ler”.',
+    lidos: 'Os livros que você terminar aparecem aqui.',
+    favoritos: 'Toque no coração de um livro para guardá-lo nos favoritos.'
+  };
+  return `<div class="fade-in pt-14">
+    <div class="text-center">
+      <p class="eyebrow">Sua coleção</p>
+      <h1 class="font-display text-5xl font-semibold mt-2">Minha Biblioteca</h1>
+      <p class="text-sm text-muted mt-3">${plural(conta.lidos, 'livro lido', 'livros lidos')} · ${segTotal >= 60 ? fmtDuracao(segTotal) + ' de leitura' : 'comece uma leitura'} · tudo fica salvo neste aparelho</p>
+    </div>
+    <div class="flex justify-center gap-2 mt-10 overflow-x-auto hide-scrollbar pb-1">
+      ${SHELVES.map(([k, l]) => `<button data-action="bibTab" data-tab="${k}" class="chip ${tab === k ? 'active' : ''}">${l} <span class="opacity-70">${conta[k]}</span></button>`).join('')}
+    </div>
+    <div class="rule my-10"></div>
+    ${list.length ? `<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-x-5 gap-y-10 md:gap-x-8">${list.map(b => {
+        const r = BIB.livros[b.id] || {}; const pct = progressPct(b.id);
+        const extra = tab === 'lendo' && (r.pages || r.modo === 'texto') ? `<div class="mt-2 space-y-1.5">${progressBar(pct)}<p class="text-[11px] text-muted">${pct}% · ${restanteTxt(b.id)}</p><button data-action="readFull" data-id="${esc(b.id)}" class="btn-link !text-[10px]">Continuar →</button></div>`
+          : tab === 'lidos' && r.finishedAt ? `<p class="text-[11px] text-muted mt-1">Terminado em ${fmtDataHora(r.finishedAt)}</p>` : '';
+        return `<div>${cardHtml(b)}${extra}</div>`; }).join('')}</div>`
+      : `<div class="text-center py-10 space-y-6"><p class="font-display italic text-2xl text-muted max-w-md mx-auto">${vazio[tab]}</p><a href="#acervo" class="btn-outline">Explorar o acervo</a></div>`}
+  </div>`;
+}
+
+const DEFAULT_ABOUT = 'A Alma & Tinta é a minha biblioteca digital: o lugar onde reúno os livros que escrevi, para que você possa conhecê-los com calma.\n\nAqui você lê uma prévia de cada obra antes de baixar o livro completo, guarda suas favoritas na estante e acompanha os novos lançamentos.';
+function viewSobre() {
+  const totalPages = S.books.reduce((n, b) => n + (Number(b.pages) || 0), 0);
+  const genres = new Set(S.books.map(b => b.genre)).size;
+  const about = S.config.about || DEFAULT_ABOUT;
+  const stat = (n, l) => `<div class="text-center"><p class="font-display text-6xl text-wine font-semibold leading-none">${n}</p><p class="text-[10px] uppercase tracking-[0.25em] text-muted mt-3">${l}</p></div>`;
+  return `<div class="max-w-3xl mx-auto fade-in pt-14">
+    <div class="text-center">
+      <p class="eyebrow">A biblioteca</p>
+      <h1 class="font-display text-5xl md:text-6xl font-semibold mt-3">Sobre a Alma & Tinta</h1>
+    </div>
+    <div class="ornament max-w-xs mx-auto my-10 text-sm"><span>✦</span></div>
+    <div class="font-book text-xl md:text-[1.35rem] text-ink/90 leading-relaxed space-y-6 first-letter:font-display">${about.split(/\n{2,}/).map((p, i) => `<p class="${i === 0 ? 'first-letter:float-left first-letter:font-display first-letter:text-7xl first-letter:leading-[.8] first-letter:mr-3 first-letter:mt-1 first-letter:text-wine' : ''}">${esc(p).replace(/\n/g, '<br>')}</p>`).join('')}</div>
+    <div class="grid ${totalPages ? 'grid-cols-3' : 'grid-cols-2'} gap-4 mt-16 py-10 border-y border-ink/10">${stat(S.books.length, S.books.length === 1 ? 'Livro' : 'Livros')}${stat(genres, genres === 1 ? 'Gênero' : 'Gêneros')}${totalPages ? stat(totalPages.toLocaleString('pt-BR'), 'Páginas escritas') : ''}</div>
+    ${S.config.contact ? `<div class="mt-14 text-center space-y-4">
+      <h2 class="font-display text-3xl font-semibold">Fale comigo</h2>
+      <p class="text-muted"><span class="text-wine select-all font-medium">${esc(S.config.contact)}</span></p>
+    </div>` : ''}
+  </div>`;
+}
+
+function viewPainel() {
+  if (!S.isAdmin) return `<div class="max-w-md mx-auto text-center py-24 space-y-5 fade-in">
+      <p class="text-4xl">🔒</p>
+      <h1 class="font-display text-4xl font-semibold">Área do autor</h1>
+      <p class="text-muted">Para publicar e editar seus livros, entre com a sua senha.</p>
+      <div class="flex justify-center gap-3"><button data-action="login" class="btn-primary">Entrar</button><a href="#acervo" class="btn-outline">Voltar</a></div></div>`;
+  const list = byRecent(S.books);
+  return `<div class="fade-in space-y-10 pt-12">
+    <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+      <div>
+        <p class="eyebrow">Meu painel</p>
+        <h1 class="font-display text-5xl font-semibold mt-2">Meus livros</h1>
+        <p class="text-sm text-muted mt-2">${plural(S.books.length, 'livro', 'livros')} na biblioteca · as mudanças aparecem para os leitores ao recarregar a página.</p>
+      </div>
+      <button data-action="newBook" class="btn-primary">+ Nova obra</button>
+    </div>
+
+
+    <div class="divide-y divide-ink/10 border border-ink/10 rounded-sm bg-paper-light shadow-card">
+      ${list.length ? list.map(b => {
+        const c = content(b);
+        return `
+        <div class="flex items-center gap-4 p-4">
+          <a href="#obra-${esc(b.id)}" class="spine relative w-12 aspect-[2/3] shrink-0 overflow-hidden rounded-[2px] bg-paper-darker shadow-book">${coverFrame(b)}</a>
+          <div class="min-w-0 flex-1">
+            <p class="font-display text-ink font-semibold text-xl leading-tight truncate">${esc(b.title)}</p>
+            <p class="text-sm text-muted truncate">${esc(b.genre)} · publicado em ${fmtDataHora(pubTime(b))}</p>
+            <p class="text-xs text-wine/90 mt-0.5">${(() => { const d = (S.downloads.porLivro || {})[b.id]; return d && d.count ? `⬇ ${plural(d.count, 'download', 'downloads')} · último em ${fmtDataHora(d.last)}` : '⬇ nenhum download ainda'; })()}</p>
+            <div class="flex gap-3 mt-1">
+              ${b.isLocked ? '<span class="text-[9px] uppercase tracking-widest text-wine font-semibold">🔒 Restrita</span>' : ''}
+              ${!hasOnline(b) ? '<span class="text-[9px] uppercase tracking-widest text-muted">Sem PDF</span>' : (b.allowDownload === false ? '<span class="text-[9px] uppercase tracking-widest text-muted">Só leitura online</span>' : '')}
+            </div>
+          </div>
+          <div class="flex flex-wrap justify-end gap-x-5 gap-y-1">
+            <button data-action="edit" data-id="${esc(b.id)}" class="btn-link">Editar</button>
+            <button data-action="del" data-id="${esc(b.id)}" class="btn-link !text-muted hover:!text-wine">Excluir</button>
+          </div>
+        </div>`; }).join('')
+      : `<p class="p-10 text-center font-display italic text-xl text-muted">Nenhuma obra publicada ainda.</p>`}
+    </div>
+
+    <section class="border border-ink/10 rounded-sm bg-paper-light shadow-card p-6 sm:p-8 space-y-5">
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
+        <div>
+          <h2 class="font-display text-3xl font-semibold">Registro de downloads</h2>
+          <p class="text-sm text-muted mt-1">${plural(S.downloads.total || 0, 'download registrado', 'downloads registrados')} · data e hora de cada clique em “Baixar PDF”. Não identifica quem baixou.</p>
+        </div>
+        <div class="flex gap-4">
+          <button data-action="refreshStats" class="btn-link">↻ Atualizar</button>
+          ${S.downloads.planilha ? `<a href="${esc(S.downloads.planilha)}" target="_blank" rel="noopener" class="btn-link">Abrir planilha ↗</a>` : ''}
+        </div>
+      </div>
+      ${(S.downloads.recentes || []).length ? `<div class="divide-y divide-ink/10 border-t border-ink/10">
+        ${S.downloads.recentes.map(r => `<div class="flex items-center justify-between gap-4 py-2.5 text-sm">
+          <span class="text-ink/90 truncate"><span class="font-display text-lg">${esc(r.title)}</span> <span class="text-muted text-xs">· ${r.origem === 'leitor' ? 'pelo leitor' : 'pela página do livro'}</span></span>
+          <span class="text-muted whitespace-nowrap tabular-nums">${fmtDataHora(r.t)}</span></div>`).join('')}
+      </div>` : `<p class="font-display italic text-lg text-muted">Nenhum download registrado ainda.</p>`}
+    </section>
+
+    <form id="settingsForm" class="border border-ink/10 rounded-sm bg-paper-light shadow-card p-6 sm:p-8 space-y-5">
+      <h2 class="font-display text-3xl font-semibold">Informações do site</h2>
+      <div><label class="label" for="s-about">Texto da página “Sobre”</label>
+        <textarea id="s-about" rows="6" class="field font-book text-base" placeholder="${esc(DEFAULT_ABOUT)}">${esc(S.config.about || '')}</textarea></div>
+      <div><label class="label" for="s-contact">Contato (opcional — aparece no rodapé e na página “Sobre”)</label>
+        <input id="s-contact" class="field" value="${esc(S.config.contact || '')}" placeholder="seu e-mail ou rede social (opcional)"></div>
+      <button type="submit" class="btn-primary">Salvar informações</button>
+      <p class="text-xs text-muted">A citação da página inicial é sorteada a cada visita entre as frases de destaque das obras. Para mudar as opções, edite a “frase de destaque” de cada obra.</p>
+    </form>
+  </div>`;
+}
+
+function viewForm() {
+  const isNew = S.editing === 'new';
+  const usualAuthor = (() => { const c = {}; S.books.forEach(x => { c[x.author] = (c[x.author] || 0) + 1; }); return Object.keys(c).sort((a, z) => c[z] - c[a])[0] || ''; })();
+  const b = isNew ? { author: usualAuthor } : (S.books.find(x => x.id === S.editing) || {});
+  const c = isNew ? {} : (content(b) || {});
+  const genres = [...new Set([...GENRES, ...S.books.map(x => x.genre).filter(Boolean), ...(b.genre ? [b.genre] : [])])];
+  const hasCover = !!(b.coverUrl || b.coverData);
+  return `<div class="max-w-3xl mx-auto fade-in pt-10">
+    <button data-action="cancelEdit" class="btn-link">← Voltar ao painel</button>
+    <form id="bookForm" class="mt-6 bg-paper-light border border-ink/10 p-6 sm:p-10 rounded-sm shadow-card space-y-7" novalidate>
+      <div class="pb-5 border-b border-ink/10">
+        <p class="eyebrow">${isNew ? 'Novo lançamento' : 'Edição'}</p>
+        <h1 class="font-display text-4xl font-semibold mt-1">${isNew ? 'Lançar nova obra' : 'Editar obra'}</h1>
+        <p class="text-xs text-muted mt-2">Campos com * são obrigatórios.</p>
+      </div>
+
+      <details class="border border-wine/25 rounded-sm p-4 bg-wine/5">
+        <summary class="cursor-pointer text-xs uppercase tracking-[0.14em] text-wine font-semibold">✦ Colar ficha pronta (gerada pelo Claude)</summary>
+        <textarea id="f-ficha" rows="5" class="field font-mono !text-xs mt-3" placeholder='{ "title": "…", "author": "…", "genre": "Ensaio", "year": 2026, "pages": 90, "tagline": "…", "synopsis": "…", "previewText": "…" }'></textarea>
+        <button type="button" data-action="applyFicha" class="btn-outline mt-3 !text-[10px] !py-2">Preencher os campos</button>
+      </details>
+
+      <div class="grid sm:grid-cols-[170px_1fr] gap-7">
+        <div class="space-y-3">
+          <span class="label">Capa</span>
+          <div class="spine relative aspect-[2/3] bg-paper-darker rounded-[3px] overflow-hidden shadow-book">
+            <img id="f-cover-prev" src="${esc(hasCover ? coverSrc(b) : genCover({ title: b.title || 'Título', author: b.author || 'Autor', genre: b.genre || 'Poesia' }))}" data-fallback="${esc(b.id || '')}" alt="Prévia da capa" class="w-full h-full object-contain">
+          </div>
+          <label class="btn-outline w-full !text-[10px] !py-2 cursor-pointer">
+            Escolher imagem<input type="file" id="f-cover" accept="image/png,image/jpeg,image/webp,image/gif" class="hidden">
+          </label>
+          ${hasCover ? `<label class="flex items-center gap-2 text-xs text-muted"><input type="checkbox" id="f-cover-remove" class="accent-[#D9B45F]"> Usar capa automática</label>` : ''}
+          <p class="text-[11px] text-muted leading-snug">Ideal: vertical (2:3). Sem imagem, criamos uma capa de tecido com letras douradas.</p>
+        </div>
+        <div class="space-y-5">
+          <div><label class="label" for="f-title">Título *</label><input id="f-title" class="field font-display !text-xl" required value="${esc(b.title || '')}"></div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <div><label class="label" for="f-author">Autor *</label><input id="f-author" class="field" required value="${esc(b.author || '')}" list="authorsList">
+              <datalist id="authorsList">${[...new Set(S.books.map(x => x.author))].map(a => `<option value="${esc(a)}">`).join('')}</datalist></div>
+            <div><label class="label" for="f-genre">Gênero</label><select id="f-genre" class="field">${genres.map(g => `<option ${b.genre === g || (!b.genre && g === 'Ensaio') ? 'selected' : ''}>${esc(g)}</option>`).join('')}<option value="__outro">Outro gênero…</option></select>
+              <input id="f-genre-novo" class="field mt-2 hidden" maxlength="40" placeholder="Digite o novo gênero"></div>
+          </div>
+          <div class="grid grid-cols-2 gap-5">
+            <div><label class="label" for="f-year">Ano</label><input id="f-year" type="number" min="1000" max="2100" class="field" value="${esc(b.year || '')}" placeholder="2026"></div>
+            <div><label class="label" for="f-pages">Nº de páginas</label><input id="f-pages" type="number" min="1" class="field" value="${esc(b.pages || '')}"></div>
+          </div>
+          <div><label class="label" for="f-published">Data e hora de publicação</label>
+            <input id="f-published" type="datetime-local" class="field" value="${paraCampoData(isNew ? Date.now() : pubTime(b))}">
+            <p class="text-[11px] text-muted mt-1.5">${isNew ? 'Já vem com o momento atual. Mude se quiser registrar outra data.' : 'Registrada quando o livro foi lançado. Você pode corrigir se precisar.'}</p></div>
+        </div>
+      </div>
+
+      <div><label class="label" for="f-tagline">Frase de destaque</label>
+        <input id="f-tagline" class="field font-display italic !text-lg" maxlength="180" value="${esc(b.tagline || '')}" placeholder="Uma frase marcante da obra — pode ser sorteada para abrir o site">
+        <p class="text-[11px] text-muted mt-1.5">Aparece na página da obra e entra no sorteio da citação de abertura.</p></div>
+
+      <div><label class="label" for="f-synopsis">Sinopse</label>
+        <textarea id="f-synopsis" rows="4" class="field font-book text-base">${esc(b.synopsis || '')}</textarea></div>
+
+      <div>
+        <div class="flex items-end justify-between gap-3"><label class="label" for="f-preview">Texto da prévia (capítulo de amostra) — opcional</label>
+          <button type="button" data-action="previewDraft" class="btn-link !text-[10px] mb-1.5">Ver como o leitor verá →</button></div>
+        <textarea id="f-preview" rows="10" class="field font-book !text-lg leading-relaxed" placeholder="# Capítulo I&#10;&#10;Escreva ou cole aqui a prévia…">${esc(c.previewText || '')}</textarea>
+        <p class="text-[11px] text-muted mt-1.5"><code class="text-wine"># Título</code> · <code class="text-wine">## Subtítulo</code> · <code class="text-wine">**negrito**</code> · <code class="text-wine">*itálico*</code> · <code class="text-wine">> citação</code> · <code class="text-wine">---</code> ornamento · linha em branco = novo parágrafo/estrofe</p>
+      </div>
+
+      <div class="border border-ink/10 rounded-sm p-5 space-y-3 bg-paper/50">
+        <span class="label !mb-0">Livro completo (PDF)</span>
+        <input id="f-pdfurl" type="url" class="field" value="${esc(c.pdfUrl || '')}" placeholder="Cole aqui o link do PDF no Google Drive">
+        ${S.isAdmin ? `<div class="flex flex-wrap items-center gap-3 text-sm text-muted">
+            <span class="font-display italic">ou</span>
+            <label class="btn-outline !text-[10px] !py-2 cursor-pointer">Enviar arquivo PDF<input type="file" id="f-pdffile" accept="application/pdf" class="hidden"></label>
+            <span id="f-pdfname" class="text-wine text-xs"></span>
+          </div>` : ''}
+        <p class="text-[11px] text-muted">Arquivos enviados vão para a pasta “Alma & Tinta — Arquivos” no seu Drive (até 15 MB). Para links do Drive, deixe o arquivo como “Qualquer pessoa com o link pode ver”. Opcional: sem PDF, a obra mostra só a prévia.</p>
+      </div>
+
+      <div class="border border-ink/10 rounded-sm p-5 space-y-3 bg-paper/50">
+        <div class="flex flex-wrap items-center justify-between gap-3">
+          <span class="label !mb-0">Texto completo para leitura online</span>
+          <button type="button" data-action="extrairTexto" class="btn-outline !text-[10px] !py-2">✦ Extrair do PDF</button>
+        </div>
+        <p id="f-texto-status" class="text-xs text-muted"></p>
+        <textarea id="f-fulltext" rows="12" class="field font-book !text-base leading-relaxed" placeholder="Escolha o PDF e o texto é extraído sozinho — ou cole aqui o texto do livro. Use # para títulos de capítulo e > para epígrafes."></textarea>
+        <label class="flex items-center gap-2 text-xs text-muted cursor-pointer"><input type="checkbox" id="f-poesia" class="accent-[#D9B45F]" ${b.genre === 'Poesia' ? 'checked' : ''}> Manter as quebras de linha de cada verso (poesia)</label>
+        <p class="text-[11px] text-muted">É assim que o livro aparece na leitura em texto, com letra ajustável, temas e sumário. Pode revisar e corrigir à vontade antes de publicar.</p>
+      </div>
+
+      <label class="flex items-start gap-3 cursor-pointer">
+        <input type="checkbox" id="f-download" class="w-4 h-4 mt-0.5 accent-[#D9B45F]" ${b.allowDownload === false ? '' : 'checked'}>
+        <span class="text-sm text-ink/80">Permitir baixar o PDF — desmarque para que o livro possa ser lido só online, aqui no site.</span>
+      </label>
+
+      <label class="flex items-start gap-3 cursor-pointer">
+        <input type="checkbox" id="f-locked" class="w-4 h-4 mt-0.5 accent-[#D9B45F]" ${b.isLocked ? 'checked' : ''}>
+        <span class="text-sm text-ink/80">Obra restrita — a prévia e o PDF ficam visíveis só para você. Os leitores veem capa e sinopse.</span>
+      </label>
+
+      <div class="pt-2 flex flex-col sm:flex-row gap-3">
+        <button type="submit" id="f-submit" class="btn-primary flex-1 !py-3.5">${isNew ? 'Publicar obra no catálogo' : 'Salvar alterações'}</button>
+        <button type="button" data-action="cancelEdit" class="btn-outline">Cancelar</button>
+      </div>
+    </form>
+  </div>`;
+}
+
+const THEMES = {
+  sepia: { bg: '#e9dfc7', page: '#f8f1e0', text: '#3b2e20', head: '#2d2216', accent: '#7A1F2B', line: 'rgba(45,34,22,.15)' },
+  claro: { bg: '#ecebe8', page: '#ffffff', text: '#2b2b2b', head: '#111111', accent: '#7A1F2B', line: 'rgba(0,0,0,.1)' },
+  escuro: { bg: '#141210', page: '#1d1915', text: '#ddd3c2', head: '#f6eedb', accent: '#d9b55c', line: 'rgba(217,181,92,.2)' }
+};
+function applyReaderPrefs() {
+  const t = THEMES[S.reader.theme] || THEMES.escuro;
+  $('rScroll').style.background = t.bg;
+  const p = $('rPage'); p.style.background = t.page; p.style.color = t.text;
+  $('readerBody').style.fontSize = S.reader.size + 'px';
+  p.querySelectorAll('[data-head]').forEach(e => e.style.color = t.head);
+  p.querySelectorAll('[data-accent]').forEach(e => e.style.color = t.accent);
+  $('rHead').style.borderBottom = '1px solid ' + t.line;
+  $('rFoot').style.borderTop = '1px solid ' + t.line;
+  $('readerBody').querySelectorAll('h3,h4,.orn').forEach(e => e.style.color = t.accent);
+  document.querySelectorAll('[data-action="theme"]').forEach(btn => btn.style.boxShadow = btn.dataset.theme === S.reader.theme ? '0 0 0 2px #1E1712, 0 0 0 3px #D9B45F' : 'none');
+}
+function openReader(b, draftText) {
+  const isDraft = typeof draftText === 'string';
+  if (!isDraft && !canAccess(b)) return showRestricted();
+  const text = isDraft ? draftText : (content(b) || {}).previewText;
+  fecharTexto(false);
+  $('rLabel').textContent = 'Degustação da obra';
+  $('rTocBtn').classList.add('hidden'); $('rToc').classList.add('hidden');
+  $('rTitle').textContent = b.title || 'Sem título';
+  $('rAuthor').textContent = (b.author || '') + (isDraft ? ' · rascunho' : '');
+  $('rMainTitle').textContent = b.title || 'Sem título';
+  $('rMeta').textContent = [b.author, text ? `${readMinutes(text)} min de leitura` : ''].filter(Boolean).join(' · ');
+  $('readerBody').innerHTML = text ? formatPreview(text) : '<p style="text-align:center;opacity:.6"><em>Esta obra ainda não tem prévia.</em></p>';
+  const pdf = isDraft ? '' : pdfLink(b);
+  $('rFoot').innerHTML = `<div data-accent class="text-xl">✦</div>
+    <p class="text-[10px] uppercase tracking-[0.3em] opacity-70">Fim da prévia</p>
+    <div class="flex flex-wrap justify-center gap-3 pt-2">
+      ${!isDraft && b.id && hasOnline(b) && canAccess(b) ? `<button data-action="readFull" data-id="${esc(b.id)}" class="btn-primary">📖 Ler o livro completo online</button>` : ''}
+      ${pdf ? `<a href="${esc(pdf)}" target="_blank" rel="noopener" data-download="${esc(b.id)}" data-origem="leitor" class="btn-outline">Baixar PDF ↗</a>` : ''}
+      <button data-action="closeReader" class="text-[11px] font-semibold uppercase tracking-[0.14em] px-5 py-3 rounded-sm border" style="border-color:currentColor;opacity:.7">Fechar leitor</button>
+    </div>
+    <p class="text-[11px] opacity-60 leading-relaxed max-w-md mx-auto pt-4">${isDraft ? '' : avisoDireitos(b)}</p>`;
+  const r = $('reader'); r.classList.remove('hidden'); r.classList.add('flex');
+  document.body.style.overflow = 'hidden';
+  $('rScroll').scrollTop = 0; updateProgress();
+  applyReaderPrefs();
+}
+function closeReader() {
+  const aberto = !$('reader').classList.contains('hidden');
+  if (aberto && TX.id) atualizarTexto(true);
+  const r = $('reader'); r.classList.add('hidden'); r.classList.remove('flex');
+  document.body.style.overflow = '';
+  if (aberto && TX.id) fecharTexto(true, true);
+}
+function updateProgress() {
+  const s = $('rScroll'); const max = s.scrollHeight - s.clientHeight;
+  $('rProgress').style.width = (max > 0 ? Math.min(100, s.scrollTop / max * 100) : 100) + '%';
+}
+$('rScroll').addEventListener('scroll', updateProgress, { passive: true });
+function saveReaderPrefs() { LS.set('almaTinta.reader3', S.reader); applyReaderPrefs(); }
+
+function showRestricted() {
+  return dialog({
+    title: 'Obra restrita',
+    msg: S.isAdmin ? 'O conteúdo restrito ainda está carregando. Tente novamente em instantes.'
+                   : 'Este livro ainda não está aberto para leitura. Você pode ler a sinopse e guardá-lo na sua estante.'
+  });
+}
+
+function toggleFav(id) {
+  if (S.favs.has(id)) { S.favs.delete(id); toast('Removido dos favoritos.'); }
+  else { S.favs.add(id); toast('Adicionado aos favoritos ♥'); }
+  LS.set('almaTinta.favs', [...S.favs]);
+  document.querySelectorAll(`[data-action="fav"][data-id="${CSS.escape(id)}"]`).forEach(btn => {
+    const fav = S.favs.has(id);
+    if (btn.classList.contains('btn-outline')) { btn.textContent = fav ? '♥ Favorito' : '♡ Favoritar'; btn.classList.toggle('!text-wine', fav); btn.classList.toggle('!border-wine/50', fav); }
+    else {
+      btn.textContent = fav ? '♥' : '♡';
+      btn.classList.toggle('text-wine', fav); btn.classList.toggle('text-muted', !fav);
+      btn.classList.toggle('opacity-0', !fav); btn.classList.toggle('group-hover:opacity-100', !fav);
+    }
+  });
+  renderChrome();
+  if (S.route.name === 'estante' || S.route.name === 'acervo') render(true);
+}
+
+async function deleteBook(id) {
+  const b = S.books.find(x => x.id === id); if (!b) return;
+  const ok = await dialog({ title: 'Excluir obra?', msg: `“${b.title}” será removida do catálogo para todos os leitores. A capa e o PDF enviados vão para a lixeira do seu Drive.`, icon: '✕', ok: 'Excluir', cancel: 'Cancelar' });
+  if (!ok) return;
+  try {
+    await api('deleteBook', PWD, id);
+    await loadCatalog();
+    toast('Obra excluída.');
+    if (S.route.name === 'obra') location.hash = 'painel'; else render(true);
+  } catch (e) { toast(errMsg(e)); }
+}
+
+function errMsg(e) {
+  const code = e && e.code;
+  if (code === 'quota_exceeded') return 'O espaço do acervo está cheio. Exclua obras ou imagens antigas.';
+  if (code === 'invalid_argument') return 'Você não tem permissão para alterar o acervo, ou os dados são grandes demais.';
+  if (code === 'resource_exhausted') return 'Muitas ações seguidas. Aguarde alguns segundos e tente de novo.';
+  const m = String((e && (e.message || e.code)) || 'erro desconhecido').replace(/^(Exception|Error):\s{0,}/, '');
+  return 'Não foi possível concluir: ' + m;
+}
+
+const BIB_KEY = 'almaTinta.biblioteca';
+const BIB = (() => { const v = LS.get(BIB_KEY, {}); return { livros: (v && v.livros) || {}, ritmo: (v && v.ritmo) || { seg: 0, pags: 0 } }; })();
+function bib(id) { return BIB.livros[id] || (BIB.livros[id] = {}); }
+function bibSave() { LS.set(BIB_KEY, BIB); }
+function shelfOf(id) { return (BIB.livros[id] || {}).shelf || ''; }
+function progressPct(id) { const r = BIB.livros[id]; if (!r) return 0; if (r.modo === 'texto') return Math.round(Math.min(1, r.frac || 0) * 100); if (!r.pages) return 0; return Math.round(Math.min(1, (r.page || 1) / r.pages) * 100); }
+function ritmo() { return BIB.ritmo.pags >= 3 ? Math.max(15, Math.min(600, BIB.ritmo.seg / BIB.ritmo.pags)) : 75; }
+function fmtDuracao(seg) {
+  const m = Math.round(seg / 60);
+  if (m < 1) return 'menos de 1 min';
+  if (m < 60) return m + ' min';
+  const h = Math.floor(m / 60), r = m % 60;
+  return h + 'h' + (r ? String(r).padStart(2, '0') : '');
+}
+function restanteTxt(id) {
+  const r = BIB.livros[id]; if (!r) return '';
+  if (r.modo === 'texto') { if (!r.palavras) return ''; return (r.frac || 0) >= 0.985 ? 'leitura concluída' : 'faltam cerca de ' + fmtDuracao(r.palavras * (1 - (r.frac || 0)) / 220 * 60); }
+  if (!r.pages) return '';
+  const falta = Math.max(0, r.pages - (r.page || 1));
+  return falta ? 'faltam cerca de ' + fmtDuracao(falta * ritmo()) : 'leitura concluída';
+}
+function hasOnline(b) { const c = content(b); return !!(b.hasPdf || b.hasText || (c && c.pdfUrl) || (S.restricted[b.id] || {}).hasText); }
+const SHELVES = [['lendo', 'Lendo agora'], ['quero', 'Quero ler'], ['lidos', 'Lidos'], ['favoritos', 'Favoritos']];
+function setShelf(id, shelf) {
+  const r = bib(id);
+  r.shelf = shelf || '';
+  if (shelf === 'lidos' && !r.finishedAt) r.finishedAt = Date.now();
+  if (shelf === 'lendo' && !r.startedAt) r.startedAt = Date.now();
+  bibSave();
+  const nomes = { lendo: 'Lendo agora', quero: 'Quero ler', lidos: 'Lidos' };
+  toast(shelf ? `Movido para “${nomes[shelf]}”.` : 'Removido da sua biblioteca.');
+  renderChrome();
+  render(true);
+}
+function progressBar(pct, extra = '') {
+  return `<div class="h-1.5 rounded-full bg-ink/10 overflow-hidden ${extra}"><div class="h-full bg-gradient-to-r from-gold to-wine-light rounded-full" style="width:${pct}%"></div></div>`;
+}
+
+const BR = { doc: null, book: null, page: 1, pages: 0, zoom: 1, task: null, cache: {}, toc: [], tocDone: false, lastTurn: 0, renderTimer: null };
+let pdfjsReady = null;
+function loadPdfJs() {
+  if (pdfjsReady) return pdfjsReady;
+  pdfjsReady = new Promise((resolve, reject) => {
+    const sc = document.createElement('script');
+    sc.src = CDN_PDFJS + 'pdf.min.js';
+    sc.onload = () => {
+      try { window.pdfjsLib.GlobalWorkerOptions.workerSrc = CDN_PDFJS + 'pdf.worker.min.js'; resolve(window.pdfjsLib); }
+      catch (e) { reject(e); }
+    };
+    sc.onerror = () => { pdfjsReady = null; reject(new Error('não foi possível carregar o leitor de PDF. Verifique a internet.')); };
+    document.head.appendChild(sc);
+  });
+  return pdfjsReady;
+}
+function b64ToBytes(b64) { const bin = atob(b64); const u = new Uint8Array(bin.length); for (let i = 0; i < bin.length; i++) u[i] = bin.charCodeAt(i); return u; }
+
+async function openPdfBook(b, pagina) {
+  if (!canAccess(b)) return showRestricted();
+  if (!(b.hasPdf || (content(b) || {}).pdfUrl)) { toast('Este livro ainda não tem o PDF para leitura online.'); return; }
+  if (!ONLINE) { toast('A leitura online funciona no site publicado.'); return; }
+  closeReader();
+  BR.book = b; BR.doc = null; BR.toc = []; BR.tocDone = false; BR.zoom = 1;
+  SS.set('almaTinta.lendoAgora', b.id);
+  $('brTitle').textContent = b.title; $('brInfo').textContent = b.author || '';
+  $('brTextoBtn').classList.toggle('hidden', !hasText(b));
+  $('brPage').textContent = ''; $('brLeft').textContent = '';
+  $('brCanvas').style.display = 'none';
+  $('brLoading').innerHTML = '<div class="w-10 h-10 rounded-full border-2 border-wine/30 border-t-wine animate-spin"></div><p class="font-display italic text-xl">Abrindo o livro…</p>';
+  $('brLoading').style.display = '';
+  renderToc();
+  const m = $('bookReader'); m.classList.remove('hidden'); m.classList.add('flex');
+  document.body.style.overflow = 'hidden';
+  try {
+    const lib = await loadPdfJs();
+    let bytes = BR.cache[b.id];
+    if (!bytes) { const r = await api('getPdfData', b.id, PWD || ''); bytes = b64ToBytes(r.b64); BR.cache[b.id] = bytes; }
+    if (BR.book !== b) return;
+    BR.doc = await lib.getDocument({ data: bytes.slice() }).promise;
+    BR.pages = BR.doc.numPages;
+    const r = bib(b.id);
+    r.pages = BR.pages; r.lastRead = Date.now();
+    if (!r.startedAt) r.startedAt = Date.now();
+    if (r.shelf !== 'lidos') r.shelf = 'lendo';
+    bibSave();
+    BR.page = Math.min(Math.max(1, pagina || r.page || 1), BR.pages);
+    $('brSlider').max = BR.pages;
+    $('brLoading').style.display = 'none';
+    $('brCanvas').style.display = '';
+    BR.lastTurn = Date.now();
+    await renderBookPage();
+    buildToc();
+  } catch (e) {
+    $('brLoading').innerHTML = `<p class="font-display italic text-xl text-ink">Não foi possível abrir o livro.</p><p class="text-sm">${esc(errMsg(e))}</p><button data-action="closeBook" class="btn-outline mt-2">Fechar</button>`;
+  }
+}
+
+async function renderBookPage() {
+  if (!BR.doc) return;
+  const n = BR.page;
+  const page = await BR.doc.getPage(n);
+  if (n !== BR.page) return;
+  const stage = $('brStage');
+  const base = page.getViewport({ scale: 1 });
+  const availW = Math.max(200, Math.min(stage.clientWidth - 32, 900));
+  const availH = Math.max(200, stage.clientHeight - 48);
+  let scale = window.innerWidth < 768 ? availW / base.width : Math.min(availW / base.width, availH / base.height);
+  scale *= BR.zoom;
+  const dpr = Math.min(2, window.devicePixelRatio || 1);
+  const vp = page.getViewport({ scale: scale * dpr });
+  const cv = $('brCanvas');
+  if (BR.task) { try { BR.task.cancel(); } catch (e) {} }
+  cv.width = Math.floor(vp.width); cv.height = Math.floor(vp.height);
+  cv.style.width = Math.floor(vp.width / dpr) + 'px'; cv.style.height = Math.floor(vp.height / dpr) + 'px';
+  BR.task = page.render({ canvasContext: cv.getContext('2d'), viewport: vp });
+  try { await BR.task.promise; } catch (e) { if (e && e.name === 'RenderingCancelledException') return; throw e; }
+  stage.scrollTop = 0;
+  updateBookUi();
+}
+
+function updateBookUi() {
+  const id = BR.book.id; const pct = progressPct(id);
+  $('brPage').textContent = `Página ${BR.page} de ${BR.pages}`;
+  $('brSlider').value = BR.page;
+  $('brLeft').textContent = restanteTxt(id);
+  $('brInfo').textContent = `${BR.book.author || ''} · ${pct}% lido`;
+  document.querySelectorAll('#brToc [data-page]').forEach(el => el.classList.remove('!text-wine', 'bg-wine/10'));
+  const atual = currentTocItem();
+  if (atual) { const el = document.querySelector(`#brToc [data-page="${atual.page}"]`); if (el) el.classList.add('!text-wine', 'bg-wine/10'); }
+}
+
+function goBookPage(n) {
+  if (!BR.doc) return;
+  n = Math.min(Math.max(1, n | 0), BR.pages);
+  if (n === BR.page) return;
+  const now = Date.now(); const dt = (now - BR.lastTurn) / 1000; BR.lastTurn = now;
+  const r = bib(BR.book.id);
+  if (!document.hidden) r.seconds = (r.seconds || 0) + Math.min(dt, 600);
+  if (n === BR.page + 1 && dt >= 3 && dt <= 600) { BIB.ritmo.seg += dt; BIB.ritmo.pags += 1; }
+  BR.page = n;
+  r.page = n; r.lastRead = now;
+  if (n >= BR.pages && r.shelf !== 'lidos') { r.shelf = 'lidos'; r.finishedAt = now; toast('Você terminou o livro ✦ Ele foi para “Lidos”.'); }
+  bibSave();
+  renderBookPage();
+}
+
+function closeBook() {
+  const m = $('bookReader'); if (m.classList.contains('hidden')) return;
+  if (BR.book) { const r = bib(BR.book.id); r.seconds = (r.seconds || 0) + Math.min((Date.now() - BR.lastTurn) / 1000, 600); r.lastRead = Date.now(); bibSave(); }
+  m.classList.add('hidden'); m.classList.remove('flex');
+  SS.set('almaTinta.lendoAgora', '');
+  document.body.style.overflow = '';
+  if (BR.task) { try { BR.task.cancel(); } catch (e) {} }
+  BR.doc = null; BR.book = null;
+  render(true);
+}
+
+function linesFrom(items) {
+  const rows = [];
+  items.forEach(it => {
+    const y = Math.round(it.transform[5]);
+    let row = rows.find(r => Math.abs(r.y - y) <= 3);
+    if (!row) { row = { y, parts: [] }; rows.push(row); }
+    row.parts.push({ x: it.transform[4], s: it.str });
+  });
+  return rows.sort((a, b) => b.y - a.y)
+    .map(r => r.parts.sort((a, b) => a.x - b.x).map(p => p.s).join('').replace(/\s+/g, ' ').trim())
+    .filter(Boolean);
+}
+const RE_CAP = /^(cap[ií]tulo|parte)\s+([0-9]+|[ivxlcdm]+)\b/i;
+const RE_SECAO = /^(pref[aá]cio|introdu[cç][aã]o|ep[ií]logo|posf[aá]cio|agradecimentos|nota do autor|apresenta[cç][aã]o|pr[oó]logo|por que este livro)\b/i;
+async function buildToc() {
+  const doc = BR.doc; const id = BR.book && BR.book.id; let items = [];
+  try {
+    const ol = await doc.getOutline();
+    if (ol && ol.length) {
+      for (const it of ol) {
+        let pg = null;
+        try { const dest = typeof it.dest === 'string' ? await doc.getDestination(it.dest) : it.dest; if (dest) pg = (await doc.getPageIndex(dest[0])) + 1; } catch (e) {}
+        if (pg) items.push({ label: it.title, page: pg });
+      }
+    }
+  } catch (e) {}
+  if (!items.length) {
+    for (let p = 1; p <= doc.numPages; p++) {
+      if (BR.doc !== doc) return;
+      let lines = [];
+      try { lines = linesFrom((await (await doc.getPage(p)).getTextContent()).items); } catch (e) { continue; }
+      if (lines.filter(l => RE_CAP.test(l)).length >= 3 || lines.filter(l => /(\.{4,}|…{2,})\s*\d*\s*$/.test(l)).length >= 3) continue;
+      const top = lines.slice(0, 8);
+      for (let i = 0; i < top.length; i++) {
+        const L = top[i];
+        if (RE_CAP.test(L)) {
+          const prox = top[i + 1] && !RE_CAP.test(top[i + 1]) && top[i + 1].length < 90 && L.length < 20 ? top[i + 1] : '';
+          items.push({ label: L, sub: prox, page: p, parte: /^parte/i.test(L) });
+          break;
+        }
+        if (RE_SECAO.test(L) && L.length < 60) { items.push({ label: L, page: p }); break; }
+      }
+      if (p % 10 === 0 && BR.doc === doc) { BR.toc = items.slice(); renderToc(); }
+    }
+  }
+  if (BR.doc === doc) { BR.toc = items; BR.tocDone = true; renderToc(); }
+}
+function currentTocItem() { let atual = null; BR.toc.forEach(it => { if (it.page <= BR.page) atual = it; }); return atual; }
+function renderToc() {
+  const el = $('brToc');
+  const head = `<div class="sticky top-0 bg-paper-light border-b border-ink/10 px-5 py-4 flex items-center justify-between"><p class="eyebrow">Sumário</p><button data-action="tocToggle" class="text-muted hover:text-wine md:hidden" aria-label="Fechar sumário">✕</button></div>`;
+  if (!BR.toc.length) {
+    el.innerHTML = head + `<p class="px-5 py-6 text-sm text-muted font-display italic">${BR.tocDone ? 'Este PDF não tem capítulos marcados. Use a barra de páginas abaixo para navegar.' : 'Montando o sumário…'}</p>`;
+    return;
+  }
+  el.innerHTML = head + '<div class="py-2">' + BR.toc.map(it => `<button data-action="tocGo" data-page="${it.page}" class="w-full text-left px-5 py-2.5 hover:bg-wine/5 flex items-baseline justify-between gap-3 ${it.parte ? 'mt-3' : ''}">
+      <span class="min-w-0"><span class="${it.parte ? 'text-[10px] uppercase tracking-[0.18em] text-wine font-semibold' : 'text-xs uppercase tracking-wider text-muted'} block">${esc(it.label)}</span>${it.sub ? `<span class="font-display text-base text-ink leading-snug block">${esc(it.sub)}</span>` : ''}</span>
+      <span class="text-[11px] text-muted tabular-nums">${it.page}</span></button>`).join('') + (BR.tocDone ? '' : '<p class="px-5 py-3 text-xs text-muted italic">Lendo o restante do livro…</p>') + '</div>';
+  updateBookUiSafe();
+}
+function updateBookUiSafe() { if (BR.doc && BR.book) updateBookUi(); }
+
+async function extrairTextoPdf(doc, opts, onProg) {
+  const poesia = !!(opts && opts.poesia);
+  const RE_CAP_X = /^(cap[ií]tulo|parte)\s+([0-9]+|[ivxlcdm]+)\b/i;
+  const RE_SEC_X = /^(pref[aá]cio|introdu[cç][aã]o|ep[ií]logo|posf[aá]cio|agradecimentos|nota do autor|nota da autora|apresenta[cç][aã]o|pr[oó]logo|por que este livro|conclus[aã]o|sobre o autor|sobre a autora)\b/i;
+  const RE_PONTILHADO = /(\.{4,}|…{2,})\s*\d*\s*$/;
+  const brutas = [];
+  for (let p = 1; p <= doc.numPages; p++) {
+    const page = await doc.getPage(p);
+    const vp = page.getViewport({ scale: 1 });
+    const tc = await page.getTextContent();
+    brutas.push({ w: vp.width, itens: tc.items.filter(it => it.str !== undefined).map(it => ({ s: it.str, x: it.transform[4], y: it.transform[5], h: Math.abs(it.transform[3]) || it.height || 0, w: it.width || 0 })) });
+    if (onProg) onProg(p, doc.numPages);
+  }
+  const contaH = {};
+  brutas.forEach(pg => pg.itens.forEach(it => { if (it.s.trim().length > 3) { const k = Math.round(it.h * 2) / 2; contaH[k] = (contaH[k] || 0) + it.s.length; } }));
+  const corpoH = +Object.keys(contaH).sort((a, b) => contaH[b] - contaH[a])[0] || 11;
+  const paginas = brutas.map(pg => {
+    const capitulares = []; const rows = [];
+    pg.itens.forEach(it => {
+      if (/^[A-ZÀ-Ý]$/.test(it.s.trim()) && it.h > corpoH * 1.6) { capitulares.push(it); return; }
+      if (!it.s) return;
+      let r = rows.find(r => Math.abs(r.y - it.y) <= Math.max(2, Math.min(r.h, it.h || r.h) * 0.4));
+      if (!r) { r = { y: it.y, h: it.h, partes: [] }; rows.push(r); }
+      r.h = Math.max(r.h, it.h); r.partes.push(it);
+    });
+    rows.forEach(r => {
+      r.partes.sort((a, b) => a.x - b.x);
+      let txt = ''; let fim = null;
+      r.partes.forEach(pt => {
+        if (fim !== null && pt.x - fim > r.h * 0.2 && !/\s$/.test(txt) && !/^\s/.test(pt.s)) txt += ' ';
+        txt += pt.s; fim = pt.x + pt.w;
+      });
+      const vis = r.partes.filter(pt => pt.s.trim());
+      r.x = vis.length ? vis[0].x : r.partes[0].x;
+      r.xFim = vis.length ? Math.max(...vis.map(pt => pt.x + pt.w)) : r.x;
+      r.t = txt.replace(/\s+/g, ' ').trim();
+    });
+    capitulares.forEach(c => {
+      const alvo = rows.filter(r => r.x > c.x && r.x < c.x + c.w + corpoH * 3 && r.y <= c.y + c.h && r.y >= c.y - corpoH).sort((a, b) => b.y - a.y)[0];
+      if (alvo) { alvo.capitular = c.s.trim(); }
+      else rows.push({ y: c.y, h: corpoH, x: c.x, xFim: c.x + c.w, t: c.s.trim(), partes: [] });
+    });
+    return { w: pg.w, rows: rows.filter(r => r.t || r.capitular).sort((a, b) => b.y - a.y) };
+  });
+  const norm = t => t.toLowerCase().replace(/[^a-zà-ÿ0-9]/g, '');
+  const freq = {};
+  paginas.forEach(pg => { const vistos = new Set(); pg.rows.slice(0, 2).concat(pg.rows.slice(-2)).forEach(r => { const k = norm(r.t); if (k.length > 2 && !vistos.has(k)) { vistos.add(k); freq[k] = (freq[k] || 0) + 1; } }); });
+  const cabecalhos = new Set(Object.keys(freq).filter(k => freq[k] >= Math.max(3, paginas.length * 0.3)));
+  const corpoRows = [];
+  paginas.forEach(pg => pg.rows.forEach(r => { if (Math.abs(r.h - corpoH) < corpoH * 0.2 && r.t.length > 25) corpoRows.push(r); }));
+  const moda = arr => { const c = {}; arr.forEach(v => { c[v] = (c[v] || 0) + 1; }); return +Object.keys(c).sort((a, b) => c[b] - c[a])[0]; };
+  const esquerda = moda(corpoRows.map(r => Math.round(r.x)));
+  const direita = moda(corpoRows.map(r => Math.round(r.xFim)));
+  const larg = Math.max(100, direita - esquerda);
+  const espacos = [];
+  paginas.forEach(pg => { for (let i = 1; i < pg.rows.length; i++) { const d = pg.rows[i - 1].y - pg.rows[i].y; if (d > 0 && d < corpoH * 3) espacos.push(Math.round(d * 2) / 2); } });
+  const entre = moda(espacos) || corpoH * 1.4;
+  const ehPontilhada = pg => pg.rows.filter(r => RE_PONTILHADO.test(r.t)).length >= 3 || pg.rows.filter(r => RE_CAP_X.test(r.t)).length >= 3;
+  let inicio = paginas.findIndex(pg => !ehPontilhada(pg) && pg.rows.slice(0, 8).some(r => !cabecalhos.has(norm(r.t)) && (RE_CAP_X.test(r.t) || RE_SEC_X.test(r.t))));
+  if (inicio < 0) inicio = 0;
+  let ultimo = null;
+  const saida = []; let par = []; let epi = []; let capPendente = null; let estado = '';
+  const fechaPar = () => { if (par.length) { saida.push(poesia ? par.join('\n') : par.join(' ').replace(/\s+/g, ' ')); par = []; } };
+  const fechaEpi = () => { if (epi.length) { saida.push('> ' + epi.join(' ').replace(/\s+/g, ' ')); epi = []; } };
+  const capitaliza = t => t.charAt(0).toUpperCase() + t.slice(1).toLowerCase();
+  for (let pi = inicio; pi < paginas.length; pi++) {
+    const pg = paginas[pi];
+    if (ehPontilhada(pg)) continue;
+    const meio = pg.w / 2;
+    const rows = pg.rows.filter(r => !cabecalhos.has(norm(r.t)) && !/^\d{1,4}$/.test(r.t));
+    let anterior = null;
+    rows.forEach((r, idx) => {
+      const t = r.t;
+      const centro = (r.x + r.xFim) / 2;
+      const centralizada = Math.abs((r.x - esquerda) - (direita - r.xFim)) < corpoH * 1.2 && (r.x - esquerda > larg * 0.04 || r.xFim > direita + corpoH * 0.5);
+      const grande = r.h > corpoH * 1.25;
+      const ehTitulo = !r.capitular && t.length < 90 && (RE_CAP_X.test(t) || (RE_SEC_X.test(t) && t.length < 60) || (grande && idx < 8));
+      if (ehTitulo) {
+        fechaPar(); fechaEpi();
+        if (RE_CAP_X.test(t) && t.length < 22 && !/^parte/i.test(t)) { capPendente = capitaliza(t); }
+        else if (capPendente) { saida.push('# ' + capPendente + ' — ' + t); capPendente = null; }
+        else if (estado === 'titulo' && anterior && grande && t === t.toUpperCase()) { saida[saida.length - 1] += ' ' + t; }
+        else saida.push('# ' + t);
+        estado = 'titulo'; anterior = r; ultimo = null; return;
+      }
+      if (capPendente) { saida.push('# ' + capPendente + (t.length < 90 ? ' — ' + t : '')); capPendente = null; estado = 'titulo'; anterior = r; if (t.length < 90) return; }
+      if (estado === 'titulo' || estado === 'epigrafe') {
+        if (estado === 'titulo' && !r.capitular && t === t.toUpperCase() && /[A-ZÀ-Ý]{3}/.test(t) && /^# parte/i.test(saida[saida.length - 1] || '')) { saida[saida.length - 1] += ' ' + t; anterior = r; return; }
+        const antesDaCapitular = rows.slice(idx + 1, idx + 6).some(x => x.capitular) && t.length < 200;
+        if ((centralizada || antesDaCapitular) && !r.capitular) { epi.push(t); estado = 'epigrafe'; anterior = r; return; }
+        fechaEpi(); estado = 'texto';
+      }
+      let texto = r.capitular ? r.capitular + t : t;
+      const continuaCapitular = anterior && anterior.capitular && Math.abs(r.x - anterior.x) < 4;
+      const recuo = r.x - esquerda > corpoH * 0.8 && !continuaCapitular;
+      const salto = anterior && anterior.y - r.y > entre * 1.6;
+      const curtaAnt = !continuaCapitular && anterior && anterior.xFim < direita - larg * 0.15 && /[.!?:”"»)]$/.test(anterior.t);
+      const fimFrase = !ultimo || /[.!?:;”"»)…]$/.test(ultimo.t);
+      const novoPar = r.capitular || (poesia ? salto : ((recuo && fimFrase) || salto || curtaAnt));
+      if (novoPar) fechaPar();
+      if (!poesia && par.length && /[A-Za-zÀ-ÿ]-$/.test(par[par.length - 1]) && /^[a-zà-ÿ]/.test(texto)) par[par.length - 1] = par[par.length - 1].slice(0, -1) + texto;
+      else par.push(texto);
+      anterior = r; ultimo = r;
+    });
+    if (poesia) fechaPar();
+  }
+  fechaPar(); fechaEpi();
+  return saida.join('\n\n');
+}
+
+const TX = { id: null, cache: {}, t0: 0, salvarTimer: null, caps: [] };
+function hasText(b) { return !!(b.hasText || (S.restricted[b.id] || {}).hasText); }
+function posicaoTxt(id) {
+  const r = BIB.livros[id] || {}; const pct = progressPct(id);
+  if (r.modo === 'texto') return `${r.capitulo ? esc(r.capitulo) + ' · ' : ''}${pct}% · ${restanteTxt(id)}`;
+  return r.pages ? `Página ${r.page || 1} de ${r.pages} · ${pct}% · ${restanteTxt(id)}` : 'Leitura iniciada';
+}
+function openBook(b) { return hasText(b) ? openTextBook(b) : openPdfBook(b); }
+async function openTextBook(b) {
+  if (!canAccess(b)) return showRestricted();
+  if (!ONLINE) { toast('A leitura online funciona no site publicado.'); return; }
+  if (!$('bookReader').classList.contains('hidden')) closeBook();
+  closeReader();
+  TX.id = b.id; TX.caps = [];
+  SS.set('almaTinta.lendoAgora', b.id);
+  $('rLabel').textContent = 'Leitura completa';
+  $('rTitle').textContent = b.title; $('rAuthor').textContent = b.author || '';
+  $('rMainTitle').textContent = b.title; $('rMeta').textContent = b.author || '';
+  $('readerBody').innerHTML = '<div class="py-16 text-center opacity-70"><div class="w-10 h-10 mx-auto rounded-full border-2 border-current opacity-40 animate-spin" style="border-top-color:transparent"></div><p class="mt-4 font-display italic text-xl">Abrindo o livro…</p></div>';
+  $('rFoot').innerHTML = '';
+  $('rTocBtn').classList.remove('hidden');
+  const m = $('reader'); m.classList.remove('hidden'); m.classList.add('flex');
+  document.body.style.overflow = 'hidden';
+  applyReaderPrefs();
+  try {
+    let texto = TX.cache[b.id];
+    if (!texto) { texto = (await api('getFullText', b.id, PWD || '')).text || ''; TX.cache[b.id] = texto; }
+    if (TX.id !== b.id) return;
+    $('readerBody').innerHTML = formatPreview(texto);
+    TX.caps = [...$('readerBody').querySelectorAll('h3')];
+    TX.caps.forEach((h, i) => { h.id = 'cap-' + i; });
+    const pdf = pdfLink(b);
+    $('rFoot').innerHTML = `<div data-accent class="text-2xl">✦</div>
+      <p class="text-[10px] uppercase tracking-[0.3em] opacity-70">Fim do livro</p>
+      <div class="flex flex-wrap justify-center gap-3 pt-2">
+        ${hasOnline(b) && (b.hasPdf || (content(b) || {}).pdfUrl) ? `<button data-action="readPdf" data-id="${esc(b.id)}" class="text-[11px] font-semibold uppercase tracking-[0.14em] px-5 py-3 rounded-sm border" style="border-color:currentColor;opacity:.8">📄 Ver as páginas originais</button>` : ''}
+        ${pdf ? `<a href="${esc(pdf)}" target="_blank" rel="noopener" data-download="${esc(b.id)}" data-origem="leitor" class="btn-outline">Baixar PDF ↗</a>` : ''}
+        <button data-action="closeReader" class="text-[11px] font-semibold uppercase tracking-[0.14em] px-5 py-3 rounded-sm border" style="border-color:currentColor;opacity:.7">Fechar leitor</button>
+      </div>
+      <p class="text-[11px] opacity-60 leading-relaxed max-w-md mx-auto pt-4">${avisoDireitos(b)}</p>`;
+    renderTextToc();
+    applyReaderPrefs();
+    const r = bib(b.id);
+    r.modo = 'texto'; r.palavras = words(texto); r.lastRead = Date.now();
+    if (!r.startedAt) r.startedAt = Date.now();
+    if (r.shelf !== 'lidos') r.shelf = 'lendo';
+    bibSave();
+    $('rMeta').textContent = `${b.author || ''} · ${fmtDuracao(r.palavras / 220 * 60)} de leitura`;
+    const sc = $('rScroll');
+    requestAnimationFrame(() => { sc.scrollTop = (r.frac || 0) * Math.max(0, sc.scrollHeight - sc.clientHeight); updateProgress(); atualizarTexto(false); });
+    TX.t0 = Date.now();
+  } catch (e) {
+    $('readerBody').innerHTML = `<div class="py-16 text-center"><p class="font-display italic text-xl">Não foi possível abrir o livro.</p><p class="text-sm opacity-70 mt-2">${esc(errMsg(e))}</p></div>`;
+  }
+}
+function renderTextToc() {
+  const el = $('rToc');
+  const head = `<div class="sticky top-0 bg-paper-light border-b border-ink/10 px-5 py-4 flex items-center justify-between"><p class="eyebrow">Sumário</p><button data-action="rTocToggle" class="text-muted hover:text-wine md:hidden" aria-label="Fechar sumário">✕</button></div>`;
+  if (!TX.caps.length) { el.innerHTML = head + '<p class="px-5 py-6 text-sm text-muted font-display italic">Este texto não tem capítulos marcados.</p>'; return; }
+  el.innerHTML = head + '<div class="py-2">' + TX.caps.map((h, i) => {
+    const t = h.textContent; const parte = /^parte\b/i.test(t);
+    const pedacos = t.split(' — '); const rot = pedacos.length > 1 && /^cap[ií]tulo/i.test(pedacos[0]) ? pedacos[0] : '';
+    const nome = rot ? pedacos.slice(1).join(' — ') : t;
+    return `<button data-action="rTocGo" data-idx="${i}" class="w-full text-left px-5 py-2.5 hover:bg-wine/5 block ${parte ? 'mt-3' : ''}">
+      ${parte ? `<span class="text-[10px] uppercase tracking-[0.18em] text-wine font-semibold block">${esc(t)}</span>` : `${rot ? `<span class="text-[10px] uppercase tracking-wider text-muted block">${esc(rot)}</span>` : ''}<span class="font-display text-base text-ink leading-snug block">${esc(nome)}</span>`}</button>`;
+  }).join('') + '</div>';
+}
+function capituloAtual() {
+  const sc = $('rScroll'); let atual = null;
+  TX.caps.forEach((h, i) => { if (h.offsetTop - 120 <= sc.scrollTop) atual = i; });
+  return atual;
+}
+function atualizarTexto(salvar) {
+  if (!TX.id) return;
+  const sc = $('rScroll'); const max = sc.scrollHeight - sc.clientHeight;
+  const frac = max > 0 ? Math.min(1, sc.scrollTop / max) : 0;
+  const idx = capituloAtual();
+  const nomeCap = idx !== null ? TX.caps[idx].textContent.split(' — ')[0] : '';
+  const b = S.books.find(x => x.id === TX.id);
+  $('rAuthor').textContent = `${(b && b.author) || ''} · ${Math.round(frac * 100)}%${nomeCap ? ' · ' + nomeCap : ''}`;
+  document.querySelectorAll('#rToc [data-idx]').forEach(el => el.classList.toggle('bg-wine/10', +el.dataset.idx === idx));
+  if (!salvar) return;
+  const r = bib(TX.id);
+  r.frac = frac; r.capitulo = nomeCap; r.lastRead = Date.now(); r.modo = 'texto';
+  if (frac >= 0.985 && r.shelf !== 'lidos') { r.shelf = 'lidos'; r.finishedAt = Date.now(); toast('Você terminou o livro ✦ Ele foi para “Lidos”.'); }
+  bibSave();
+}
+function fecharTexto(rerender, jaSalvo) {
+  if (!TX.id) return;
+  if (!jaSalvo) atualizarTexto(true);
+  const r = bib(TX.id); r.seconds = (r.seconds || 0) + Math.min((Date.now() - TX.t0) / 1000, 7200); bibSave();
+  TX.id = null; TX.caps = [];
+  SS.set('almaTinta.lendoAgora', '');
+  $('rTocBtn').classList.add('hidden'); $('rToc').classList.add('hidden');
+  if (rerender) render(true);
+}
+window.addEventListener('pagehide', () => { if (TX.id) atualizarTexto(true); });
+$('rScroll').addEventListener('scroll', () => { if (!TX.id) return; atualizarTexto(false); clearTimeout(TX.salvarTimer); TX.salvarTimer = setTimeout(() => atualizarTexto(true), 700); }, { passive: true });
+
+const TEXTO_FORM = { alterado: false, ocupado: false };
+async function extrairParaFormulario(silencioso) {
+  if (TEXTO_FORM.ocupado) return;
+  const st = $('f-texto-status'); if (!st) return;
+  const arquivo = $('f-pdffile') && $('f-pdffile').files[0];
+  const existente = S.editing !== 'new' && S.books.find(x => x.id === S.editing);
+  if (!arquivo && !(existente && hasOnline(existente))) { if (!silencioso) toast('Escolha o arquivo PDF primeiro (em “Enviar arquivo PDF”).'); return; }
+  TEXTO_FORM.ocupado = true;
+  st.textContent = 'Preparando o leitor de PDF…';
+  try {
+    const lib = await loadPdfJs();
+    let bytes;
+    if (arquivo) bytes = new Uint8Array(await arquivo.arrayBuffer());
+    else { st.textContent = 'Buscando o PDF no Drive…'; bytes = b64ToBytes((await api('getPdfData', existente.id, PWD || '')).b64); }
+    const doc = await lib.getDocument({ data: bytes }).promise;
+    const texto = await extrairTextoPdf(doc, { poesia: $('f-poesia') && $('f-poesia').checked }, (p, n) => { st.textContent = `Lendo o PDF… página ${p} de ${n}`; });
+    if (!$('f-fulltext')) return;
+    $('f-fulltext').value = texto;
+    TEXTO_FORM.alterado = true;
+    const caps = (texto.match(/^# /gm) || []).length;
+    st.innerHTML = `<span class="text-wine">✓ Texto extraído:</span> ${plural(caps, 'título', 'títulos')} de capítulo ou parte, ${words(texto).toLocaleString('pt-BR')} palavras. Revise abaixo se quiser.`;
+    salvarRascunho();
+  } catch (e) {
+    st.textContent = 'Não foi possível extrair o texto: ' + errMsg(e);
+  } finally { TEXTO_FORM.ocupado = false; }
+}
+async function carregarTextoAtual() {
+  const ex = S.editing !== 'new' && S.books.find(x => x.id === S.editing);
+  const st = $('f-texto-status');
+  TEXTO_FORM.alterado = !!($('f-fulltext') && $('f-fulltext').value.trim());
+  if (!ex || !st) return;
+  TEXTO_FORM.alterado = false;
+  if (!hasText(ex)) { st.textContent = hasOnline(ex) ? 'Este livro ainda não tem texto. Clique em “Extrair do PDF”.' : ''; return; }
+  if ($('f-fulltext').value.trim()) { TEXTO_FORM.alterado = true; return; }
+  st.textContent = 'Carregando o texto atual…';
+  try {
+    const t = TX.cache[ex.id] || (await api('getFullText', ex.id, PWD || '')).text || '';
+    TX.cache[ex.id] = t;
+    if ($('f-fulltext') && !$('f-fulltext').value.trim()) { $('f-fulltext').value = t; st.textContent = `Texto atual: ${words(t).toLocaleString('pt-BR')} palavras.`; }
+  } catch (e) { st.textContent = 'Não consegui carregar o texto atual.'; }
+}
+
+const HAS_GAS = !!(window.google && google.script && google.script.run);
+const ONLINE = HAS_GAS || (!!API_URL && location.protocol !== 'file:');
+let PWD = null; try { PWD = sessionStorage.getItem('almaTinta.pwd'); } catch (e) { PWD = null; }
+function api(fn, ...args) {
+  if (HAS_GAS) {
+    return new Promise((resolve, reject) => {
+      google.script.run.withSuccessHandler(resolve).withFailureHandler(reject)[fn](...args);
+    });
+  }
+  if (!API_URL) return Promise.reject(new Error('o endereço do Apps Script não está configurado no index.html.'));
+  return fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ fn, args }), redirect: 'follow' })
+    .then(r => { if (!r.ok) throw new Error('o servidor respondeu com erro ' + r.status + '.'); return r.json(); })
+    .catch(e => { throw (e instanceof SyntaxError || e instanceof TypeError) ? new Error('não consegui falar com o servidor. Confira a internet e se o App da Web está publicado para “Qualquer pessoa”.') : e; })
+    .then(j => { if (!j || !j.ok) throw new Error((j && j.error) || 'erro desconhecido'); return j.data; });
+}
+async function loadCatalog() {
+  const r = await api('getCatalog');
+  S.books = (r && r.books) || [];
+  S.config = (r && r.config) || {};
+  if (S.isAdmin) {
+    try { S.restricted = await api('getRestricted', PWD); } catch (e) { S.restricted = {}; }
+    try { S.downloads = await api('getDownloadStats', PWD); } catch (e) { }
+  }
+  S.mode = 'ready';
+}
+async function doLogin() {
+  if (!ONLINE) { toast('A área do autor funciona apenas no site publicado.'); return; }
+  const pwd = await dialog({ title: 'Área do autor', msg: 'Digite a sua senha (a mesma definida no Código.gs).', icon: '✒', ok: 'Entrar', cancel: 'Cancelar', input: true });
+  if (!pwd) return;
+  try {
+    const ok = await api('login', pwd);
+    if (!ok) { toast('Senha incorreta.'); return; }
+    PWD = pwd; try { sessionStorage.setItem('almaTinta.pwd', pwd); } catch (e) {}
+    S.isAdmin = true; S.assets = true;
+    S.restricted = await api('getRestricted', PWD);
+    try { S.downloads = await api('getDownloadStats', PWD); } catch (e) { }
+    toast('Bem-vindo de volta ✦');
+    render(true);
+  } catch (e) { toast(errMsg(e)); }
+}
+function doLogout() {
+  PWD = null; try { sessionStorage.removeItem('almaTinta.pwd'); } catch (e) {}
+  S.isAdmin = false; S.assets = null; S.restricted = {}; S.editing = null;
+  if (S.route.name === 'painel') location.hash = 'acervo'; else render(true);
+  toast('Você saiu da área do autor.');
+}
+
+function loadImage(src) { return new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = src; }); }
+async function resizeToBlob(file, max, quality) {
+  const img = await loadImage(URL.createObjectURL(file));
+  const sc = Math.min(1, max / Math.max(img.width, img.height));
+  const cv = document.createElement('canvas');
+  cv.width = Math.round(img.width * sc); cv.height = Math.round(img.height * sc);
+  cv.getContext('2d').drawImage(img, 0, 0, cv.width, cv.height);
+  return new Promise(res => cv.toBlob(res, 'image/jpeg', quality));
+}
+function blobToDataUrl(blob) { return new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(r.result); r.onerror = rej; r.readAsDataURL(blob); }); }
+
+function generoEscolhido() {
+  const v = $('f-genre').value;
+  if (v !== '__outro') return v;
+  const novo = $('f-genre-novo').value.trim();
+  return novo ? novo.charAt(0).toUpperCase() + novo.slice(1) : 'Ensaio';
+}
+const RASCUNHO_KEY = 'almaTinta.rascunho';
+const CAMPOS_RASCUNHO = ['f-title', 'f-author', 'f-genre', 'f-genre-novo', 'f-year', 'f-pages', 'f-published', 'f-tagline', 'f-synopsis', 'f-preview', 'f-pdfurl', 'f-fulltext'];
+let rascunhoTimer = null;
+function salvarRascunho() {
+  if (!$('bookForm')) return;
+  const d = { editando: S.editing, quando: Date.now(), campos: {} };
+  CAMPOS_RASCUNHO.forEach(id => { if ($(id)) d.campos[id] = $(id).value; });
+  ['f-locked', 'f-download'].forEach(id => { if ($(id)) d.campos[id] = $(id).checked; });
+  LS.set(RASCUNHO_KEY, d);
+}
+function limparRascunho() { try { localStorage.removeItem(RASCUNHO_KEY); } catch (e) {} }
+function restaurarRascunho() {
+  const d = LS.get(RASCUNHO_KEY, null);
+  if (!d || d.editando !== S.editing || !d.campos) return;
+  Object.keys(d.campos).forEach(id => {
+    const el = $(id); if (!el) return;
+    if (el.type === 'checkbox') { el.checked = !!d.campos[id]; return; }
+    if (id === 'f-genre' && ![...el.options].some(o => o.value === d.campos[id])) el.add(new Option(d.campos[id], d.campos[id]), 0);
+    el.value = d.campos[id];
+  });
+  if ($('f-genre').value === '__outro') $('f-genre-novo').classList.remove('hidden');
+  refreshCoverPreview();
+  toast('Rascunho recuperado ✦ (capa e PDF precisam ser escolhidos de novo)');
+}
+document.addEventListener('input', e => { if (e.target.id === 'f-fulltext') TEXTO_FORM.alterado = true; if (e.target.closest && e.target.closest('#bookForm') && e.target.type !== 'file') { clearTimeout(rascunhoTimer); rascunhoTimer = setTimeout(salvarRascunho, 400); } });
+document.addEventListener('change', e => { if (e.target.closest && e.target.closest('#bookForm') && e.target.type !== 'file') salvarRascunho(); });
+
+async function saveBook() {
+  const val = id => ($(id) ? $(id).value.trim() : '');
+  const title = val('f-title'), author = val('f-author'), synopsis = val('f-synopsis'), previewText = $('f-preview').value.replace(/\s+$/, '');
+  const missing = [!title && 'título', !author && 'autor'].filter(Boolean);
+  if (missing.length) { toast('Preencha: ' + missing.join(', ') + '.'); return; }
+  const pdfUrlRaw = val('f-pdfurl');
+  if (pdfUrlRaw && !safeUrl(pdfUrlRaw)) { toast('O link do PDF precisa ser um endereço completo, começando com https.'); return; }
+
+  const isNew = S.editing === 'new';
+  const btn = $('f-submit'); const label = btn.textContent; btn.disabled = true;
+  try {
+    let capa = null, pdf = null;
+    const coverFile = $('f-cover').files[0];
+    if (coverFile) { btn.textContent = 'Preparando capa…'; capa = await blobToDataUrl(await resizeToBlob(coverFile, 1000, 0.86)); }
+    const pdfFile = $('f-pdffile') && $('f-pdffile').files[0];
+    if (pdfFile) {
+      if (pdfFile.size > 15 * 1024 * 1024) throw { message: 'o PDF passa de 15 MB. Envie-o ao seu Google Drive e cole o link.' };
+      btn.textContent = 'Enviando PDF…'; pdf = await blobToDataUrl(pdfFile);
+    }
+    if (pdfFile && !$('f-fulltext').value.trim()) { btn.textContent = 'Extraindo o texto…'; await extrairParaFormulario(true); }
+    btn.textContent = 'Publicando…';
+    const textoCompleto = TEXTO_FORM.alterado ? $('f-fulltext').value : null;
+    const obra = {
+      id: isNew ? '' : S.editing, title, author, genre: generoEscolhido(), synopsis, previewText,
+      tagline: val('f-tagline'), year: val('f-year'), pages: val('f-pages'),
+      publishedAt: (() => { const t = new Date(val('f-published')).getTime(); return isFinite(t) ? t : Date.now(); })(),
+      pdfUrl: pdfFile ? '' : pdfUrlRaw, isLocked: $('f-locked').checked, allowDownload: $('f-download').checked,
+      removeCover: !coverFile && !!($('f-cover-remove') && $('f-cover-remove').checked)
+    };
+    const id = await api('saveBook', PWD, obra, capa, pdf, textoCompleto);
+    if (typeof textoCompleto === 'string') TX.cache[id] = textoCompleto;
+    limparRascunho(); S.editing = null; SS.set('almaTinta.editando', '');
+    await loadCatalog();
+    toast(isNew ? 'Obra publicada com sucesso ✦' : 'Alterações salvas.');
+    if (location.hash === '#obra-' + id) render(true); else location.hash = 'obra-' + id;
+  } catch (e) {
+    btn.disabled = false; btn.textContent = label;
+    dialog({ title: 'Não foi possível publicar', icon: '!', msg: errMsg(e) + ' — Seu rascunho continua salvo. Se a mensagem falar de autorização ou de função não encontrada, cole o Código.gs mais recente, execute "instalar" uma vez e publique uma nova versão.' });
+  }
+}
+
+async function saveSettings() {
+  try {
+    S.config = await api('saveConfig', PWD, { about: $('s-about').value.trim(), contact: $('s-contact').value.trim() });
+    toast('Informações do site salvas.');
+    renderChrome();
+  } catch (e) { toast(errMsg(e)); }
+}
+
+function applyFicha() {
+  let f;
+  try { f = JSON.parse($('f-ficha').value); } catch (e) { toast('A ficha não é um JSON válido. Copie o bloco inteiro, com as chaves { }.'); return; }
+  const pick = (...keys) => { for (const k of keys) if (f[k] !== undefined && f[k] !== null && f[k] !== '') return f[k]; return undefined; };
+  const set = (id, v) => { if (v !== undefined && $(id)) $(id).value = v; };
+  set('f-title', pick('title', 'titulo', 'título'));
+  set('f-author', pick('author', 'autor'));
+  const g = pick('genre', 'genero', 'gênero');
+  if (g !== undefined) {
+    const sel = $('f-genre');
+    if (![...sel.options].some(o => o.value === g)) sel.add(new Option(g, g), 0);
+    sel.value = g;
+  }
+  set('f-year', pick('year', 'ano'));
+  set('f-pages', pick('pages', 'paginas', 'páginas'));
+  set('f-tagline', pick('tagline', 'frase', 'fraseDeDestaque'));
+  set('f-synopsis', pick('synopsis', 'sinopse'));
+  set('f-preview', pick('previewText', 'previa', 'prévia'));
+  set('f-pdfurl', pick('pdfUrl', 'pdf'));
+  const lk = pick('isLocked', 'restrita');
+  if (lk !== undefined) $('f-locked').checked = !!lk;
+  refreshCoverPreview();
+  $('f-ficha').closest('details').open = false;
+  toast('Campos preenchidos. Agora envie a capa e o PDF ✦');
+}
+
+function goAcervoFiltered() {
+  if (location.hash === '#acervo' || location.hash === '') { render(true); }
+  else location.hash = 'acervo';
+  setTimeout(() => { const s = $('search'); if (s) s.scrollIntoView({ block: 'center' }); }, 60);
+}
+document.addEventListener('click', e => {
+  const el = e.target.closest('[data-action]'); if (!el) return;
+  const a = el.dataset.action, id = el.dataset.id;
+  const book = id ? S.books.find(b => b.id === id) : null;
+  switch (a) {
+    case 'read': if (book) openReader(book); break;
+    case 'fav': e.preventDefault(); toggleFav(id); break;
+    case 'restricted': showRestricted(); break;
+    case 'genre':
+      S.genre = S.genre === el.dataset.genre && !el.classList.contains('btn-link') ? 'Todos' : el.dataset.genre;
+      if (S.route.name === 'acervo') { fillAcervo(); $('search').scrollIntoView({ block: 'start', behavior: 'smooth' }); } else goAcervoFiltered();
+      break;
+    case 'genreFilter': S.genre = el.dataset.genre; S.q = ''; goAcervoFiltered(); break;
+    case 'authorFilter': S.q = el.dataset.author; S.genre = 'Todos'; goAcervoFiltered(); break;
+    case 'clearFilters': S.q = ''; S.genre = 'Todos'; if ($('search')) $('search').value = ''; fillAcervo(); break;
+    case 'scroll': { const c = $(el.dataset.target); if (c) c.scrollBy({ left: +el.dataset.dir * c.clientWidth * 0.85, behavior: 'smooth' }); break; }
+    case 'newBook': S.editing = 'new'; SS.set('almaTinta.editando', 'new'); if (location.hash === '#painel') render(true); else location.hash = 'painel'; window.scrollTo(0, 0); break;
+    case 'edit': S.editing = id; SS.set('almaTinta.editando', id); if (location.hash === '#painel') render(true); else location.hash = 'painel'; window.scrollTo(0, 0); break;
+    case 'cancelEdit': limparRascunho(); S.editing = null; SS.set('almaTinta.editando', ''); render(true); window.scrollTo(0, 0); break;
+    case 'del': deleteBook(id); break;
+    case 'login': doLogin(); break;
+    case 'logout': doLogout(); break;
+    case 'applyFicha': applyFicha(); break;
+    case 'refreshStats': api('getDownloadStats', PWD).then(d => { S.downloads = d; render(true); toast('Registro atualizado.'); }).catch(err => toast(errMsg(err))); break;
+    case 'previewDraft': openReader({ title: $('f-title').value.trim(), author: $('f-author').value.trim() }, $('f-preview').value); break;
+    case 'closeReader': closeReader(); break;
+    case 'readFull': if (book) openBook(book); break;
+    case 'readPdf': if (book) openPdfBook(book); break;
+    case 'readText': { const bk = BR.book; if (bk) { closeBook(); openTextBook(bk); } break; }
+    case 'rTocToggle': $('rToc').classList.toggle('hidden'); break;
+    case 'rTocGo': { const h = TX.caps[+el.dataset.idx]; if (h) { $('rScroll').scrollTop = h.offsetTop - 24; atualizarTexto(true); } if (window.innerWidth < 768) $('rToc').classList.add('hidden'); break; }
+    case 'extrairTexto': extrairParaFormulario(false); break;
+    case 'closeBook': closeBook(); break;
+    case 'brPrev': goBookPage(BR.page - 1); break;
+    case 'brNext': goBookPage(BR.page + 1); break;
+    case 'brZoomIn': BR.zoom = Math.min(3, BR.zoom + 0.25); renderBookPage(); break;
+    case 'brZoomOut': BR.zoom = Math.max(0.5, BR.zoom - 0.25); renderBookPage(); break;
+    case 'tocToggle': $('brToc').classList.toggle('hidden'); setTimeout(renderBookPage, 50); break;
+    case 'tocGo': goBookPage(+el.dataset.page); if (window.innerWidth < 768) $('brToc').classList.add('hidden'); break;
+    case 'bibTab': S.bibTab = el.dataset.tab; render(true); break;
+    case 'fontDown': S.reader.size = Math.max(15, S.reader.size - 1); saveReaderPrefs(); break;
+    case 'fontUp': S.reader.size = Math.min(28, S.reader.size + 1); saveReaderPrefs(); break;
+    case 'theme': S.reader.theme = el.dataset.theme; saveReaderPrefs(); break;
+    case 'dialogOk': closeDialog(true); break;
+    case 'dialogCancel': closeDialog(false); break;
+  }
+});
+document.addEventListener('click', e => {
+  const a = e.target.closest ? e.target.closest('a[data-download]') : null;
+  if (a) logDownload(a.dataset.download, a.dataset.origem);
+});
+document.addEventListener('submit', e => {
+  e.preventDefault();
+  if (e.target.id === 'bookForm') saveBook();
+  else if (e.target.id === 'settingsForm') saveSettings();
+});
+let searchTimer;
+function refreshCoverPreview() {
+  const prev = $('f-cover-prev'); if (!prev) return;
+  if ($('f-cover') && $('f-cover').files[0]) return;
+  const ex = S.editing !== 'new' && S.books.find(x => x.id === S.editing);
+  const keep = ex && (ex.coverUrl || ex.coverData) && !($('f-cover-remove') && $('f-cover-remove').checked);
+  prev.src = keep ? coverSrc(ex) : genCover({ title: $('f-title').value || 'Título', author: $('f-author').value || 'Autor', genre: generoEscolhido() });
+}
+document.addEventListener('input', e => {
+  if (e.target.id === 'search') { S.q = e.target.value; clearTimeout(searchTimer); searchTimer = setTimeout(fillHome, 120); }
+  if (e.target.id === 'f-title' || e.target.id === 'f-author') refreshCoverPreview();
+});
+document.addEventListener('change', e => {
+  const t = e.target;
+  if (t.id === 'sort') { S.sort = t.value; fillHome(); }
+  if (t.id === 'f-cover' && t.files[0]) { $('f-cover-prev').src = URL.createObjectURL(t.files[0]); if ($('f-cover-remove')) $('f-cover-remove').checked = false; }
+  if (t.id === 'f-pdffile' && t.files[0]) { $('f-pdfname').textContent = '✓ ' + t.files[0].name; $('f-pdfurl').value = ''; if (!$('f-fulltext').value.trim()) extrairParaFormulario(true); }
+  if (t.id === 'f-genre') { const outro = t.value === '__outro'; $('f-genre-novo').classList.toggle('hidden', !outro); if (outro) $('f-genre-novo').focus(); }
+  if (t.id === 'f-genre' || t.id === 'f-cover-remove') refreshCoverPreview();
+});
+document.addEventListener('keydown', e => {
+  if (!$('bookReader').classList.contains('hidden') && $('dialog').classList.contains('hidden')) {
+    if (e.key === 'ArrowRight' || e.key === 'PageDown') { e.preventDefault(); goBookPage(BR.page + 1); return; }
+    if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); goBookPage(BR.page - 1); return; }
+    if (e.key === 'Escape') { closeBook(); return; }
+  }
+  if (e.key !== 'Escape') return;
+  if (!$('dialog').classList.contains('hidden')) closeDialog(false);
+  else if (!$('reader').classList.contains('hidden')) closeReader();
+});
+
+function tiltMove(el, x, y) {
+  const r = el.getBoundingClientRect();
+  const px = Math.min(1, Math.max(0, (x - r.left) / r.width)), py = Math.min(1, Math.max(0, (y - r.top) / r.height));
+  el.style.transition = 'transform .08s linear, box-shadow .3s';
+  el.style.transform = `perspective(800px) rotateX(${((0.5 - py) * 16).toFixed(2)}deg) rotateY(${((px - 0.5) * 18).toFixed(2)}deg) translateY(-6px) scale(1.02)`;
+  el.style.setProperty('--gx', (px * 100).toFixed(1) + '%');
+  el.style.setProperty('--gy', (py * 100).toFixed(1) + '%');
+}
+function tiltReset(el) { el.style.transition = ''; el.style.transform = ''; el.classList.remove('touching'); }
+if (!REDUCE) {
+  document.addEventListener('pointermove', e => {
+    const el = e.target.closest ? e.target.closest('.tilt') : null;
+    if (S.tiltEl && S.tiltEl !== el) { tiltReset(S.tiltEl); S.tiltEl = null; }
+    if (!el || (e.pointerType === 'touch' && !el.classList.contains('touching'))) return;
+    S.tiltEl = el; tiltMove(el, e.clientX, e.clientY);
+  }, { passive: true });
+  document.addEventListener('pointerdown', e => {
+    if (e.pointerType !== 'touch') return;
+    const el = e.target.closest ? e.target.closest('.tilt') : null; if (!el) return;
+    el.classList.add('touching'); S.tiltEl = el; tiltMove(el, e.clientX, e.clientY);
+  }, { passive: true });
+  ['pointerup', 'pointercancel'].forEach(t => document.addEventListener(t, e => {
+    if (e.pointerType === 'touch' && S.tiltEl) { tiltReset(S.tiltEl); S.tiltEl = null; }
+  }, { passive: true }));
+  document.documentElement.addEventListener('pointerleave', () => { if (S.tiltEl) { tiltReset(S.tiltEl); S.tiltEl = null; } });
+
+  const depthEls = [...document.querySelectorAll('[data-depth]')];
+  let ticking = false;
+  const parallax = () => {
+    ticking = false; const y = window.scrollY;
+    depthEls.forEach(el => { el.style.transform = `translate3d(0, ${(-y * +el.dataset.depth).toFixed(1)}px, 0)${el.dataset.rot ? ` rotate(${el.dataset.rot}deg)` : ''}`; });
+  };
+  window.addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(parallax); } }, { passive: true });
+  parallax();
+} else {
+  document.querySelectorAll('[data-rot]').forEach(el => el.style.transform = `rotate(${el.dataset.rot}deg)`);
+}
+
+(function goldenDust() {
+  const cv = $('dust'); if (!cv || !cv.getContext) return;
+  const ctx = cv.getContext('2d'); let W = 0, H = 0, parts = [], lastY = window.scrollY;
+  const mk = anywhere => ({
+    x: Math.random() * W, y: anywhere ? Math.random() * H : H + 8,
+    r: Math.random() * 1.5 + 0.4, vy: -(Math.random() * 0.22 + 0.04), vx: (Math.random() - 0.5) * 0.12,
+    ph: Math.random() * 6.283, sp: Math.random() * 0.018 + 0.004, a: Math.random() * 0.45 + 0.15
+  });
+  function size() {
+    const dpr = Math.min(2, window.devicePixelRatio || 1);
+    W = window.innerWidth; H = window.innerHeight;
+    cv.width = W * dpr; cv.height = H * dpr; cv.style.width = W + 'px'; cv.style.height = H + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const n = Math.round(Math.min(85, (W * H) / 15000) * (REDUCE ? 0.5 : 1));
+    parts = Array.from({ length: n }, () => mk(true));
+  }
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    const dy = (window.scrollY - lastY) * 0.2; lastY = window.scrollY;
+    for (const p of parts) {
+      if (!REDUCE) {
+        p.ph += p.sp; p.x += p.vx + Math.sin(p.ph) * 0.12; p.y += p.vy - dy * p.r * 0.35;
+        if (p.y < -12 || p.x < -12 || p.x > W + 12) Object.assign(p, mk(false));
+        if (p.y > H + 14) p.y = -8;
+      }
+      const tw = (Math.sin(p.ph * 2.3) + 1) / 2, al = p.a * (0.35 + 0.65 * tw), R = p.r * 4;
+      const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, R);
+      g.addColorStop(0, `rgba(242,208,128,${al.toFixed(3)})`); g.addColorStop(0.35, `rgba(242,208,128,${(al * 0.35).toFixed(3)})`); g.addColorStop(1, 'rgba(242,208,128,0)');
+      ctx.fillStyle = g; ctx.beginPath(); ctx.arc(p.x, p.y, R, 0, 6.283); ctx.fill();
+    }
+    if (!REDUCE) requestAnimationFrame(draw);
+  }
+  size(); window.addEventListener('resize', () => { size(); if (REDUCE) draw(); }); draw();
+})();
+
+if (!location.hash && SS.get('almaTinta.rota')) { try { history.replaceState(null, '', SS.get('almaTinta.rota')); } catch (e) { location.hash = SS.get('almaTinta.rota'); } }
+S.route = parseRoute();
+if (S.route.name === 'painel' && SS.get('almaTinta.editando')) S.editing = SS.get('almaTinta.editando');
+render(true);
+
+(async function init() {
+  const slowTimer = setTimeout(() => { if (S.mode === 'loading') { S.mode = 'slow'; render(); } }, 10000);
+  if (!ONLINE) {
+    clearTimeout(slowTimer);
+    S.mode = 'offline'; S.books = DEMO_BOOKS.slice(); render(true); return;
+  }
+  try {
+    if (PWD) {
+      try { S.isAdmin = !!(await api('login', PWD)); } catch (e) { S.isAdmin = false; }
+      if (!S.isAdmin) { PWD = null; try { sessionStorage.removeItem('almaTinta.pwd'); } catch (e) {} }
+      S.assets = S.isAdmin || null;
+    }
+    await loadCatalog();
+  } catch (e) {
+    S.mode = S.books.length ? 'ready' : 'error';
+  }
+  clearTimeout(slowTimer);
+  if (S.editing && S.editing !== 'new' && !S.books.some(b => b.id === S.editing)) { S.editing = null; SS.set('almaTinta.editando', ''); }
+  if (S.route.name === 'painel' && !S.isAdmin) S.editing = null;
+  render(true);
+  const aberto = SS.get('almaTinta.lendoAgora');
+  const livro = aberto && S.books.find(b => b.id === aberto);
+  if (livro && canAccess(livro) && hasOnline(livro)) openBook(livro);
+})();
+</script>
+</body>
+</html>
