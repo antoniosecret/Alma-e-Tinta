@@ -122,6 +122,25 @@
     html { overflow-x: hidden; }
     body { overflow-x: hidden; overflow-x: clip; max-width: 100vw; }
     .vitrine-item { overflow-x: clip; }
+    .livro3d-cena { position: relative; perspective: 1500px; touch-action: pan-y; cursor: grab; user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent; }
+    .livro3d-cena.arrastando { cursor: grabbing; }
+    .livro3d-cena::after { content: ''; position: absolute; left: 8%; right: 8%; bottom: -7%; height: 9%; background: radial-gradient(closest-side, rgba(0,0,0,.55), rgba(0,0,0,0)); z-index: -1; transform: scaleX(var(--sombra, 1)); transition: transform .6s; }
+    html.claro .livro3d-cena::after { background: radial-gradient(closest-side, rgba(70,45,20,.35), rgba(70,45,20,0)); }
+    .livro3d { position: absolute; inset: 0; transform-style: preserve-3d; transform: rotateX(var(--incl, 4deg)) rotateY(var(--ang, -18deg)); transition: transform .75s cubic-bezier(.2,.75,.2,1); will-change: transform; }
+    .livro3d-cena.arrastando .livro3d { transition: none; }
+    .l3 { position: absolute; backface-visibility: hidden; -webkit-backface-visibility: hidden; overflow: hidden; }
+    .l3-frente, .l3-verso { inset: 0; border-radius: 2px 4px 4px 2px; background: #2a2018; }
+    .l3-frente { transform: translateZ(calc(var(--d) / 2)); box-shadow: inset 4px 0 8px -4px rgba(0,0,0,.45); }
+    .l3-verso { transform: rotateY(180deg) translateZ(calc(var(--d) / 2)); border-radius: 4px 2px 2px 4px; box-shadow: inset -4px 0 8px -4px rgba(0,0,0,.45); }
+    .l3-frente img, .l3-verso img { width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; }
+    .l3-frente::after, .l3-verso::after { content: ''; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(105deg, rgba(255,255,255,0) 30%, rgba(255,240,210,var(--brilho, .10)) 48%, rgba(255,255,255,0) 62%); }
+    .l3-lombada { top: 0; height: 100%; width: var(--d); left: calc(50% - var(--d) / 2); transform: rotateY(-90deg) translateZ(calc(var(--w) / 2)); background: linear-gradient(90deg, rgba(0,0,0,.35), rgba(255,255,255,.06) 40%, rgba(0,0,0,.3)), var(--cor-lombada, #3a2c20); display: flex; align-items: center; justify-content: center; }
+    .l3-lombada span { writing-mode: vertical-rl; transform: rotate(180deg); font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 600; color: #E9CF7A; font-size: calc(var(--d) * .5); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-height: 88%; letter-spacing: .04em; }
+    .l3-paginas { top: 1.5%; height: 97%; width: calc(var(--d) - 2px); left: calc(50% - var(--d) / 2 + 1px); transform: rotateY(90deg) translateZ(calc(var(--w) / 2 - 3px)); background: repeating-linear-gradient(90deg, #efe4cc 0 1px, #d9ccb0 1px 2px), #efe4cc; box-shadow: inset 0 0 6px rgba(80,60,30,.35); }
+    .l3-topo, .l3-base { left: 1%; width: 97%; height: calc(var(--d) - 2px); top: calc(50% - var(--d) / 2 + 1px); background: repeating-linear-gradient(0deg, #efe4cc 0 1px, #dacdb2 1px 2px); }
+    .l3-topo { transform: rotateX(90deg) translateZ(calc(var(--h) / 2 - 3px)); }
+    .l3-base { transform: rotateX(-90deg) translateZ(calc(var(--h) / 2 - 3px)); }
+    .dica-giro { font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: rgb(var(--c-muted)); }
     .reveal { opacity: 0; transform: translateY(34px); transition: opacity 1s ease, transform 1s cubic-bezier(.2,.7,.2,1); }
     .reveal.visivel { opacity: 1; transform: none; }
     .reveal .reveal-2 { opacity: 0; transform: translateY(18px); transition: opacity .9s ease .25s, transform .9s cubic-bezier(.2,.7,.2,1) .25s; }
@@ -925,8 +944,12 @@ function viewObra(id) {
   <div class="fade-in pt-10">
     <a href="#acervo" class="btn-link">← Voltar ao acervo</a>
     <div class="grid md:grid-cols-[320px_1fr] gap-10 md:gap-16 mt-8 items-start">
-      <div class="tilt spine relative aspect-[2/3] w-60 sm:w-64 md:w-full mx-auto overflow-hidden rounded-[3px] shadow-book-lg bg-paper-darker">
-        ${coverFrame(b)}<span class="glare"></span>
+      <div class="w-60 sm:w-64 md:w-full mx-auto">
+        ${livro3dHtml(b, 'obra')}
+        <div class="mt-9 flex items-center justify-center gap-4 whitespace-nowrap">
+          <span class="dica-giro whitespace-nowrap">↔ Arraste para girar</span>
+          <button data-action="virarLivro" class="whitespace-nowrap text-[10px] uppercase tracking-[0.16em] text-wine hover:underline underline-offset-4">↻ Ver ${b.backCoverUrl ? 'a contracapa' : 'o verso'}</button>
+        </div>
       </div>
       <div class="space-y-6">
         <div class="flex flex-wrap gap-2">
@@ -1131,6 +1154,15 @@ function viewForm() {
           </label>
           ${hasCover ? `<label class="flex items-center gap-2 text-xs text-muted"><input type="checkbox" id="f-cover-remove" class="accent-[#D9B45F]"> Usar capa automática</label>` : ''}
           <p class="text-[11px] text-muted leading-snug">Ideal: vertical (2:3). Sem imagem, criamos uma capa de tecido com letras douradas.</p>
+          <span class="label !mt-6 block">Contracapa</span>
+          <div class="relative aspect-[2/3] bg-paper-darker rounded-[3px] overflow-hidden shadow-book">
+            <img id="f-back-prev" src="${esc(versoSrc(b.title ? b : { title: 'Título', author: 'Autor', genre: b.genre || 'Ensaio' }))}" alt="Prévia da contracapa" class="w-full h-full object-cover">
+          </div>
+          <label class="btn-outline w-full !text-[10px] !py-2 cursor-pointer">
+            Escolher contracapa<input type="file" id="f-back" accept="image/png,image/jpeg,image/webp,image/gif" class="hidden">
+          </label>
+          ${b.backCoverUrl ? `<label class="flex items-center gap-2 text-xs text-muted"><input type="checkbox" id="f-back-remove" class="accent-[#D9B45F]"> Usar contracapa automática</label>` : ''}
+          <p class="text-[11px] text-muted leading-snug">Opcional. Aparece quando a pessoa gira o livro em 3D. Sem imagem, criamos uma com a frase principal e a sinopse.</p>
         </div>
         <div class="space-y-5">
           <div><label class="label" for="f-title">Título *</label><input id="f-title" class="field font-display !text-xl" required value="${esc(b.title || '')}"></div>
@@ -2711,9 +2743,8 @@ function vitrineHtml(livros, rotulo) {
       <div class="relative md:col-span-5 ${inverso ? 'md:order-2' : ''} flex justify-center py-6">
         ${manchaTinta(b.id, '', 'width:135%;left:-18%;top:-14%')}
         ${manchaTinta(b.id + 'ouro', 'ouro', 'width:110%;left:5%;top:0%')}
-        <a href="#obra-${esc(b.id)}" class="vitrine-capa tilt spine relative block w-52 sm:w-60 md:w-72 aspect-[2/3] overflow-hidden rounded-[3px] bg-paper-darker shadow-book-lg z-10" aria-label="${esc(b.title)}">
-          ${coverFrame(b)}<span class="glare"></span>
-          ${pct > 0 && sh !== 'lidos' ? `<div class="absolute bottom-0 inset-x-0 z-10 h-1.5 bg-black/55"><div class="h-full bg-gradient-to-r from-gold to-wine-light" style="width:${pct}%"></div></div>` : ''}
+        <a href="#obra-${esc(b.id)}" class="relative block w-52 sm:w-60 md:w-72 z-10" aria-label="${esc(b.title)}" draggable="false">
+          ${livro3dHtml(b, 'vitrine', pct > 0 && sh !== 'lidos' ? pct : 0)}
         </a>
       </div>
       <div class="relative md:col-span-7 ${inverso ? 'md:order-1 md:text-right' : ''} reveal-2">
@@ -2813,6 +2844,105 @@ function sincronizarFrases() {
   oculto.value = [...document.querySelectorAll('#f-frases .f-frase')].map(x => x.value.replace(/\s+/g, ' ').trim()).filter(Boolean).join('\n');
   if (typeof salvarRascunho === 'function') { clearTimeout(rascunhoTimer); rascunhoTimer = setTimeout(salvarRascunho, 400); }
 }
+
+const VERSO_CACHE = {};
+function genContracapa(b) {
+  const chave = [b.title, b.author, b.genre, b.tagline, (b.synopsis || '').slice(0, 60)].join('|');
+  if (VERSO_CACHE[chave]) return VERSO_CACHE[chave];
+  const [a, c] = TONES[b.genre] || ['#4a3f35', '#28211b'];
+  const frase = frasePrincipal(b);
+  const fr = frase ? wrapWords('“' + frase + '”', 30).slice(0, 5) : [];
+  let sin = String(b.synopsis || '').replace(/\s+/g, ' ').trim();
+  if (sin.length > 430) sin = sin.slice(0, 430).replace(/\s\S*$/, '') + '…';
+  const sl = sin ? wrapWords(sin, 44).slice(0, 12) : [];
+  let y = 92; let corpo = '';
+  fr.forEach(l => { corpo += `<text x="200" y="${y}" text-anchor="middle" font-family="Cormorant Garamond, Georgia, serif" font-style="italic" font-size="21" fill="#E9CF7A">${esc(l)}</text>`; y += 27; });
+  if (fr.length) { y += 8; corpo += `<line x1="175" y1="${y}" x2="225" y2="${y}" stroke="#E9CF7A" stroke-opacity=".5"/>`; y += 30; }
+  sl.forEach(l => { corpo += `<text x="200" y="${y}" text-anchor="middle" font-family="Georgia, serif" font-size="13.5" fill="#F6EEDB" fill-opacity=".86">${esc(l)}</text>`; y += 20; });
+  const svg = `<svg xmlns="${SVG_NS}" viewBox="0 0 400 600">
+    <defs><linearGradient id="g" x1="1" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${a}"/><stop offset="1" stop-color="${c}"/></linearGradient>
+    <filter id="t"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2"/><feColorMatrix values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .12 0"/></filter></defs>
+    <rect width="400" height="600" fill="url(#g)"/><rect width="400" height="600" filter="url(#t)"/>
+    <rect x="26" y="26" width="348" height="548" fill="none" stroke="#E9CF7A" stroke-opacity=".45"/>
+    ${corpo}
+    <circle cx="200" cy="502" r="21" fill="none" stroke="#E9CF7A" stroke-opacity=".7"/>
+    <text x="200" y="509" text-anchor="middle" font-family="Cormorant Garamond, Georgia, serif" font-weight="600" font-size="18" fill="#E9CF7A">A&amp;T</text>
+    <text x="200" y="550" text-anchor="middle" font-family="Cormorant Garamond, Georgia, serif" font-size="12" fill="#E9CF7A" fill-opacity=".65" letter-spacing="5">ALMA &amp; TINTA</text>
+  </svg>`;
+  return (VERSO_CACHE[chave] = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg));
+}
+function versoSrc(b) {
+  if (b.backCoverUrl && String(b.backCoverUrl).startsWith('https:' + BARRAS)) return b.backCoverUrl;
+  return genContracapa(b);
+}
+function espessuraLivro(b) { const p = +b.pages || 120; return Math.max(16, Math.min(46, 10 + p * 0.09)); }
+function livro3dHtml(b, onde, pct) {
+  const tom = (TONES[b.genre] || ['#4a3f35', '#28211b'])[1];
+  return `<div class="livro3d-cena aspect-[2/3] w-full" data-livro3d data-onde="${onde}" data-esp="${espessuraLivro(b).toFixed(1)}" style="--cor-lombada:${tom}">
+    <div class="livro3d">
+      <div class="l3 l3-frente"><img src="${esc(coverSrc(b))}" data-fallback="${esc(b.id || '')}" alt="Capa de ${esc(b.title)}" draggable="false" ${onde === 'obra' ? '' : 'loading="lazy"'}>${pct ? `<div class="absolute bottom-0 inset-x-0 h-1.5 bg-black/55"><div class="h-full bg-gradient-to-r from-gold to-wine-light" style="width:${pct}%"></div></div>` : ''}</div>
+      <div class="l3 l3-verso"><img src="${esc(versoSrc(b))}" alt="Contracapa de ${esc(b.title)}" draggable="false" loading="lazy"></div>
+      <div class="l3 l3-lombada"><span>${esc(b.title)}</span></div>
+      <div class="l3 l3-paginas"></div><div class="l3 l3-topo"></div><div class="l3 l3-base"></div>
+    </div></div>`;
+}
+const DESCANSO = -18;
+function iniciarLivros3d() {
+  document.querySelectorAll('[data-livro3d]:not([data-pronto])').forEach(cena => {
+    cena.dataset.pronto = '1';
+    const livro = cena.querySelector('.livro3d');
+    let ang = DESCANSO, ang0 = 0, x0 = 0, y0 = 0, t0 = 0, xAnt = 0, tAnt = 0, vel = 0, ativo = false, arrastou = false, idPonteiro = null;
+    const medir = () => {
+      const w = cena.offsetWidth, h = cena.offsetHeight; if (!w) return;
+      const esp = Math.max(12, Math.min(+cena.dataset.esp || 22, w * 0.16));
+      cena.style.setProperty('--w', w + 'px'); cena.style.setProperty('--h', h + 'px'); cena.style.setProperty('--d', esp.toFixed(1) + 'px');
+    };
+    const aplicar = () => {
+      livro.style.setProperty('--ang', ang.toFixed(2) + 'deg');
+      const lado = Math.cos(ang * Math.PI / 180);
+      cena.style.setProperty('--sombra', (0.75 + 0.25 * Math.abs(lado)).toFixed(3));
+      livro.style.setProperty('--brilho', (0.04 + 0.12 * Math.max(0, Math.sin((ang + 40) * Math.PI / 180))).toFixed(3));
+    };
+    const encaixar = alvo => { ang = alvo; aplicar(); };
+    const maisPerto = a => { const k = Math.round((a - DESCANSO) / 180); return DESCANSO + k * 180; };
+    cena.virar = () => encaixar(maisPerto(ang) + 180);
+    medir(); aplicar();
+    if (window.ResizeObserver) new ResizeObserver(medir).observe(cena); else window.addEventListener('resize', medir);
+    cena.addEventListener('pointerdown', e => {
+      if (e.button !== undefined && e.button !== 0) return;
+      ativo = true; arrastou = false; idPonteiro = e.pointerId; x0 = xAnt = e.clientX; y0 = e.clientY; t0 = tAnt = performance.now(); ang0 = ang; vel = 0;
+    });
+    cena.addEventListener('pointermove', e => {
+      if (!ativo || e.pointerId !== idPonteiro) return;
+      const dx = e.clientX - x0, dy = e.clientY - y0;
+      if (!arrastou) {
+        if (Math.abs(dx) < 6) return;
+        if (Math.abs(dy) > Math.abs(dx)) { ativo = false; return; }
+        arrastou = true; cena.classList.add('arrastando'); try { cena.setPointerCapture(e.pointerId); } catch (err) {}
+      }
+      const agora = performance.now();
+      vel = (e.clientX - xAnt) / Math.max(1, agora - tAnt); xAnt = e.clientX; tAnt = agora;
+      ang = ang0 + dx * (300 / Math.max(240, cena.offsetWidth * 1.6)); aplicar();
+      e.preventDefault();
+    });
+    const soltar = e => {
+      if (!ativo) return; ativo = false;
+      if (!arrastou) return;
+      cena.classList.remove('arrastando');
+      const projetado = ang + Math.max(-1.2, Math.min(1.2, vel)) * 160;
+      encaixar(maisPerto(projetado));
+      cena.dataset.recemArrastado = '1'; setTimeout(() => { delete cena.dataset.recemArrastado; }, 350);
+    };
+    cena.addEventListener('pointerup', soltar); cena.addEventListener('pointercancel', soltar);
+    cena.addEventListener('click', e => { if (cena.dataset.recemArrastado) { e.preventDefault(); e.stopPropagation(); } }, true);
+    if (cena.dataset.onde === 'obra' && !REDUCE && !SS.get('almaTinta.dicaGiro')) {
+      SS.set('almaTinta.dicaGiro', '1');
+      setTimeout(() => { encaixar(DESCANSO - 55); setTimeout(() => encaixar(DESCANSO), 750); }, 900);
+    }
+  });
+}
+let livros3dAgendado = false;
+new MutationObserver(() => { if (livros3dAgendado) return; livros3dAgendado = true; requestAnimationFrame(() => { livros3dAgendado = false; iniciarLivros3d(); }); }).observe(document.body, { childList: true, subtree: true });
 
 const TEXTO_FORM = { alterado: false, ocupado: false };
 async function extrairParaFormulario(silencioso) {
@@ -2961,6 +3091,9 @@ async function saveBook() {
     let capa = null, pdf = null;
     const coverFile = $('f-cover').files[0];
     if (coverFile) { btn.textContent = 'Preparando capa…'; capa = await blobToDataUrl(await resizeToBlob(coverFile, 1000, 0.86)); }
+    let contracapa = null;
+    const backFile = $('f-back') && $('f-back').files[0];
+    if (backFile) { btn.textContent = 'Preparando contracapa…'; contracapa = await blobToDataUrl(await resizeToBlob(backFile, 1000, 0.86)); }
     const pdfFile = $('f-pdffile') && $('f-pdffile').files[0];
     if (pdfFile) {
       if (pdfFile.size > 15 * 1024 * 1024) throw { message: 'o PDF passa de 15 MB. Envie-o ao seu Google Drive e cole o link.' };
@@ -2974,9 +3107,10 @@ async function saveBook() {
       tagline: val('f-tagline'), year: val('f-year'), pages: val('f-pages'),
       publishedAt: (() => { const t = new Date(val('f-published')).getTime(); return isFinite(t) ? t : Date.now(); })(),
       pdfUrl: pdfFile ? '' : pdfUrlRaw, isLocked: $('f-locked').checked, allowDownload: $('f-download').checked,
-      removeCover: !coverFile && !!($('f-cover-remove') && $('f-cover-remove').checked)
+      removeCover: !coverFile && !!($('f-cover-remove') && $('f-cover-remove').checked),
+      removeBackCover: !backFile && !!($('f-back-remove') && $('f-back-remove').checked)
     };
-    const id = await api('saveBook', PWD, obra, capa, pdf, textoCompleto);
+    const id = await api('saveBook', PWD, obra, capa, pdf, textoCompleto, contracapa);
     if (typeof textoCompleto === 'string') TX.cache[id] = textoCompleto;
     limparRascunho(); S.editing = null; SS.set('almaTinta.editando', '');
     await loadCatalog();
@@ -3097,6 +3231,7 @@ document.addEventListener('click', e => {
     case 'ttsProx': ttsPular(1); break;
     case 'ttsVel': ttsVelocidade(); break;
     case 'ttsParar': ttsParar(); break;
+    case 'virarLivro': { const c = document.querySelector('#view [data-livro3d]'); if (c && c.virar) c.virar(); break; }
     case 'outraFrase': outraFrase(); break;
     case 'maisFrase': { const lista = $('f-frases'); if (lista) { lista.insertAdjacentHTML('beforeend', campoFrase(lista.children.length, '')); lista.lastElementChild.querySelector('input').focus(); } break; }
     case 'tirarFrase': { const linha = el.closest('[data-frase]'); if (linha) { linha.querySelector('input').value = ''; sincronizarFrases(); if ($('f-frases').children.length > 5) { linha.remove(); renumerarFrases(); } } break; }
@@ -3156,6 +3291,7 @@ document.addEventListener('input', e => {
 document.addEventListener('change', e => {
   const t = e.target;
   if (t.id === 'sort') { S.sort = t.value; fillHome(); }
+  if (t.id === 'f-back' && t.files[0]) { $('f-back-prev').src = URL.createObjectURL(t.files[0]); if ($('f-back-remove')) $('f-back-remove').checked = false; }
   if (t.id === 'f-cover' && t.files[0]) { $('f-cover-prev').src = URL.createObjectURL(t.files[0]); if ($('f-cover-remove')) $('f-cover-remove').checked = false; }
   if (t.id === 'f-pdffile' && t.files[0]) { $('f-pdfname').textContent = '✓ ' + t.files[0].name; $('f-pdfurl').value = ''; if (!$('f-fulltext').value.trim()) extrairParaFormulario(true); }
   if (t.id === 'f-genre') { const outro = t.value === '__outro'; $('f-genre-novo').classList.toggle('hidden', !outro); if (outro) $('f-genre-novo').focus(); }
