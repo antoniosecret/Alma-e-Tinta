@@ -1139,7 +1139,8 @@ function viewForm() {
 
       <details class="border border-wine/25 rounded-sm p-4 bg-wine/5">
         <summary class="cursor-pointer text-xs uppercase tracking-[0.14em] text-wine font-semibold">✦ Colar ficha pronta (gerada pelo Claude)</summary>
-        <textarea id="f-ficha" rows="5" class="field font-mono !text-xs mt-3" placeholder='{ "title": "…", "author": "…", "genre": "Ensaio", "year": 2026, "pages": 90, "tagline": "…", "synopsis": "…", "previewText": "…" }'></textarea>
+        <textarea id="f-ficha" rows="5" class="field font-mono !text-xs mt-3" placeholder='{ "title": "…", "author": "…", "genre": "Ensaio", "year": 2026, "pages": 90, "frases": ["…", "…", "…", "…", "…"], "synopsis": "…", "previewText": "…" }'></textarea>
+        <button type="button" data-action="copiarPedidoFicha" class="mt-3 mr-2 text-[10px] uppercase tracking-[0.16em] text-muted hover:text-wine">⧉ Copiar pedido para o Claude</button>
         <button type="button" data-action="applyFicha" class="btn-outline mt-3 !text-[10px] !py-2">Preencher os campos</button>
       </details>
 
@@ -2944,6 +2945,27 @@ function iniciarLivros3d() {
 let livros3dAgendado = false;
 new MutationObserver(() => { if (livros3dAgendado) return; livros3dAgendado = true; requestAnimationFrame(() => { livros3dAgendado = false; iniciarLivros3d(); }); }).observe(document.body, { childList: true, subtree: true });
 
+function frasesDaFicha(f) {
+  const lista = [];
+  const juntar = v => {
+    if (v == null) return;
+    if (Array.isArray(v)) { v.forEach(juntar); return; }
+    if (typeof v === 'object') { juntar(v.texto || v.text || v.frase || v.quote || ''); return; }
+    String(v).split(/\n+|\s\|\s/).forEach(x => { const t = x.replace(/^\s*(\d+[.)-]|[-•*])\s+/, '').replace(/^["“”']+|["“”']+$/g, '').trim(); if (t) lista.push(t); });
+  };
+  const chaves = Object.keys(f || {});
+  const primeiro = chaves.filter(k => /^(tagline|frase(principal)?|frasededestaque|fraseprincipal)$/i.test(k.replace(/[\s_-]/g, '')));
+  const outros = chaves.filter(k => !primeiro.includes(k) && /frase|destaque|tagline|cita[cç]|quote|highlight/i.test(k));
+  primeiro.concat(outros).forEach(k => juntar(f[k]));
+  const vistos = new Set();
+  return lista.filter(t => { const n = t.toLowerCase(); if (vistos.has(n)) return false; vistos.add(n); return true; });
+}
+const PEDIDO_FICHA = 'Leia o PDF do meu livro e me devolva só um JSON (sem comentários) para colar no site Alma & Tinta, neste formato:\n{ "title": "", "author": "", "genre": "Ensaio", "year": 2026, "pages": 0, "frases": ["", "", "", "", ""], "synopsis": "", "previewText": "" }\nEm "frases", coloque 5 frases de destaque marcantes, tiradas do próprio livro, sem aspas, a mais forte primeiro. Em "synopsis", uma sinopse de 2 parágrafos. Em "previewText", o começo do livro em texto (capítulos com # no início da linha).';
+async function copiarPedidoFicha() {
+  try { await navigator.clipboard.writeText(PEDIDO_FICHA); toast('Pedido copiado ✦ Cole numa conversa com o Claude junto com o PDF do livro.'); }
+  catch (e) { dialog({ title: 'Copie o pedido', msg: PEDIDO_FICHA, icon: '⧉', ok: 'Fechar' }); }
+}
+
 const TEXTO_FORM = { alterado: false, ocupado: false };
 async function extrairParaFormulario(silencioso) {
   if (TEXTO_FORM.ocupado) return;
@@ -3145,11 +3167,7 @@ function applyFicha() {
   }
   set('f-year', pick('year', 'ano'));
   set('f-pages', pick('pages', 'paginas', 'páginas'));
-  { const fr = pick('frases', 'frasesDeDestaque', 'taglines'); const tg = pick('tagline', 'frase', 'fraseDeDestaque');
-    if (Array.isArray(fr)) set('f-tagline', fr.map(x => String(x).trim()).filter(Boolean).join('\n'));
-    else if (Array.isArray(tg)) set('f-tagline', tg.map(x => String(x).trim()).filter(Boolean).join('\n'));
-    else set('f-tagline', tg);
-    montarFrases(); }
+  { const frases = frasesDaFicha(f); if (frases.length) set('f-tagline', frases.join('\n')); montarFrases(); }
   set('f-synopsis', pick('synopsis', 'sinopse'));
   set('f-preview', pick('previewText', 'previa', 'prévia'));
   set('f-pdfurl', pick('pdfUrl', 'pdf'));
@@ -3231,6 +3249,7 @@ document.addEventListener('click', e => {
     case 'ttsProx': ttsPular(1); break;
     case 'ttsVel': ttsVelocidade(); break;
     case 'ttsParar': ttsParar(); break;
+    case 'copiarPedidoFicha': copiarPedidoFicha(); break;
     case 'virarLivro': { const c = document.querySelector('#view [data-livro3d]'); if (c && c.virar) c.virar(); break; }
     case 'outraFrase': outraFrase(); break;
     case 'maisFrase': { const lista = $('f-frases'); if (lista) { lista.insertAdjacentHTML('beforeend', campoFrase(lista.children.length, '')); lista.lastElementChild.querySelector('input').focus(); } break; }
