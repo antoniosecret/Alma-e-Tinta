@@ -66,7 +66,7 @@
     }
     html.claro [data-depth][class*="aspect-[1/2]"] { color: rgba(92,58,30,.2) !important; }
     html.claro [data-depth][class*="aspect-[11/12]"] { color: rgba(120,78,40,.12) !important; }
-    html.claro [data-depth].rounded-full { opacity: .8; }
+    html.claro [data-depth][style*="radial-gradient"] { opacity: .8; }
     html.claro #quill path { stroke: #7a4e1c; }
     html.claro #quill path:first-child { fill: #b8853a; fill-opacity: .3; }
     .filigrana { color: rgb(var(--c-wine) / .22); }
@@ -74,7 +74,7 @@
     html.claro .text-muted\/60, html.claro .text-muted\/70, html.claro .text-muted\/80 { color: rgb(var(--c-muted)); }
     html.claro .text-ink\/85, html.claro .text-ink\/90, html.claro .text-ink\/95 { color: rgb(var(--c-ink)); }
     html.claro footer { background-color: rgb(var(--c-paper-dark) / .85); }
-    html.claro .mancha { color: #5c3a1c; opacity: .13; filter: blur(2px); }
+    html.claro .mancha { color: #5c3a1c; opacity: .12; }
     html.claro .mancha.ouro { color: #a0702a; opacity: .18; }
     html.claro .numeral { -webkit-text-stroke: 1.2px rgb(var(--c-wine) / .38); }
     html.claro .btn-primary { background: linear-gradient(135deg, #9A3040 0%, #7A1F2B 50%, #5E1620 100%); color: #FFF8EC; }
@@ -123,8 +123,8 @@
     .reveal.visivel { opacity: 1; transform: none; }
     .reveal .reveal-2 { opacity: 0; transform: translateY(18px); transition: opacity .9s ease .25s, transform .9s cubic-bezier(.2,.7,.2,1) .25s; }
     .reveal.visivel .reveal-2 { opacity: 1; transform: none; }
-    .mancha { position: absolute; pointer-events: none; color: rgb(var(--c-gold)); opacity: .13; filter: blur(2.5px); }
-    .mancha.ouro { color: #8a6a3a; opacity: .16; filter: blur(6px); }
+    .mancha { position: absolute; pointer-events: none; color: rgb(var(--c-gold)); opacity: .13; }
+    .mancha.ouro { color: #8a6a3a; opacity: .14; }
     .numeral { font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 600; line-height: .8; color: transparent; -webkit-text-stroke: 1px rgb(var(--c-wine) / .28); user-select: none; pointer-events: none; }
     .vitrine-capa { transition: transform .8s cubic-bezier(.2,.7,.2,1); }
     .vitrine-item:hover .vitrine-capa { transform: translateY(-6px) rotate(-1deg); }
@@ -175,7 +175,15 @@
     #reader.ouvindo #ttsBar { display: flex; }
     .cor-ponto { width: 22px; height: 22px; border-radius: 9999px; border: 2px solid rgba(255,255,255,.25); }
     .cor-ponto.ativa { border-color: #fff; box-shadow: 0 0 0 2px #d9b55c; }
-    .tchar { opacity: 0; animation: inkIn .55s ease forwards; }
+    .tchar { opacity: 0; color: rgb(var(--c-wine)); transition: opacity .5s ease, color 1.4s ease; }
+    .tchar.on { opacity: 1; color: inherit; }
+    .pena-voo { position: absolute; left: 0; top: 0; width: .8em; height: 1.6em; margin-top: -1.6em; transform-origin: 0 100%; pointer-events: none; will-change: transform, opacity; z-index: 2; opacity: 0; transition: opacity .25s; filter: drop-shadow(0 4px 6px rgba(0,0,0,.35)); }
+    .pena-voo path { vector-effect: non-scaling-stroke; }
+    .pena-voo { color: #EBCF8E; }
+    html.claro .pena-voo { color: #6b4219; }
+    html.claro .pena-voo { filter: drop-shadow(0 4px 5px rgba(80,50,20,.25)); }
+    #quill { transition: opacity .35s ease; }
+    #quill.fora { opacity: 0; }
     @keyframes inkIn { from { opacity: 0; filter: blur(4px); transform: translateY(2px); } to { opacity: 1; filter: none; transform: none; } }
     .quill { transform-origin: 30% 90%; }
     .quill.writing { animation: quillWrite .32s ease-in-out infinite; }
@@ -199,10 +207,10 @@
 
   <!-- CAMADAS DE PROFUNDIDADE (parallax) -->
   <div class="fixed inset-0 z-0 pointer-events-none overflow-hidden" aria-hidden="true">
-    <div data-depth="0.05" class="absolute -top-[15vh] -left-[20vw] w-[60vw] h-[60vw] rounded-full bg-wine-deep/40 blur-[120px]"></div>
-    <div data-depth="0.12" class="absolute top-[10vh] -right-[15vw] w-[45vw] h-[45vw] rounded-full bg-gold/10 blur-[110px]"></div>
-    <div data-depth="0.08" class="absolute top-[120vh] left-[35vw] w-[55vw] h-[55vw] rounded-full bg-wine-deep/30 blur-[130px]"></div>
-    <div data-depth="0.18" class="absolute top-[200vh] -left-[10vw] w-[40vw] h-[40vw] rounded-full bg-gold/[0.07] blur-[110px]"></div>
+    <div data-depth="0.05" class="absolute -top-[15vh] -left-[20vw] w-[60vw] h-[60vw]" style="background:radial-gradient(closest-side, rgb(var(--c-wine-deep) / 0.4), rgb(var(--c-wine-deep) / 0))"></div>
+    <div data-depth="0.12" class="absolute top-[10vh] -right-[15vw] w-[45vw] h-[45vw]" style="background:radial-gradient(closest-side, rgb(var(--c-gold) / 0.1), rgb(var(--c-gold) / 0))"></div>
+    <div data-depth="0.08" class="absolute top-[120vh] left-[35vw] w-[55vw] h-[55vw]" style="background:radial-gradient(closest-side, rgb(var(--c-wine-deep) / 0.3), rgb(var(--c-wine-deep) / 0))"></div>
+    <div data-depth="0.18" class="absolute top-[200vh] -left-[10vw] w-[40vw] h-[40vw]" style="background:radial-gradient(closest-side, rgb(var(--c-gold) / 0.07), rgb(var(--c-gold) / 0))"></div>
     <div data-depth="0.32" data-rot="-28" class="absolute top-[18vh] left-[4vw] w-[22vw] max-w-[260px] min-w-[150px] aspect-[1/2] text-gold/[0.07]"><svg viewBox="0 0 200 400" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-full h-full"><path d="M58 384 L72 330 C84 250 104 150 150 62 C165 36 180 18 192 8 C194 40 186 92 170 142 C154 192 128 244 94 302 L72 338 Z" fill="currentColor" fill-opacity=".35"/><path d="M60 378 L184 22"/><path d="M96 300 L74 296 M112 262 L84 254 M128 222 L96 210 M142 184 L108 168 M156 146 L122 126 M168 108 L138 86 M178 72 L156 50 M106 270 L132 286 M124 232 L150 240 M140 194 L164 196 M154 156 L174 152 M166 118 L182 108"/><path d="M58 384 L52 398" stroke-width="3"/></svg></div>
     <div data-depth="0.22" data-rot="12" class="absolute top-[78vh] right-[6vw] w-[24vw] max-w-[300px] min-w-[160px] aspect-[11/12] text-wine-deep/30"><svg viewBox="0 0 220 240" fill="currentColor" class="w-full h-full"><path d="M104 52 C138 48 162 72 160 104 C158 128 172 140 166 158 C158 182 128 176 112 186 C96 196 70 192 60 170 C50 148 34 140 44 116 C54 92 70 56 104 52 Z"/><path d="M118 184 C122 204 120 222 114 234 C110 220 108 202 112 186 Z"/><path d="M70 176 C68 190 64 200 58 206 C58 194 60 184 64 176 Z"/><circle cx="182" cy="84" r="12"/><circle cx="196" cy="120" r="6"/><circle cx="30" cy="84" r="9"/><circle cx="16" cy="140" r="5"/><circle cx="150" cy="30" r="7"/><circle cx="62" cy="34" r="4"/><circle cx="188" cy="176" r="8"/><circle cx="40" cy="200" r="4"/></svg></div>
     <div data-depth="0.4" data-rot="20" class="absolute top-[150vh] left-[24vw] w-[18vw] max-w-[220px] min-w-[130px] aspect-[1/2] text-gold/[0.06]"><svg viewBox="0 0 200 400" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-full h-full"><path d="M58 384 L72 330 C84 250 104 150 150 62 C165 36 180 18 192 8 C194 40 186 92 170 142 C154 192 128 244 94 302 L72 338 Z" fill="currentColor" fill-opacity=".35"/><path d="M60 378 L184 22"/><path d="M96 300 L74 296 M112 262 L84 254 M128 222 L96 210 M142 184 L108 168 M156 146 L122 126 M168 108 L138 86 M178 72 L156 50 M106 270 L132 286 M124 232 L150 240 M140 194 L164 196 M154 156 L174 152 M166 118 L182 108"/><path d="M58 384 L52 398" stroke-width="3"/></svg></div>
@@ -215,7 +223,7 @@
 
 
   <!-- CABEÇALHO -->
-  <header class="border-b border-ink/10 bg-paper/90 backdrop-blur-md sticky top-0 z-40">
+  <header class="border-b border-ink/10 bg-paper/95 sticky top-0 z-40">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between gap-4">
       <a href="#acervo" class="flex items-center gap-3 shrink-0 group" aria-label="Alma & Tinta — início">
         <svg viewBox="0 0 48 48" class="w-11 h-11 shrink-0 transition-transform duration-500 group-hover:rotate-[8deg]" aria-hidden="true">
@@ -684,7 +692,7 @@ function fillAcervo() {
   const loading = S.mode === 'loading' && !S.books.length;
   const pick = loading ? null : pickQuote();
   const key = loading ? 'loading' : (pick ? pick.id + (canAccess(pick) ? '' : ':l') : 'none');
-  if (hero.dataset.key !== key) { hero.dataset.key = key; hero.innerHTML = heroHtml(pick); }
+  if (hero.dataset.key !== key) { hero.dataset.key = key; hero.innerHTML = heroHtml(pick); if (S.penaPendente) { const pp = S.penaPendente; S.penaPendente = null; requestAnimationFrame(() => iniciarPena(pp)); } }
   const genres = presentGenres();
   if (S.genre !== 'Todos' && !genres.includes(S.genre)) S.genre = 'Todos';
   $('chips').innerHTML = genres.length > 1
@@ -831,12 +839,13 @@ function heroHtml(b) {
   S.quoteWritten = true;
   const chars = [...q].length;
   const step = Math.min(42, 4200 / Math.max(1, chars));
-  const total = animate ? Math.round(chars * step) : 0;
+  const SAIDA_PENA = 650;
+  const total = animate ? Math.round(chars * step) + SAIDA_PENA : 0;
+  if (animate) S.penaPendente = { step, escrita: Math.round(chars * step), saida: SAIDA_PENA };
   let k = 0;
   const textHtml = animate
-    ? q.split(' ').map(w => `<span class="inline-block whitespace-nowrap">${[...w].map(ch => `<span class="tchar" style="animation-delay:${Math.round((k++) * step)}ms">${esc(ch)}</span>`).join('')}</span>`).join(' ')
+    ? q.split(' ').map(w => `<span class="inline-block whitespace-nowrap">${[...w].map(ch => `<span class="tchar">${esc(ch)}</span>`).join('')}</span>`).join(' ')
     : esc(q);
-  if (animate) setTimeout(() => { const ql = $('quill'); if (ql) ql.classList.remove('writing'); }, total + 300);
   const after = d => animate ? `style="animation-delay:${total + d}ms"` : '';
   const size = q.length > 140 ? 'text-3xl md:text-[2.6rem]' : q.length > 80 ? 'text-3xl md:text-5xl' : 'text-4xl md:text-6xl';
   const fil = lado => `<svg viewBox="0 0 120 120" class="filigrana absolute top-0 ${lado === 'e' ? '-left-2 md:-left-20' : '-right-2 md:-right-20 -scale-x-100'} w-16 md:w-28 pointer-events-none" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" aria-hidden="true"><path d="M4 116 V42 C4 20 20 4 42 4 H116"/><path d="M14 112 V48 C14 29 29 14 48 14 H112" opacity=".55"/><path d="M42 4 C42 22 32 34 14 42"/><path d="M27 27 c10 -3 17 4 13 12 c-4 7 -13 5 -13 -1 c0 -5 5 -7 8 -4"/><path d="M60 14 c6 4 14 4 20 0 M14 60 c4 6 4 14 0 20" opacity=".7"/><circle cx="4" cy="116" r="2.4" fill="currentColor"/><circle cx="116" cy="4" r="2.4" fill="currentColor"/><circle cx="66" cy="22" r="1.4" fill="currentColor"/><circle cx="22" cy="66" r="1.4" fill="currentColor"/></svg>`;
@@ -847,13 +856,13 @@ function heroHtml(b) {
       <path d="M18 44 h28 l-3 14 h-22 z" fill="#1E1712" stroke="#D9B45F" stroke-width="1.2" stroke-linejoin="round"/>
       <path d="M22 44 v-4 a4 3 0 0 1 4 -3 h12 a4 3 0 0 1 4 3 v4" fill="#1E1712" stroke="#D9B45F" stroke-width="1.2"/>
       <ellipse cx="32" cy="44" rx="14" ry="2" fill="#0F0B09" stroke="#D9B45F" stroke-width=".8"/>
-      <g id="quill" class="quill ${animate ? 'writing' : ''}">
+      <g id="quill" class="quill ${animate ? 'fora' : ''}">
         <path d="M31 43 L50 6 C56 12 54 22 45 28 C41 31 37 35 33 41 Z" fill="#E8CB86" fill-opacity=".18" stroke="#E8CB86" stroke-width="1.1" stroke-linejoin="round"/>
         <path d="M31 43 L48 12" stroke="#E8CB86" stroke-width=".8"/>
         <path d="M40 24 l6 -3 M37 30 l6 -2 M43 18 l5 -3" stroke="#E8CB86" stroke-width=".6" opacity=".7"/>
       </g>
     </svg>
-    <blockquote class="relative font-display italic font-medium ${size} leading-[1.15] mt-6 text-ink" aria-label="${esc(q)}">${textHtml}</blockquote>
+    <blockquote class="relative font-display italic font-medium ${size} leading-[1.15] mt-6 text-ink" aria-label="${esc(q)}">${textHtml}${animate ? `<span id="penaVoo" class="pena-voo" aria-hidden="true"><svg viewBox="0 0 40 80" width="100%" height="100%" fill="none" overflow="visible"><path d="M1.5 78.5 C8 58 18 34 33 4 C40 12 39 26 30 36 C24 43 16 52 6 71 Z" fill="currentColor" fill-opacity=".22" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M1.5 78.5 L30 12" stroke="currentColor" stroke-width="1.1"/><path d="M20 34 l9 -4 M16 43 l9 -3 M24 25 l8 -5 M12 52 l7 -2" stroke="currentColor" stroke-width=".8" opacity=".75"/><path d="M1.5 78.5 l2.5 -6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></span>` : ''}</blockquote>
     <div class="ornament max-w-xs mx-auto mt-8 text-sm ${animate ? 'fade-in' : ''}" ${after(100)}><span>✦</span></div>
     <p class="mt-5 font-display text-xl text-muted ${animate ? 'fade-in' : ''}" ${after(250)}>— <a href="#obra-${esc(b.id)}" class="italic text-wine hover:underline underline-offset-4">${esc(b.title)}</a>, ${esc(b.author)}</p>
     <div class="mt-8 flex flex-wrap justify-center gap-3 ${animate ? 'fade-in' : ''}" ${after(450)}>
@@ -2716,7 +2725,54 @@ function observarRevelar() {
     if (!REVELAR || REDUCE) el.classList.add('visivel'); else REVELAR.observe(el);
   });
 }
-new MutationObserver(() => observarRevelar()).observe(document.body, { childList: true, subtree: true });
+let revelarAgendado = false;
+new MutationObserver(() => { if (revelarAgendado) return; revelarAgendado = true; requestAnimationFrame(() => { revelarAgendado = false; observarRevelar(); }); }).observe(document.body, { childList: true, subtree: true });
+
+function iniciarPena(cfg) {
+  const bq = document.querySelector('#hero blockquote'); const pena = $('penaVoo'); const tinteiro = $('quill');
+  if (!bq || !pena) { document.querySelectorAll('#hero .tchar').forEach(l => l.classList.add('on')); if (tinteiro) tinteiro.classList.remove('fora'); return; }
+  const letras = [...bq.querySelectorAll('.tchar')];
+  if (!letras.length) return;
+  let pos = [], inicio = { x: 0, y: 0 };
+  const medir = () => {
+    const r0 = bq.getBoundingClientRect();
+    pos = letras.map(l => { const r = l.getBoundingClientRect(); return { x: r.left - r0.left, y: r.top - r0.top + r.height * 0.8, w: r.width }; });
+    if (tinteiro) { const ri = tinteiro.getBoundingClientRect(); inicio = { x: ri.left - r0.left + ri.width * 0.3, y: ri.top - r0.top + ri.height * 0.95 }; }
+    else inicio = { x: pos[0].x - 40, y: pos[0].y - 60 };
+  };
+  medir();
+  window.addEventListener('resize', medir);
+  const suave = t => t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+  const VOLTA = 900; const t0 = performance.now(); let feitas = 0; const atual = { x: inicio.x, y: inicio.y };
+  pena.style.opacity = '1';
+  const alvoNaLetra = f => { const i = Math.max(0, Math.min(pos.length - 1, Math.floor(f))); const a = pos[i]; return { x: a.x + a.w * Math.min(1, f - i), y: a.y }; };
+  function quadro(agora) {
+    if (!pena.isConnected) { window.removeEventListener('resize', medir); return; }
+    const t = agora - t0; let x, y, rot;
+    if (t < cfg.saida) {
+      const e = suave(t / cfg.saida); const a = pos[0];
+      x = inicio.x + (a.x - inicio.x) * e; y = inicio.y + (a.y - inicio.y) * e - Math.sin(e * Math.PI) * 50; rot = -38 + 30 * e;
+      atual.x = x; atual.y = y;
+    } else if (t < cfg.saida + cfg.escrita) {
+      const f = (t - cfg.saida) / cfg.step; const k = Math.floor(f);
+      while (feitas <= k && feitas < letras.length) letras[feitas++].classList.add('on');
+      const alvo = alvoNaLetra(f);
+      const salto = Math.abs(alvo.y - atual.y) > 8;
+      atual.x += (alvo.x - atual.x) * (salto ? 0.22 : 0.6); atual.y += (alvo.y - atual.y) * (salto ? 0.22 : 0.6);
+      x = atual.x; y = atual.y + Math.sin(t / 34) * 1.8 - (salto ? 10 : 0); rot = -8 + Math.sin(t / 47) * 5;
+    } else if (t < cfg.saida + cfg.escrita + VOLTA) {
+      while (feitas < letras.length) letras[feitas++].classList.add('on');
+      const e = suave((t - cfg.saida - cfg.escrita) / VOLTA); const de = pos[pos.length - 1];
+      const sx = de.x + de.w, sy = de.y;
+      x = sx + (inicio.x - sx) * e; y = sy + (inicio.y - sy) * e - Math.sin(e * Math.PI) * 70; rot = -8 - 30 * e;
+      if (e > 0.82 && tinteiro) tinteiro.classList.remove('fora');
+      pena.style.opacity = e > 0.8 ? String(Math.max(0, 1 - (e - 0.8) / 0.2)) : '1';
+    } else { pena.remove(); if (tinteiro) tinteiro.classList.remove('fora'); window.removeEventListener('resize', medir); return; }
+    pena.style.transform = `translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, 0) rotate(${rot.toFixed(1)}deg)`;
+    requestAnimationFrame(quadro);
+  }
+  requestAnimationFrame(quadro);
+}
 
 const TEXTO_FORM = { alterado: false, ocupado: false };
 async function extrairParaFormulario(silencioso) {
@@ -3132,9 +3188,25 @@ if (!REDUCE) {
     const n = Math.round(Math.min(85, (W * H) / 15000) * (REDUCE ? 0.5 : 1));
     parts = Array.from({ length: n }, () => mk(true));
   }
+  const sprites = {};
+  function sprite(claro) {
+    const chave = claro ? 'c' : 'e'; if (sprites[chave]) return sprites[chave];
+    const cor = claro ? '150,100,32' : '242,208,128'; const T = 32;
+    const c = document.createElement('canvas'); c.width = c.height = T; const g2 = c.getContext('2d');
+    const g = g2.createRadialGradient(T / 2, T / 2, 0, T / 2, T / 2, T / 2);
+    g.addColorStop(0, `rgba(${cor},1)`); g.addColorStop(0.35, `rgba(${cor},.35)`); g.addColorStop(1, `rgba(${cor},0)`);
+    g2.fillStyle = g; g2.fillRect(0, 0, T, T);
+    return (sprites[chave] = c);
+  }
+  let ativo = true;
+  function deveParar() { return document.hidden || !$('reader').classList.contains('hidden') || !$('bookReader').classList.contains('hidden'); }
+  document.addEventListener('visibilitychange', () => { if (!deveParar() && !ativo && !REDUCE) { ativo = true; requestAnimationFrame(draw); } });
+  setInterval(() => { if (!deveParar() && !ativo && !REDUCE) { ativo = true; requestAnimationFrame(draw); } }, 800);
   function draw() {
+    if (!REDUCE && deveParar()) { ativo = false; return; }
     ctx.clearRect(0, 0, W, H);
     const claro = document.documentElement.classList.contains('claro');
+    const img = sprite(claro);
     const dy = (window.scrollY - lastY) * 0.2; lastY = window.scrollY;
     for (const p of parts) {
       if (!REDUCE) {
@@ -3143,11 +3215,9 @@ if (!REDUCE) {
         if (p.y > H + 14) p.y = -8;
       }
       const tw = (Math.sin(p.ph * 2.3) + 1) / 2, al = p.a * (0.35 + 0.65 * tw) * (claro ? 1.25 : 1), R = p.r * (claro ? 3.2 : 4);
-      const cor = claro ? '150,100,32' : '242,208,128';
-      const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, R);
-      g.addColorStop(0, `rgba(${cor},${al.toFixed(3)})`); g.addColorStop(0.35, `rgba(${cor},${(al * 0.35).toFixed(3)})`); g.addColorStop(1, `rgba(${cor},0)`);
-      ctx.fillStyle = g; ctx.beginPath(); ctx.arc(p.x, p.y, R, 0, 6.283); ctx.fill();
+      ctx.globalAlpha = Math.min(1, al); ctx.drawImage(img, p.x - R, p.y - R, R * 2, R * 2);
     }
+    ctx.globalAlpha = 1;
     if (!REDUCE) requestAnimationFrame(draw);
   }
   size(); window.addEventListener('resize', () => { size(); if (REDUCE) draw(); }); draw();
