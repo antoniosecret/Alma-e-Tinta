@@ -993,10 +993,10 @@ function viewEstante() {
       <h1 class="font-display text-5xl font-semibold mt-2">Minha Biblioteca</h1>
       <p class="text-sm text-muted mt-3">${plural(conta.lidos, 'livro lido', 'livros lidos')} · ${segTotal >= 60 ? fmtDuracao(segTotal) + ' de leitura' : 'comece uma leitura'} · tudo fica salvo neste aparelho</p>
     </div>
-    <div class="flex justify-center gap-2 mt-10 overflow-x-auto hide-scrollbar pb-1">
+    <div class="flex flex-wrap justify-center gap-2 mt-10 pb-1">
       ${SHELVES.map(([k, l]) => `<button data-action="bibTab" data-tab="${k}" class="chip ${tab === k ? 'active' : ''}">${l} <span class="opacity-70">${conta[k]}</span></button>`).join('')}
     </div>
-    <div class="flex justify-center gap-2 mt-3 overflow-x-auto hide-scrollbar pb-1">
+    <div class="flex flex-wrap justify-center gap-2 mt-3 pb-1">
       ${EXTRAS_BIB.map(([k, l]) => `<button data-action="bibTab" data-tab="${k}" class="chip ${tab === k ? 'active' : ''}">${l}${k === 'notas' && contaNotas ? ` <span class="opacity-70">${contaNotas}</span>` : ''}</button>`).join('')}
     </div>
     <div class="rule my-10"></div>
