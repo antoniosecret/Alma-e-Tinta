@@ -1,6 +1,6 @@
 /* Alma & Tinta — guarda o site no aparelho para abrir sem internet.
    Os livros em si (texto e PDF) ficam no IndexedDB, guardados pela própria página. */
-const VERSAO = 'v3.9';
+const VERSAO = 'v4.0';
 const CASCA = 'alma-casca-' + VERSAO;
 const EXTRAS = 'alma-extras';
 const IMAGENS = 'alma-imagens';
