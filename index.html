@@ -57,7 +57,8 @@
     html.claro .filigrana { color: rgb(var(--c-wine) / .42); }
     html.claro .text-muted\/60, html.claro .text-muted\/70, html.claro .text-muted\/80 { color: rgb(var(--c-muted)); }
     html.claro .text-ink\/85, html.claro .text-ink\/90, html.claro .text-ink\/95 { color: rgb(var(--c-ink)); }
-    html.claro footer { background-color: rgb(var(--c-paper-dark) / .85); }
+    html.claro footer.nv-rodape { background-color: rgb(var(--c-paper-dark) / .85); }
+    #rFoot { background: transparent !important; }
     html.claro .mancha { color: #5c3a1c; opacity: .12; }
     html.claro .mancha.ouro { color: #a0702a; opacity: .18; }
     html.claro .numeral { -webkit-text-stroke: 1.2px rgb(var(--c-wine) / .38); }
@@ -1947,7 +1948,7 @@ function openReader(b, draftText) {
     <p class="text-[10px] uppercase tracking-[0.3em] opacity-70">Fim da prévia</p>
     <div class="flex flex-wrap justify-center gap-3 pt-2">
       ${!isDraft && b.id && hasOnline(b) && canAccess(b) ? `<button data-action="readFull" data-id="${esc(b.id)}" class="btn-primary">📖 Ler o livro completo online</button>` : ''}
-      ${pdf ? `<a href="${esc(pdf)}" target="_blank" rel="noopener" data-download="${esc(b.id)}" data-origem="leitor" class="btn-outline">⤓ Baixar PDF</a>` : ''}
+      ${pdf ? `<a href="${esc(pdf)}" target="_blank" rel="noopener" data-download="${esc(b.id)}" data-origem="leitor" class="text-[11px] font-semibold uppercase tracking-[0.14em] px-5 py-3 rounded-sm border inline-flex items-center" style="border-color:currentColor">⤓ Baixar PDF</a>` : ''}
       <button data-action="closeReader" class="text-[11px] font-semibold uppercase tracking-[0.14em] px-5 py-3 rounded-sm border" style="border-color:currentColor;opacity:.7">Fechar leitor</button>
     </div>
     <p class="text-[11px] opacity-60 leading-relaxed max-w-md mx-auto pt-4">${isDraft ? '' : avisoDireitos(b)}</p>`;
@@ -2388,7 +2389,7 @@ async function openTextBook(b) {
       <p class="text-[10px] uppercase tracking-[0.3em] opacity-70">Fim do livro</p>
       <div class="flex flex-wrap justify-center gap-3 pt-2">
         ${hasOnline(b) && (b.hasPdf || (content(b) || {}).pdfUrl) ? `<button data-action="readPdf" data-id="${esc(b.id)}" class="text-[11px] font-semibold uppercase tracking-[0.14em] px-5 py-3 rounded-sm border" style="border-color:currentColor;opacity:.8">📄 Ver as páginas originais</button>` : ''}
-        ${pdf ? `<a href="${esc(pdf)}" target="_blank" rel="noopener" data-download="${esc(b.id)}" data-origem="leitor" class="btn-outline">⤓ Baixar PDF</a>` : ''}
+        ${pdf ? `<a href="${esc(pdf)}" target="_blank" rel="noopener" data-download="${esc(b.id)}" data-origem="leitor" class="text-[11px] font-semibold uppercase tracking-[0.14em] px-5 py-3 rounded-sm border inline-flex items-center" style="border-color:currentColor">⤓ Baixar PDF</a>` : ''}
         <button data-action="closeReader" class="text-[11px] font-semibold uppercase tracking-[0.14em] px-5 py-3 rounded-sm border" style="border-color:currentColor;opacity:.7">Fechar leitor</button>
       </div>
       <p class="text-[11px] opacity-60 leading-relaxed max-w-md mx-auto pt-4">${avisoDireitos(b)}</p>`;
