@@ -901,7 +901,9 @@ async function baixarPdfDireto(b, a) {
   const rotulo = a.innerHTML;
   a.innerHTML = 'Baixando…'; a.style.pointerEvents = 'none';
   try {
-    const bytes = await pdfDoLivro(b, false);
+    let bytes;
+    if (navigator.onLine) { const r = await api('getPdfData', b.id, PWD || ''); bytes = b64ToBytes(r.b64); BR.cache[b.id] = bytes; if ((OFF.idx[b.id] || {}).p) guardarPdfOffline(b, bytes).catch(() => {}); }
+    else bytes = await pdfDoLivro(b, false);
     const url = URL.createObjectURL(new Blob([bytes], { type: 'application/pdf' }));
     const link = document.createElement('a');
     link.href = url; link.download = (b.title || 'livro').replace(/[\\:*?"<>|]+/g, '').trim() + '.pdf';
@@ -3926,7 +3928,13 @@ $('buscaTopo').addEventListener('submit', e => {
 });
 const CAT_KEY = 'almaTinta.catalogo';
 function catalogoGuardado() { try { const c = JSON.parse(localStorage.getItem(CAT_KEY) || 'null'); return c && Array.isArray(c.books) ? c : null; } catch (e) { return null; } }
-function aplicarCatalogo(r) { S.books = (r && r.books) || []; S.config = (r && r.config) || {}; }
+function aplicarCatalogo(r) {
+  const novos = (r && r.books) || [];
+  const antes = {}; (S.books || []).forEach(b => { antes[b.id] = b.updatedAt; });
+  novos.forEach(b => { if (antes[b.id] && antes[b.id] !== b.updatedAt) esquecerArquivos(b.id); });
+  S.books = novos; S.config = (r && r.config) || {};
+}
+function esquecerArquivos(id) { try { delete TX.cache[id]; delete BR.cache[id]; } catch (e) {} }
 function guardarCatalogo(r) {
   const txt = JSON.stringify(r);
   try { localStorage.setItem(CAT_KEY, txt); } catch (e) { try { localStorage.removeItem(CAT_KEY); } catch (e2) {} }
@@ -4042,6 +4050,7 @@ async function saveBook() {
       removeBackCover: !backFile && !!($('f-back-remove') && $('f-back-remove').checked)
     };
     const id = await api('saveBook', PWD, obra, capa, pdf, textoCompleto, contracapa);
+    esquecerArquivos(id);
     if (typeof textoCompleto === 'string') TX.cache[id] = textoCompleto;
     limparRascunho(); S.editing = null; SS.set('almaTinta.editando', '');
     await loadCatalog();
