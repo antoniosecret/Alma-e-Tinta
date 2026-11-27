@@ -412,7 +412,7 @@
     @media (prefers-reduced-motion: reduce) { .nv-btn::after { animation: none; display: none; } }
     .nv-logo { position: relative; }
     .nv-logo svg { width: 190px; overflow: visible; }
-    .nv-logo-arte { position: relative; display: block; width: 190px; }
+    .nv-logo-arte { position: relative; display: block; width: 200px; }
     .nv-logo-arte > svg { display: block; width: 100%; height: auto; }
     .nv-logo-arte > .nv-logo-pena, .nv-logo-arte > .nv-logo-brilhos { position: absolute; inset: 0; }
     .nv-logo-pena { transform-origin: 43.6% 69.3%; animation: nvBalanco 7s ease-in-out infinite; will-change: transform; }
@@ -487,38 +487,21 @@
   <aside id="lateral" class="nv-lado" aria-label="Menu principal">
     <a href="#acervo" class="nv-logo" aria-label="Alma & Tinta — início">
       <span class="nv-logo-arte">
-        <svg viewBox="0 0 220 150" aria-hidden="true">
-        <defs>
-          <radialGradient id="nvBrilho" cx=".5" cy=".55" r=".5"><stop offset="0" stop-color="#e8c47a" stop-opacity=".35"/><stop offset="1" stop-color="#e8c47a" stop-opacity="0"/></radialGradient>
-          <linearGradient id="nvPagE" x1="0" x2="1"><stop offset="0" stop-color="#d9c8a4"/><stop offset=".75" stop-color="#f3e8cf"/><stop offset="1" stop-color="#b9a47c"/></linearGradient>
-          <linearGradient id="nvPagD" x1="1" x2="0"><stop offset="0" stop-color="#d9c8a4"/><stop offset=".75" stop-color="#f3e8cf"/><stop offset="1" stop-color="#b9a47c"/></linearGradient>
-          <linearGradient id="nvCouro" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5a2a18"/><stop offset="1" stop-color="#2a120a"/></linearGradient>
-          <linearGradient id="nvPluma" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#c9a04a"/><stop offset=".45" stop-color="#f1dfb4"/><stop offset="1" stop-color="#fff7e6"/></linearGradient>
-        </defs>
-        <ellipse cx="110" cy="92" rx="104" ry="56" fill="url(#nvBrilho)"/>
-        <path d="M110 140c-26-10-62-14-100-9l-2-58c40-6 76-2 102 12 26-14 62-18 102-12l-2 58c-38-5-74-1-100 9z" fill="url(#nvCouro)" stroke="url(#nvOuro)" stroke-width="2"/>
-        <path d="M14 127l-1-12M206 127l1-12" stroke="#e8cb86" stroke-width="3" stroke-linecap="round"/>
-        <path d="M110 135c-24-9-58-13-94-9M110 135c24-9 58-13 94-9" stroke="#e9dcc0" stroke-width="2.4" fill="none" opacity=".9"/>
-        <path d="M110 132c-24-9-58-13-94-9M110 132c24-9 58-13 94-9" stroke="#cdb990" stroke-width="2" fill="none"/>
-        <path d="M110 129c-24-10-58-14-96-10V64c38-6 72 0 96 14z" fill="url(#nvPagE)"/>
-        <path d="M110 129c24-10 58-14 96-10V64c-38-6-72 0-96 14z" fill="url(#nvPagD)"/>
-        <path d="M110 78v51" stroke="#8a7350" stroke-width="1.6"/>
-        <path d="M104 80v48M116 80v48" stroke="#000" stroke-opacity=".12" stroke-width="6"/>
-        <g stroke="#a8946c" stroke-width=".7" opacity=".7">
-          <path d="M26 76c26-3 50 1 70 10M26 84c26-3 50 1 70 10M26 92c26-3 50 1 70 10M26 100c26-3 50 1 70 10M26 108c18-2 34 0 48 6"/>
-          <path d="M124 86c20-9 44-13 70-10M124 94c20-9 44-13 70-10M124 102c20-9 44-13 70-10M124 110c20-9 44-13 70-10M146 114c14-5 30-7 48-5"/>
-        </g>
-        <path d="M34 70c6 4 6 10 0 14" stroke="#7a1f2b" stroke-width="2" fill="none" opacity=".7"/>
-        <path d="M112 79l0 62 6-7 6 7v-66z" fill="#8e1d28"/><path d="M112 79v62" stroke="#c13a45" stroke-width="1"/>
-        <g fill="#1a1209"><circle cx="86" cy="118" r="2.4"/><circle cx="80" cy="123" r="1.3"/><circle cx="92" cy="122" r="1"/></g>
-      </svg>
-        <svg class="nv-logo-pena" viewBox="0 0 220 150" aria-hidden="true"><defs><linearGradient id="nvPluma" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#c9a04a"/><stop offset=".45" stop-color="#f1dfb4"/><stop offset="1" stop-color="#fff7e6"/></linearGradient></defs><g>
-          <path d="M96.0 104.0 L99.6 100.2 L103.2 96.3 L106.8 92.5 L110.5 88.6 L114.7 85.1 L120.1 82.3 L125.5 79.4 L130.8 76.5 L136.0 73.6 L141.1 70.5 L146.0 67.4 L150.7 64.2 L155.2 60.8 L159.5 57.3 L163.5 53.7 L167.3 50.0 L170.9 46.1 L174.2 42.1 L177.3 38.0 L180.1 33.7 L182.7 29.3 L185.2 24.8 L187.4 20.2 L189.5 15.5 L191.5 10.7 L193.4 5.9 L188.7 1.5 L184.5 4.1 L180.2 6.7 L176.0 9.5 L171.9 12.3 L167.9 15.3 L163.9 18.4 L160.0 21.7 L156.1 25.1 L152.4 28.7 L148.8 32.5 L145.2 36.5 L141.8 40.7 L138.4 45.0 L135.1 49.5 L131.9 54.2 L128.8 59.0 L125.7 63.9 L122.7 68.9 L119.7 74.0 L116.8 79.2 L113.9 84.3 L110.5 88.6 L106.8 92.5 L103.2 96.3 L99.6 100.2 L96.0 104.0Z" fill="url(#nvPluma)"/>
-          <path d="M117.7 80.9L120.3 81.9 M117.7 80.9L117.1 79.1 M121.3 77.1L125.8 78.7 M121.3 77.1L120.2 73.8 M124.9 73.2L131.2 75.6 M124.9 73.2L123.4 68.7 M128.5 69.4L136.5 72.4 M128.5 69.4L126.6 63.6 M132.2 65.5L141.7 69.1 M132.2 65.5L129.8 58.6 M135.8 61.7L146.7 65.8 M135.8 61.7L133.1 53.8 M139.4 57.8L151.5 62.4 M139.4 57.8L136.4 49.1 M143.0 54.0L156.1 58.9 M143.0 54.0L139.8 44.5 M146.6 50.2L160.4 55.3 M146.6 50.2L143.3 40.1 M150.2 46.3L164.5 51.6 M150.2 46.3L146.8 36.0 M153.8 42.5L168.3 47.8 M153.8 42.5L150.3 32.0 M157.5 38.6L171.9 44.0 M157.5 38.6L154.0 28.2 M161.1 34.8L175.2 40.0 M161.1 34.8L157.7 24.6 M164.7 30.9L178.2 35.9 M164.7 30.9L161.4 21.1 M168.3 27.1L181.0 31.8 M168.3 27.1L165.2 17.9 M171.9 23.2L183.5 27.5 M171.9 23.2L169.1 14.8 M175.5 19.4L185.9 23.2 M175.5 19.4L173.0 11.9 M179.2 15.5L188.0 18.8 M179.2 15.5L177.0 9.1 M182.8 11.7L190.0 14.4 M182.8 11.7L181.0 6.5 M186.4 7.8L191.9 9.9 M186.4 7.8L185.1 3.9" stroke="#b08a43" stroke-width=".7" opacity=".7"/>
-          <path d="M96 104L190 4" stroke="#8a6326" stroke-width="2.2"/>
-          <path d="M96 104l-6 9 2-11z" fill="#1a1209"/>
-        </g></svg>
-        <svg class="nv-logo-brilhos" viewBox="0 0 220 150" aria-hidden="true" fill="#f6e3ad"><path d="M40 40l2 6 6 2-6 2-2 6-2-6-6-2 6-2z"/><path d="M182 54l1.4 4 4 1.4-4 1.4-1.4 4-1.4-4-4-1.4 4-1.4z"/><path d="M58 22l1 3 3 1-3 1-1 3-1-3-3-1 3-1z"/></svg>
+        <svg viewBox="0 0 220 150" aria-hidden="true"><defs><linearGradient id="nvLg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f6dfa2"/><stop offset=".55" stop-color="#d4a548"/><stop offset="1" stop-color="#8f6623"/></linearGradient>
+<linearGradient id="nvLgh" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#8f6623"/><stop offset=".5" stop-color="#f6dfa2"/><stop offset="1" stop-color="#8f6623"/></linearGradient>
+<radialGradient id="nvLhalo" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#e8c47a" stop-opacity=".22"/><stop offset="1" stop-color="#e8c47a" stop-opacity="0"/></radialGradient></defs>
+<ellipse cx="110" cy="76" rx="96" ry="72" fill="url(#nvLhalo)"/>
+<path d="M58 118C40 100 38 66 54 42" stroke="url(#nvLg)" stroke-width="1.8" fill="none"/><path d="M162 118C180 100 182 66 166 42" stroke="url(#nvLg)" stroke-width="1.8" fill="none"/>
+<g fill="url(#nvLg)"><ellipse cx="49.2" cy="110.0" rx="3.2" ry="7.5" transform="rotate(-35 49.2 110.0)"/><ellipse cx="170.8" cy="110.0" rx="3.2" ry="7.5" transform="rotate(35 170.8 110.0)"/><ellipse cx="47.7" cy="98.0" rx="3.2" ry="7.5" transform="rotate(-29 47.7 98.0)"/><ellipse cx="172.3" cy="98.0" rx="3.2" ry="7.5" transform="rotate(29 172.3 98.0)"/><ellipse cx="46.6" cy="86.0" rx="3.2" ry="7.5" transform="rotate(-23 46.6 86.0)"/><ellipse cx="173.4" cy="86.0" rx="3.2" ry="7.5" transform="rotate(23 173.4 86.0)"/><ellipse cx="46.1" cy="74.0" rx="3.2" ry="7.5" transform="rotate(-17 46.1 74.0)"/><ellipse cx="173.9" cy="74.0" rx="3.2" ry="7.5" transform="rotate(17 173.9 74.0)"/><ellipse cx="46.0" cy="62.0" rx="3.2" ry="7.5" transform="rotate(-11 46.0 62.0)"/><ellipse cx="174.0" cy="62.0" rx="3.2" ry="7.5" transform="rotate(11 174.0 62.0)"/><ellipse cx="46.0" cy="50.0" rx="3.2" ry="7.5" transform="rotate(-5 46.0 50.0)"/><ellipse cx="174.0" cy="50.0" rx="3.2" ry="7.5" transform="rotate(5 174.0 50.0)"/></g>
+<circle cx="110" cy="74" r="46" fill="#1a130c" stroke="url(#nvLg)" stroke-width="2.6"/>
+<circle cx="110" cy="74" r="40" fill="none" stroke="#d4a548" stroke-width="1" stroke-dasharray="1.4 2.6" opacity=".8"/>
+<text x="92" y="88" text-anchor="middle" font-family="Cormorant Garamond, Georgia, serif" font-weight="700" font-size="44" fill="url(#nvLg)">A</text>
+<text x="110" y="80" text-anchor="middle" font-family="Cormorant Garamond, Georgia, serif" font-style="italic" font-weight="600" font-size="26" fill="#c9a04a">&amp;</text>
+<text x="128" y="88" text-anchor="middle" font-family="Cormorant Garamond, Georgia, serif" font-weight="700" font-size="44" fill="url(#nvLg)">T</text>
+<path d="M86 136c8-4 16-6 24-6s16 2 24 6" stroke="url(#nvLgh)" stroke-width="1.6" fill="none"/><path d="M110 127l3 4-3 4-3-4z" fill="#e8cb86"/>
+
+</svg>
+        <svg class="nv-logo-brilhos" viewBox="0 0 220 150" aria-hidden="true" fill="#f6e3ad"><path d="M40 30l1.6 4.4 4.4 1.6-4.4 1.6-1.6 4.4-1.6-4.4-4.4-1.6 4.4-1.6z"/><path d="M180 26l1 3 3 1-3 1-1 3-1-3-3-1 3-1z"/></svg>
       </span>
       <span class="nv-marca">Alma <b>&amp;</b> Tinta</span>
       <span class="nv-lema">Ler é viver outras vidas…</span>
